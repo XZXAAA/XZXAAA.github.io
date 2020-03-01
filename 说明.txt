@@ -1,0 +1,8 @@
+2.2 日常博文修改
+第一次配置完成后, 以后只需要循环进行 6-7 操作即可.
+
+在本地对博客进行修改添加新博文、修改样式等等后. 通过下面的流程进行管理：
+
+依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub (此时当前分支应为hexo)
+
+然后才执行 hexo generate -d 发布网站到 master 分支上.
