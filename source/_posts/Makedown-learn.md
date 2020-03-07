@@ -1,7 +1,7 @@
-title: Makedown_learn
-date: 2020-03-07 10:56:23
+title: Makedown_学习
 tags: hexo学习
 top: true
+date: 2020-03-07 10:56:23
 ---
 # 标题学习
 ```bash
@@ -43,6 +43,10 @@ __粗体文本__
 ___粗斜体文本___
 
 
+
+
+![upload successful](/xzxaaa/images/pasted-0.png)
+
 # 引用
 
 
@@ -66,8 +70,9 @@ ___粗斜体文本___
 ```
 
 
-![upload successful](/images/pasted-4.png "图片")
+![upload successful](/xzxaaa/images/pasted-4.png "图片")
 # 超链接
+
 
 ```bash
 [超链接名字](超链接地址 "超链接title")
@@ -146,4 +151,3 @@ ___粗斜体文本___
 ```cs
 cs 和三个`
 ```
-
