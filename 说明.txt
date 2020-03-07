@@ -6,3 +6,8 @@
 依次执行git add .、git commit -m “…”、git push origin hexo指令将改动推送到GitHub (此时当前分支应为hexo)
 
 然后才执行 hexo generate -d 发布网站到 master 分支上.
+
+
+npm install hexo-deployer-git –save
+
+hexo s -g
