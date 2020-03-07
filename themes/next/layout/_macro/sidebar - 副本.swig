@@ -32,9 +32,6 @@
           </li>
         </ul>
       {% endif %}
-	  
-	   
-
 
       <section class="site-overview-wrap sidebar-panel{% if not display_toc or toc(page.content).length <= 1 %} sidebar-panel-active{% endif %}">
         <div class="site-overview">
@@ -101,9 +98,6 @@
               </a>
             </div>
           {% endif %}
-		  
-					  
-		  
 
           {% if theme.social %}
             <div class="links-of-author motion-element">
@@ -151,7 +145,7 @@
           {% include '../_custom/sidebar.swig' %}
         </div>
       </section>
-	  
+
       {% if display_toc and toc(page.content).length > 1 %}
       <!--noindex-->
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
@@ -173,21 +167,34 @@
         </section>
       <!--/noindex-->
       {% endif %}
-	
-
 
 		{% if site.tags.length > 1 %}
-		<script type="text/javascript" charset="utf-8" src="{{ url_for('/js/tagcloud.js') }}"></script>
-		<script type="text/javascript" charset="utf-8" src="{{ url_for('/js/tagcanvas.js') }}"></script>
-		<div class="widget-wrap">
-			<h3 class="widget-title">Tag Cloud</h3>
-			<div id="myCanvasContainer" class="widget tagcloud">
-				<canvas width="250" height="250" id="resCanvas" style="width:100%">
-					{{ list_tags() }}
-				</canvas>
+			<script type="text/javascript" charset="utf-8" src="{{ url_for('/js/tagcloud.js') }}"></script>
+			<script type="text/javascript" charset="utf-8" src="{{ url_for('/js/tagcanvas.js') }}"></script>
+			<div class="widget-wrap">
+				<h3 class="widget-title">Tag Cloud</h3>
+				<div id="myCanvasContainer" class="widget tagcloud">
+					<canvas width="250" height="250" id="resCanvas" style="width:100%">
+						{{ list_tags() }}
+					</canvas>
+				</div>
 			</div>
-		</div>
-		{% endif %}	
+		{% endif %}
+
+
+      {% if theme.sidebar.b2t %}
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          {% if theme.sidebar.scrollpercent %}
+            <span id="scrollpercent"><span>0</span>%</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+	
+	  
+	  
+	  
 
     </div>
   </aside>
