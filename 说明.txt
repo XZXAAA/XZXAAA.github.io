@@ -11,3 +11,8 @@
 npm install hexo-deployer-git –save
 
 hexo s -g
+
+
+https://leancloud.cn   存评论和阅读量
+appid:  spCDftnh2nLGISldIkqbpkaj-gzGzoHsz
+  appkey:  OJ4MjT4aDuj83BBxMp3KMH1R
