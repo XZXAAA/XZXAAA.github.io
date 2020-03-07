@@ -1,6 +1,7 @@
 .header {
   position: relative;
   margin: 0 auto;
+  width: 80%;
   width: $main-desktop;
 
   +tablet() {
@@ -12,6 +13,7 @@
 }
 
 .header-inner {
+  width: 80%;
   position: absolute;
   top: 0;
   overflow: hidden;
@@ -58,6 +60,7 @@
 }
 
 .content-wrap {
+  width: calc(100% - 260px);
   float: right;
   box-sizing: border-box;
   padding: $content-desktop-padding;
@@ -85,7 +88,7 @@
   float: left;
   margin-top: 300px;
   width: $sidebar-desktop;
-  background: $body-bg-color;
+  background: white;
   box-shadow: none;
 
   +tablet() {

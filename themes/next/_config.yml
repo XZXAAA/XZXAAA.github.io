@@ -199,10 +199,10 @@ sidebar:
   offset: 12
 
   # Back to top in sidebar (only for Pisces | Gemini).
-  b2t: false
+  b2t: true
 
   # Scroll percent label in b2t button.
-  scrollpercent: false
+  scrollpercent: true
 
   # Enable sidebar on narrow view (only for Muse | Mist).
   onmobile: false
@@ -378,17 +378,17 @@ disqus:
 # changyan
 changyan:
   enable: false
-  appid:
-  appkey:
+  appid:   spCDftnh2nLGISldIkqbpkaj-gzGzoHsz
+  appkey:  OJ4MjT4aDuj83BBxMp3KMH1R
 
 
 # Valine.
 # You can get your appid and appkey from https://leancloud.cn
 # more info please open https://valine.js.org
 valine:
-  enable: false
-  appid:  # your leancloud application appid
-  appkey:  # your leancloud application appkey
+  enable: true
+  appid:  spCDftnh2nLGISldIkqbpkaj-gzGzoHsz
+  appkey:  OJ4MjT4aDuj83BBxMp3KMH1R
   notify: false # mail notifier , https://github.com/xCss/Valine/wiki
   verify: false # Verification code
   placeholder: Just go go # comment box placeholder
@@ -539,9 +539,9 @@ rating:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
-  enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  enable: true
+  app_id: spCDftnh2nLGISldIkqbpkaj-gzGzoHsz-gzGzoHsz
+  app_key: OJ4MjT4aDuj83BBxMp3KMH1R
 
 # Another tool to show number of visitors to each article.
 # visit https://console.firebase.google.com/u/0/ to get apiKey and projectId
