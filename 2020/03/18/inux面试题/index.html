@@ -111,13 +111,13 @@
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/18/inux%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="Linux下进程通信的八种方法： 管道(pipe)    命名管道(FIFO)   内存映射(mapped memeory)    消息队列(message queue)    共享内存(shared memory)     信号量(semaphore)     信号(signal)    套接字(Socket)">
-<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/pasted-1.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-18T10:22:00.000Z">
-<meta property="article:modified_time" content="2020-03-18T16:07:55.254Z">
+<meta property="article:modified_time" content="2020-03-21T10:03:41.092Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/pasted-1.png">
+<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
 
 
 
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-19T00:07:55+08:00">
-                2020-03-19
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-21T18:03:41+08:00">
+                2020-03-21
               </time>
             
           </span>
@@ -463,7 +463,7 @@
 <h1 id="Linux中底层一些函数"><a href="#Linux中底层一些函数" class="headerlink" title="Linux中底层一些函数"></a>Linux中底层一些函数</h1><ul>
 <li>linux平台下堆的malloc堆申请 更底层用的是brk或者sbrk ，栈是alloca   </li>
 </ul>
-<h1 id="linux-内存映像分布"><a href="#linux-内存映像分布" class="headerlink" title="linux 内存映像分布"></a>linux 内存映像分布</h1><p><img src="/xzxaaa/images/pasted-1.png" alt="upload successful"></p>
+<h1 id="linux-内存映像分布"><a href="#linux-内存映像分布" class="headerlink" title="linux 内存映像分布"></a>linux 内存映像分布</h1><p><img src="/xzxaaa/images/memfengbu.png" alt="upload successful"></p>
 <h1 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h1><ul>
 <li>父进程设置的锁，子进程不继承</li>
 <li>子进程的未决告警被清除 </li>
@@ -480,8 +480,54 @@
 <ul>
 <li>VFS是一个抽象层，其向上提供了统一的文件访问接口，而向下则兼容了各种不同的文件系统。</li>
 <li>inode是文件的唯一表示，其中除了包含元数据和数据的索引之外，还包含关键操作的函数指针。比如对于文件读写和属性更改等操作接口都存在该结构体中 .如address_space、inode_operations和file_operations，其中每一个结构体中都包含很多函数指针。</li>
+<li>在挂载的时候就会将indoe中的address_space、inode_operations和file_operations函数指针初始化为Ext4文件系统的函数<br><img src="/xzxaaa/images/VFS.png" alt="upload successful"></li>
 </ul>
-<p><img src="/xzxaaa/images/VFS.png" alt="upload successful">  </p>
+<h1 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h1><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠</p>
+<ul>
+<li>等待条件代码   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);  </span><br><span class="line">while (条件为假）  </span><br><span class="line">	     pthread_cond_wait(cond, mutex);  </span><br><span class="line">修改条件  </span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure></li>
+<li>给条件发送信号代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(cond);</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure>
+有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是</li>
+</ul>
+<hr>
+<h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">链接</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名</p>
+<ul>
+<li>动态库 ：gcc -shared -o libMyTest.so *.o </li>
+<li>静态库：ar rcs libMyTest.a *.o  </li>
+</ul>
+<h1 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h1><p>一个进程内部的线程可以共享资源</p>
+<ul>
+<li>代码段</li>
+<li>数据段</li>
+<li>打开文件和信号</li>
+<li>线程和信号出来函数方面 ，每个线程有自己的信号掩码<br>Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号</li>
+</ul>
+<h1 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h1><p><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">参考2</a><br>查indoe命令 indoe</p>
+<ul>
+<li>一个超级块对应一个文件系统</li>
+<li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
+<li>Linux虚拟文件系统四大对象：</li>
+</ul>
+<p>1）超级块(super block)</p>
+<p>2）索引节点(inode)</p>
+<p>3）目录项(dentry)</p>
+<p>4）文件对象(file)</p>
+<h1 id="嵌入式Linux开发常用命令总结"><a href="#嵌入式Linux开发常用命令总结" class="headerlink" title="嵌入式Linux开发常用命令总结"></a>嵌入式Linux开发常用命令总结</h1><p><a href="https://blog.csdn.net/czg13548930186/article/details/77972081" target="_blank" rel="noopener">链接</a></p>
+<ul>
+<li>/bin 系统的必备执行工具 所有的客户都可以使用</li>
+<li>/sbin 系统管理工具  要有管理员权限才能执行</li>
+<li>/usr/bin 应用软件的必备工具</li>
+<li>/usr/sbin 网络管理工具</li>
+</ul>
+<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><ul>
+<li>此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。<br>由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。<br>然而，在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</li>
+</ul>
+<h1 id="内核打印的信息"><a href="#内核打印的信息" class="headerlink" title="内核打印的信息"></a>内核打印的信息</h1><ul>
+<li>#dmesg命令 </li>
+<li>消息记录到文件(有时是/var/log/dmesg或/var/log/kernel)中<ul>
+<li>/var 目录，此目录存放一些可以改变的数据</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -607,7 +653,7 @@
               
                 <a href="/xzxaaa/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -618,7 +664,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/xzxaaa/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -629,7 +675,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/xzxaaa/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -693,7 +739,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下进程通信的八种方法："><span class="nav-number">1.</span> <span class="nav-text">Linux下进程通信的八种方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux系统中的线程间通信方式"><span class="nav-number">2.</span> <span class="nav-text">Linux系统中的线程间通信方式:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中底层一些函数"><span class="nav-number">3.</span> <span class="nav-text">Linux中底层一些函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">4.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fork"><span class="nav-number">5.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.</span> <span class="nav-text">TCP可靠</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">7.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS"><span class="nav-number">8.</span> <span class="nav-text">VFS</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下进程通信的八种方法："><span class="nav-number">1.</span> <span class="nav-text">Linux下进程通信的八种方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux系统中的线程间通信方式"><span class="nav-number">2.</span> <span class="nav-text">Linux系统中的线程间通信方式:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中底层一些函数"><span class="nav-number">3.</span> <span class="nav-text">Linux中底层一些函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">4.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fork"><span class="nav-number">5.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.</span> <span class="nav-text">TCP可靠</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">7.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS"><span class="nav-number">8.</span> <span class="nav-text">VFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条件变量"><span class="nav-number">9.</span> <span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库"><span class="nav-number">10.</span> <span class="nav-text">gcc编译、静态库与动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程共享资源"><span class="nav-number">11.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#超级块"><span class="nav-number">12.</span> <span class="nav-text">超级块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#嵌入式Linux开发常用命令总结"><span class="nav-number">13.</span> <span class="nav-text">嵌入式Linux开发常用命令总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统"><span class="nav-number">14.</span> <span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">15.</span> <span class="nav-text">内核打印的信息</span></a></li></ol></div>
             
 
           </div>
@@ -710,7 +756,7 @@
 			<h3 class="widget-title">Tag Cloud</h3>
 			<div id="myCanvasContainer" class="widget tagcloud">
 				<canvas width="250" height="250" id="resCanvas" style="width:100%">
-					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li></ul>
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li></ul>
 				</canvas>
 			</div>
 		</div>

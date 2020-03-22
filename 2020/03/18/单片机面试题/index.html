@@ -111,10 +111,15 @@
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/18/%E5%8D%95%E7%89%87%E6%9C%BA%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="中断 Linux不用FIQ，只用到了IRQ 中断服务有没有参数主要是看中断发生在裸机上还是实时系统中   linux中断流程Linux不用FIQ，只用到了IRQlinux的中断处理都是在SVC模式下处理的。当发生中断的时候，代码运行在内核空间IRQ执行的时候很快在IRQ回到SVC模式时候 R0存着irqnumber在SVC模式的内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12 。 R0保">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bus.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/P1.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/Makefile.png">
 <meta property="article:published_time" content="2020-03-18T12:28:00.000Z">
-<meta property="article:modified_time" content="2020-03-19T07:54:01.004Z">
+<meta property="article:modified_time" content="2020-03-21T09:33:55.500Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
 
 
 
@@ -352,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-19T15:54:01+08:00">
-                2020-03-19
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-21T17:33:55+08:00">
+                2020-03-21
               </time>
             
           </span>
@@ -436,7 +441,9 @@
 <li>Linux不用FIQ，只用到了IRQ</li>
 <li>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中 </li>
 </ul>
-<p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linux中断流程</a><br>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间<br>IRQ执行的时候很快<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在SVC模式的内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12 。 R0保存在IRQ那边的内核栈。<br>随后会再搬到SVC的内核栈上</p>
+<p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linux中断流程</a><br>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间<br>IRQ执行的时候很快<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在SVC模式的内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12 。 R0保存在IRQ那边的内核栈。<br>随后会再搬到SVC的内核栈上  </p>
+<a id="more"></a>
+
 <p>总结分为7点：  </p>
 <ul>
 <li>Linux对中断的扩展：硬件中断，软件中断  </li>
@@ -445,10 +452,25 @@
 <li>要处理的事情实在太多：拆分为：上半部，下半部  </li>
 <li>下半部的事情耗时不是太长：tasklet  </li>
 <li>下半部要做的事情太多并且很复杂：工作队列  </li>
-<li>新技术：threaded irq  </li>
+<li>新技术：threaded irq<br>tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的</li>
 </ul>
-<h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><a id="more"></a>
-<p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">参考简书文章</a> </p>
+<h1 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h1><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">文章</a><br>现在主流的操作系统都是分时操作系统，同时也是抢占式的。</p>
+<ul>
+<li>进程创建时，默认是SCHED_ OTHER  </li>
+</ul>
+<ul>
+<li><p>Linux系统中，为了高效地调度进程，将进程分威两类：实时进程和普通进程(又称非实时进程或一般进程)<br>实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行． </p>
+</li>
+<li><p>实时进程又有两种策略：时间片轮转和先进先出，在时间片轮转策略中。每个可执行实时进程轮流执行一个时间片，而先进先出策略每个进程按各自在运行队列中的顺序执行且顺序不能变化。  </p>
+</li>
+<li><p>在Linux中，进程调度策略共定义了3种：<br>Linux系统中的每个进程用task，struct结构来描述，进程调度的依据是task—struct结构中的policy、priority、counter和rt—priority，PCB中设置Policy数据项，其值用于反映针对不同类型的进程而采用的调度策略。SCHED—RR和SCHED—FIFO用于实时进程。分别表示轮转调度策略和先进先出调度策略；<br>SCHED—OTHER表示普通进程，也按照轮转调度策略处理。  </p>
+</li>
+<li><p>这三类调度策略均基于优先级．  PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数，初始值为rt—priority或Priority。进程启动后该值随时钟周期递减。</p>
+</li>
+<li><p>调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的？程度如何？最后决定给它的优先级做一定的调整。  </p>
+</li>
+</ul>
+<h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">参考简书文章</a> </p>
 <ul>
 <li>可重入强调对单个线程执行时，重新进入同一个子程序，仍然是安全的。  </li>
 </ul>
@@ -457,9 +479,49 @@
 <ul>
 <li>printf 是不可重入函数</li>
 </ul>
+<h1 id="C预处理命令"><a href="#C预处理命令" class="headerlink" title="C预处理命令"></a>C预处理命令</h1><p>按照ANSI标准的定义，预处理程序应该处理以下指令：<br>#if #ifdef #ifndef #else #elif<br>#endif<br>#define<br>#undef<br>#line<br>#error<br>#pragma<br>#include</p>
+<h1 id="Cortex-M3"><a href="#Cortex-M3" class="headerlink" title="Cortex-M3"></a>Cortex-M3</h1><p>程序存储器、IO接口和数据存储器都是在32位的4GB线性空间上，下图就是这个线性空间的分配图，<br>可以看出程序存储器和数据存储器处于不同的地址区域，不像8051那样程序存储器和数据存储器分别有两套不同的地址区域。</p>
+<ul>
+<li>统一编址并不代表就是单总线结构  </li>
+<li>ARM微处理器共有37个32位寄存器，其中31个为通用寄存器，6个为状态寄存器。R0-R7非分组寄存器，R8-R14分组寄存器，R15(PC)。（分组寄存器即不同的模式下使用不同的物理寄存器）</li>
+</ul>
+<p><img src="/xzxaaa/images/mem.png" alt="upload successful"><br><img src="/xzxaaa/images/bus.png" alt="upload successful"></p>
 <h1 id="I2C"><a href="#I2C" class="headerlink" title="I2C"></a>I2C</h1><ul>
-<li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1</li>
-<li>IIC 速度能到达400K  SPI:50M</li>
+<li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
+<li>IIC 速度能到达400K  SPI:50M<br>USB3.0支持差分全双工</li>
+<li>IC为什么用开漏输出和上拉电阻  </li>
+</ul>
+<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
+<ul>
+<li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)</li>
+</ul>
+<p><img src="/xzxaaa/images/P1.png" alt="upload successful"></p>
+<h1 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h1><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。</p>
+<h1 id="Linux-模块相关命令"><a href="#Linux-模块相关命令" class="headerlink" title="Linux 模块相关命令"></a>Linux 模块相关命令</h1><p>加载：insmod chrdevbase.ko或modprobe chrdevbase.ko</p>
+<p>卸载： rmmod chrdevbase.ko</p>
+<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><p><img src="/xzxaaa/images/Makefile.png" alt="upload successful"></p>
+<h1 id="Linux下如何从用户态切换到内核态？"><a href="#Linux下如何从用户态切换到内核态？" class="headerlink" title="Linux下如何从用户态切换到内核态？"></a>Linux下如何从用户态切换到内核态？</h1><p><a href="https://blog.csdn.net/shanghx_123/article/details/83151064" target="_blank" rel="noopener">链接</a>   </p>
+<ul>
+<li>该系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，那么在Linux下，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。</li>
+<li>陷入内核后调用system_call()  </li>
+<li>Linux为每个系统调用都进行了编号 （0—NR_syscall），同时在内核中保存了一张系统调用表 ，该表中保存了系统调用编号和其对应的服务例程</li>
+<li>系统调入通过系统门陷入内核前，需要把系统调用号一并传入内核。<br>在x86上，这个传递动作是通过在执行int0x80前把调用号装入eax寄存器实现的。这样系统调用处理程序一旦运行，就可以从eax中得到数据，然后再去系统调用表中寻找相应服务例程了(API)</li>
+</ul>
+<h1 id="linux-malloc底层实现原"><a href="#linux-malloc底层实现原" class="headerlink" title="linux-malloc底层实现原"></a>linux-malloc底层实现原</h1><p><a href="https://blog.csdn.net/mmshixing/article/details/51679571" target="_blank" rel="noopener">连接</a></p>
+<h1 id="Linux-目录"><a href="#Linux-目录" class="headerlink" title="Linux 目录"></a>Linux 目录</h1><ul>
+<li>proc文件系统常常被放置于Linux系统的/proc目录下，常常用于查看有关硬件、进程的状态。 proc<br>是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，<br>储存系统运行信息文件。</li>
+<li>系统启动后以/sys目录作为 sysfs 文件系统的挂载点<br>sysfs 是一个类似于 proc 的<br>殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系<br>统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</li>
+<li>linux下的cmdline是uboot的bootargs参数传过去的 </li>
+<li>/opt目录：这是给主机额外安装软件所摆放的目录<h1 id="I2C总线仲裁"><a href="#I2C总线仲裁" class="headerlink" title="I2C总线仲裁"></a>I2C总线仲裁</h1><ul>
+<li>假设主控器1要发送的数据DATA1为“101 ……”；主控器2要发送的数据DATA2为“1001 ……”<br>当主控器1发送第3位数据“1”时（主控器2发送“0” ），由于“线与”的结果SDA上的电平为“0”，这样当主控器1检测自己的输出电平时，就会测到一个与自身不相符的“0”电平。这时主控器1只好放弃对总线的控制权。<br>1 对于整个仲裁过程主控器1和主控器2都不会丢失数据；  </li>
+</ul>
+</li>
+</ul>
+<p>2.各个主控器没有对总线实施控制的优先级别，他们遵循“低电平优先”的原则，即谁先发送低电平谁就会掌握对总线的控制权。  </p>
+<h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">链接</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考</a></p>
+<ul>
+<li>当缺页时候，发生异常中断</li>
+<li>如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 * 如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。<br>在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。</li>
 </ul>
 
       
@@ -494,6 +556,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xzxaaa/2020/03/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%B8%89%E7%BA%A7%E8%80%83%E8%AF%95/" rel="prev" title="嵌入式三级考试">
+                嵌入式三级考试 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -582,7 +648,7 @@
               
                 <a href="/xzxaaa/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -593,7 +659,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/xzxaaa/categories/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -604,7 +670,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/xzxaaa/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -668,7 +734,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">2.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">3.</span> <span class="nav-text">I2C</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C预处理命令"><span class="nav-number">4.</span> <span class="nav-text">C预处理命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M3"><span class="nav-number">5.</span> <span class="nav-text">Cortex-M3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">6.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">7.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-模块相关命令"><span class="nav-number">8.</span> <span class="nav-text">Linux 模块相关命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">9.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">10.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">11.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-目录"><span class="nav-number">12.</span> <span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C总线仲裁"><span class="nav-number">13.</span> <span class="nav-text">I2C总线仲裁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">14.</span> <span class="nav-text">MMU</span></a></li></ol></div>
             
 
           </div>
@@ -685,7 +751,7 @@
 			<h3 class="widget-title">Tag Cloud</h3>
 			<div id="myCanvasContainer" class="widget tagcloud">
 				<canvas width="250" height="250" id="resCanvas" style="width:100%">
-					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li></ul>
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li></ul>
 				</canvas>
 			</div>
 		</div>
