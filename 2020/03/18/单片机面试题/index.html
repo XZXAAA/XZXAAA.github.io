@@ -115,8 +115,9 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bus.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/P1.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/Makefile.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
 <meta property="article:published_time" content="2020-03-18T12:28:00.000Z">
-<meta property="article:modified_time" content="2020-03-21T09:33:55.500Z">
+<meta property="article:modified_time" content="2020-03-22T02:26:39.455Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
@@ -161,6 +162,16 @@
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0e0e23458f6ac565f6ef9f4cf0049800";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -357,8 +368,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-21T17:33:55+08:00">
-                2020-03-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-22T10:26:39+08:00">
+                2020-03-22
               </time>
             
           </span>
@@ -452,7 +463,7 @@
 <li>要处理的事情实在太多：拆分为：上半部，下半部  </li>
 <li>下半部的事情耗时不是太长：tasklet  </li>
 <li>下半部要做的事情太多并且很复杂：工作队列  </li>
-<li>新技术：threaded irq<br>tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的</li>
+<li>新技术：threaded irq<br>tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</li>
 </ul>
 <h1 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h1><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">文章</a><br>现在主流的操作系统都是分时操作系统，同时也是抢占式的。</p>
 <ul>
@@ -506,7 +517,9 @@
 <li>陷入内核后调用system_call()  </li>
 <li>Linux为每个系统调用都进行了编号 （0—NR_syscall），同时在内核中保存了一张系统调用表 ，该表中保存了系统调用编号和其对应的服务例程</li>
 <li>系统调入通过系统门陷入内核前，需要把系统调用号一并传入内核。<br>在x86上，这个传递动作是通过在执行int0x80前把调用号装入eax寄存器实现的。这样系统调用处理程序一旦运行，就可以从eax中得到数据，然后再去系统调用表中寻找相应服务例程了(API)</li>
+<li>软中断会进入SVC模式，所以linux系统调用后再ARM工作再SVC模式</li>
 </ul>
+<p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful"></p>
 <h1 id="linux-malloc底层实现原"><a href="#linux-malloc底层实现原" class="headerlink" title="linux-malloc底层实现原"></a>linux-malloc底层实现原</h1><p><a href="https://blog.csdn.net/mmshixing/article/details/51679571" target="_blank" rel="noopener">连接</a></p>
 <h1 id="Linux-目录"><a href="#Linux-目录" class="headerlink" title="Linux 目录"></a>Linux 目录</h1><ul>
 <li>proc文件系统常常被放置于Linux系统的/proc目录下，常常用于查看有关硬件、进程的状态。 proc<br>是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，<br>储存系统运行信息文件。</li>
@@ -577,6 +590,12 @@
 
 
     <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
       
     </div>
   </div>
