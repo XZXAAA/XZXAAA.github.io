@@ -116,8 +116,10 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/P1.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/Makefile.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/flash.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/emmc.png">
 <meta property="article:published_time" content="2020-03-18T12:28:00.000Z">
-<meta property="article:modified_time" content="2020-03-22T02:26:39.455Z">
+<meta property="article:modified_time" content="2020-03-22T14:43:39.496Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
@@ -368,7 +370,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-22T10:26:39+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-22T22:43:39+08:00">
                 2020-03-22
               </time>
             
@@ -465,7 +467,7 @@
 <li>下半部要做的事情太多并且很复杂：工作队列  </li>
 <li>新技术：threaded irq<br>tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</li>
 </ul>
-<h1 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h1><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">文章</a><br>现在主流的操作系统都是分时操作系统，同时也是抢占式的。</p>
+<h1 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h1><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">文章</a><br><a href="https://blog.csdn.net/gatieme/article/details/51699889" target="_blank" rel="noopener">linux调度</a><br>现在主流的操作系统都是分时操作系统，同时也是抢占式的。</p>
 <ul>
 <li>进程创建时，默认是SCHED_ OTHER  </li>
 </ul>
@@ -478,7 +480,7 @@
 </li>
 <li><p>这三类调度策略均基于优先级．  PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数，初始值为rt—priority或Priority。进程启动后该值随时钟周期递减。</p>
 </li>
-<li><p>调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的？程度如何？最后决定给它的优先级做一定的调整。  </p>
+<li><p>调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的（统称为普通进程）？程度如何？最后决定给它的优先级做一定的调整。  </p>
 </li>
 </ul>
 <h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">参考简书文章</a> </p>
@@ -499,7 +501,7 @@
 <p><img src="/xzxaaa/images/mem.png" alt="upload successful"><br><img src="/xzxaaa/images/bus.png" alt="upload successful"></p>
 <h1 id="I2C"><a href="#I2C" class="headerlink" title="I2C"></a>I2C</h1><ul>
 <li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
-<li>IIC 速度能到达400K  SPI:50M<br>USB3.0支持差分全双工</li>
+<li>IIC 速度能到达400K  SPI:50M<br>USB3.0支持差分全双工, 2.0是半双工</li>
 <li>IC为什么用开漏输出和上拉电阻  </li>
 </ul>
 <p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
@@ -535,8 +537,36 @@
 <ul>
 <li>当缺页时候，发生异常中断</li>
 <li>如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 * 如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。<br>在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。</li>
+<li>为什么要有虚拟地址？   </li>
 </ul>
-
+<p>1.程序每次load的时候不用指定运行地址</p>
+<ul>
+<li>windows上的虚拟内存在linux叫交换空间 </li>
+<li>虚拟内存中，允许将一个作业分多次调入内存。</li>
+</ul>
+<h1 id="存储物质"><a href="#存储物质" class="headerlink" title="存储物质"></a>存储物质</h1><ul>
+<li><p>E2PROM 字节位单位，与MCU一般是IIC通讯，容量小，用于保存一些参数，如占空比等等</p>
+</li>
+<li><p>Flash ——一种特殊的E2PROM(以块为单位)<br><a href="https://blog.csdn.net/xjw1874/article/details/81505967?utm_source=copy" target="_blank" rel="noopener">链接</a></p>
+</li>
+<li><p>eMMC则在其内部集成了 Flash Controller，包括了协议、擦写均衡、坏块管理、ECC校验、电源管理、时钟管理、数据存取等功能。相比于直接将NAND Flash接入到Host 端，eMMC屏蔽了 NAND Flash 的物理特性，可以减少 Host 端软件的复杂度，让 Host 端专注于上层业务，省去对 NAND Flash </p>
+</li>
+<li><p>NOR Flash 的读取和我们常见的 SDRAM 的读取是一样，用户可以直接运行装载在 NOR FLASH 里面的代码，这样可以减少 SRAM 的容量从而节约了成本。 NAND Flash 没有采取内存的随机读取技术，它的读取是以一次读取一块的形式来进行的， 通常是一次读取 512 个字节</p>
+</li>
+<li><p>NAND器件中的坏块是随机分布的。以前也曾有过消除坏块的努力，但发现成品率太低，代价太高，根本不划算。</p>
+</li>
+<li><p>优缺点   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.Nor的成本相对高，容量相对小，比如常见的只有128KB，256KB，1MB，2MB等等，优</span><br><span class="line">点是读写数据时候，不容易出错。所以在应用领域方面，Nor Flash比较适合应用于存储少</span><br><span class="line">量的代码。  </span><br><span class="line">2.Nand flash成本相对低，说白了就是便宜，缺点是使用中数据读写容易出错，所以一般都</span><br><span class="line">需要有对应的软件或者硬件的数据校验算法，统称为ECC。但优点是，相对来说容量比较</span><br><span class="line">大，现在常见的Nand Flash都是1GB，2GB，更大的8GB的都有了，相对来说，价格便宜，</span><br><span class="line">因此适合用来存储大量的数据。其在嵌入式系统中的作用，相当于PC上的硬盘，用于存储</span><br><span class="line">大量数据。  </span><br><span class="line">3.Nor flash，有类似于dram之类的地址总线，因此可以直接和CPU相连，CPU可以直接通过地址总线对nor flash进行访问，而Nand Flash没有这类的总线，只有IO 接口，只能通过IO</span><br></pre></td></tr></table></figure>
+<p><img src="/xzxaaa/images/flash.png" alt="upload successful"></p>
+</li>
+</ul>
+<p><img src="/xzxaaa/images/emmc.png" alt="upload successful"></p>
+<h1 id="Kmalloc-Vmalloc"><a href="#Kmalloc-Vmalloc" class="headerlink" title="Kmalloc Vmalloc"></a>Kmalloc Vmalloc</h1><p><a href="https://www.jianshu.com/p/9780673ee4c2" target="_blank" rel="noopener">简书连接</a><br><a href="https://zhidao.baidu.com/question/1541354265673904547.html" target="_blank" rel="noopener">百度知道</a></p>
+<ul>
+<li>在设备驱动程序或者内核模块中动态开辟内存，不是用malloc，而是kmalloc ,vmalloc释放内存用的是kfree,vfree  </li>
+<li>kmalloc特殊之处在于它分配的内存是物理上连续的,这对于要进行DMA的设备十分重要. 而用vmalloc分配的内存只是线性地址连续,物理地址不一定连续,不能直接用于DMA</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1，vmalloc分配的一般为高端内存(在3G+内存以上)，只有当内存不够的时候才分配低端内存；kmallco从低端内存分配（在3G+内存）下面。这里说的高低是在虚拟内存那边，物理内存好像也是</span><br><span class="line"></span><br><span class="line">2，vmalloc分配的物理地址一般不连续，而kmalloc分配的地址连续，两者分配的虚拟地址都是连续的；</span><br><span class="line"></span><br><span class="line">　3，vmalloc分配的一般为大块内存，而kmaooc一般分配的为小块内存，（一般不超过128k);</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -667,7 +697,7 @@
               
                 <a href="/xzxaaa/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -753,7 +783,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C预处理命令"><span class="nav-number">4.</span> <span class="nav-text">C预处理命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M3"><span class="nav-number">5.</span> <span class="nav-text">Cortex-M3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">6.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">7.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-模块相关命令"><span class="nav-number">8.</span> <span class="nav-text">Linux 模块相关命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">9.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">10.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">11.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-目录"><span class="nav-number">12.</span> <span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C总线仲裁"><span class="nav-number">13.</span> <span class="nav-text">I2C总线仲裁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">14.</span> <span class="nav-text">MMU</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C预处理命令"><span class="nav-number">4.</span> <span class="nav-text">C预处理命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M3"><span class="nav-number">5.</span> <span class="nav-text">Cortex-M3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">6.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">7.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-模块相关命令"><span class="nav-number">8.</span> <span class="nav-text">Linux 模块相关命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">9.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">10.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">11.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-目录"><span class="nav-number">12.</span> <span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C总线仲裁"><span class="nav-number">13.</span> <span class="nav-text">I2C总线仲裁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">14.</span> <span class="nav-text">MMU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储物质"><span class="nav-number">15.</span> <span class="nav-text">存储物质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kmalloc-Vmalloc"><span class="nav-number">16.</span> <span class="nav-text">Kmalloc Vmalloc</span></a></li></ol></div>
             
 
           </div>

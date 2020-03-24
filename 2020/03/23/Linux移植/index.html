@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="Hello World," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -105,17 +105,19 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="Uboot启动分析链接">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/07/hello-world/index.html">
+<meta property="og:title" content="Linux移植">
+<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="article:published_time" content="2020-03-07T04:49:00.000Z">
-<meta property="article:modified_time" content="2020-03-07T10:34:08.545Z">
+<meta property="og:description" content="Uboot启动分析链接">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bootz.png">
+<meta property="article:published_time" content="2020-03-23T01:13:43.000Z">
+<meta property="article:modified_time" content="2020-03-24T03:48:18.243Z">
 <meta property="article:author" content="辛同学">
-<meta property="article:tag" content="Hello World">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
 
 
 
@@ -145,13 +147,13 @@
 
 
 
-  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/07/hello-world/"/>
+  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/23/Linux移植/"/>
 
 
 
 
 
-  <title>Hello World | 辛同学的博客</title>
+  <title>Linux移植 | 辛同学的博客</title>
   
 
 
@@ -318,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/07/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="辛同学">
@@ -335,7 +337,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">Linux移植</h1>
         
 
         <div class="post-meta">
@@ -347,8 +349,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-07T12:49:00+08:00">
-                2020-03-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-23T09:13:43+08:00">
+                2020-03-23
               </time>
             
 
@@ -363,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-07T18:34:08+08:00">
-                2020-03-07
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-24T11:48:18+08:00">
+                2020-03-24
               </time>
             
           </span>
@@ -378,8 +380,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/xzxaaa/2020/03/07/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/07/hello-world/" itemprop="commentCount"></span>
+                <a href="/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -387,7 +389,7 @@
 
           
           
-             <span id="/xzxaaa/2020/03/07/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
+             <span id="/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/" class="leancloud_visitors" data-flag-title="Linux移植">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -421,19 +423,39 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <h1 id="Uboot启动分析"><a href="#Uboot启动分析" class="headerlink" title="Uboot启动分析"></a>Uboot启动分析</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
 <a id="more"></a>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2个宏<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ENTRY(save_boot_params )展开后</span><br><span class="line">.globl  save_boot_params  </span><br><span class="line">.align  4  </span><br><span class="line">save_boot_params: </span><br><span class="line">ENDPROC(save_boot_params)展开后</span><br><span class="line">.typename save_boot_params STTFUNC;</span><br><span class="line">.size save_boot_params,-save_boot_params</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+</li>
+</ul>
+<p><img src="/xzxaaa/images/reset.png" alt="upload successful"></p>
+<p>main 函数的运行流程，在_main 函数里面调用了 </p>
+<ul>
+<li>board_init_f、 relocate_code、relocate_vectors 和 board_init_r 这 4 个函数</li>
+<li>board_init_f 初始化一系列外设，比如串口、定时器，或者打印一些消息等。<br>，初始化 gd 的各个成员变量， uboot 会将自己重定位到 DRAM 最后面的地址区域，也就<br>是将自己拷贝到 DRAM 最后面的内存区域中。拷贝的位置都记录在gd中</li>
+<li>relocate_code 拷贝</li>
+<li>重定位向量表 board_init_f 并没有初始化所有的外设，还需要做一些后续工作，这<br>些后续工作就是由函数 board_init_r 来完成的，最后调用run_main_loop进入指令读取死循环</li>
+</ul>
+<h2 id="bootz命令解析"><a href="#bootz命令解析" class="headerlink" title="bootz命令解析"></a>bootz命令解析</h2><p><img src="/xzxaaa/images/bootz.png" alt="upload successful"></p>
+<h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
+<ul>
+<li>执行start_kernel ，通过调用众多的子函数来完成 Linux 启动之前的一些初始化工作</li>
+<li>start_kernel里面有一个rest_init 函数（也是最后一个）创建3个进程<br>init 进程的 PID 为 1 (init 进程一开始是内核进程)<br>PID 为 2的kthreadd进程负责所有内核进程的调度和管理。<br>PID 为0的是idle 进程，因为是内核进程，所以ps看不到<ul>
+<li>init进程 查看uboot传递过来的bootarg参数 ，  </li>
+</ul>
+1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它</li>
+</ul>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
+<li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>
+</li>
+<li><p>指令集架构如：ARMv5、ARMv6、ARMv7-A/R、ARMv8-A<br>ARM内核如：ARM7、ARM9、ARM11（v6)、到cortex-A7、A8、A9、A12、A15（v7-A/R)、到cortex-A53、A57（V8）、A72、A73。缓存(cache)就是在内核中的。这些内核又名公版架构，即ARM推出的通用的架构。</p>
+</li>
+<li><p>其实架构就分“大架”和“小架”，”大架”是指令集，“小架”是对应于”大架”的内核结构</p>
+</li>
+</ul>
 
       
     </div>
@@ -449,12 +471,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/xzxaaa/tags/Hello-World/" rel="tag"># Hello World</a>
-          
-        </div>
-      
 
       
       
@@ -464,8 +480,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/xzxaaa/2020/03/07/Makedown-learn/" rel="next" title="Makedown_学习">
-                <i class="fa fa-chevron-left"></i> Makedown_学习
+              <a href="/xzxaaa/2020/03/22/%E7%BD%91%E7%BB%9C/" rel="next" title="网络">
+                <i class="fa fa-chevron-left"></i> 网络
               </a>
             
           </div>
@@ -473,10 +489,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="prev" title="1.快速排序">
-                1.快速排序 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -657,7 +669,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Uboot启动分析"><span class="nav-number">1.</span> <span class="nav-text">Uboot启动分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz命令解析"><span class="nav-number">1.1.</span> <span class="nav-text">bootz命令解析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux——kernel"><span class="nav-number">2.</span> <span class="nav-text">Linux——kernel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">3.</span> <span class="nav-text">补充</span></a></li></ol></div>
             
 
           </div>

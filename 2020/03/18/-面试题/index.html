@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="宏和模板 宏：没有类型检查，在有的时候会出现二义  ，当参数为 a++时候  智能指针">
 <meta property="article:published_time" content="2020-03-18T10:22:00.000Z">
-<meta property="article:modified_time" content="2020-03-22T05:49:18.756Z">
+<meta property="article:modified_time" content="2020-03-23T14:51:18.736Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-22T13:49:18+08:00">
-                2020-03-22
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-23T22:51:18+08:00">
+                2020-03-23
               </time>
             
           </span>
@@ -463,7 +463,8 @@
 <li><p>而对于函数模板，却只有全特化，不能偏特化<br>至于为什么函数不能偏特化，似乎不是因为语言实现不了，而是因为偏特化的功能可以通过函数的重载完成。</p>
 </li>
 </ul>
-<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><p>deque是一个双向队列，优化了对序列两端元素进行添加和删除操作的基本序列容器（有点vector+list的感觉）</p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><p>deque是一个双向队列，优化了对序列两端元素进行添加和删除操作的基本序列容器（有点vector+list的感觉）  </p>
+<p>string的size用法不包含’\0’</p>
 <p>c++11新加入了emplace_back():<br>如果要将一个临时变量push到容器的末尾，push_back()需要先构造临时对象，再将这个对象拷贝到容器的末尾，而emplace_back()则直接在容器的末尾构造对象，这样就省去了拷贝的过程。 有点类似右值引用</p>
 <p>链表的缺点：<br>不能随机查找，必须从第一个开始遍历，查找效率低</p>
 <p>双向链表和单向链表:<br>双向链表占用空间大</p>
@@ -476,7 +477,7 @@
 <li>override：  表示要重写该函数，如果父类继承过来的没有能够继承，则编译报错</li>
 <li>final ： 一个类不想被继承或一个函数不想被重写</li>
 <li>inline：  实现宏的效果，减少进栈出栈过程，不用宏是因为容易出错</li>
-<li>static 在嵌入式系统中，要时刻懂得移植的重要性，程序可能是很多程序员共同协作同时完成，在定义变量及函数的过程，可能会重名，这给系统的集成带来麻烦，因此保证不冲突的办法是显示的表示此变量或者函数是本地的，static即可。在Linux的模块编程中，这一条很明显，所有的函数和全局变量都要用static关键字声明，将其作用域限制在本模块内部，与其他模块共享的函数或者变量要EXPORT到内核中。</li>
+<li>static 在嵌入式系统中，要时刻懂得移植的重要性，程序可能是很多程序员共同协作同时完成，在定义变量及函数的过程，可能会重名，这给系统的集成带来麻烦，因此保证不冲突的办法是显示的表示此变量或者函数是本地的，static即可。在Linux的模块编程中，这一条很明显，所有的函数和全局变量都要用static关键字声明，将其作用域限制在本模块内部，与其他模块共享的函数或者变量要EXPORT到内核中。<br>只能再定义中使用，如果在头文件用的话，那是各自的变量而已</li>
 </ul>
 <h1 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h1><p><a href="https://blog.csdn.net/u012864854/article/details/81562738" target="_blank" rel="noopener">参考博客</a></p>
 <p>  当队空时：front=rear<br>  当队满时：front=rear 亦成立</p>
@@ -529,9 +530,28 @@
 </ul>
 <p>例如：<br>struct fd{<br>…<br>…<br>}<strong>sttribute</strong> ((align(4))) fd; //指定struct fd类的字节对齐方式</p>
 <ul>
-<li>align属性：设置字节对齐</li>
+<li>align属性：设置字节对齐  <h1 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h1></li>
+<li>高内聚指的是:一个好的内聚模块应当恰好做一件事  </li>
+<li>耦合是软件结构中各模块之间相互连接的一种度量，耦合强弱取决于模块间接口的复杂程度、进入或访问一个模块的点以及通过接口的数据。</li>
+<li>低耦合指的是接口复杂度低  <h1 id="strcpy和memcpy"><a href="#strcpy和memcpy" class="headerlink" title="strcpy和memcpy"></a>strcpy和memcpy</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">char * __cdecl strcpy(char * dst, const char * src)</span><br><span class="line">&#123;</span><br><span class="line">        char * cp &#x3D; dst;</span><br><span class="line"> </span><br><span class="line">        while( *cp++ &#x3D; *src++ )</span><br><span class="line">                ;               &#x2F;* Copy src over dst *&#x2F;</span><br><span class="line"> </span><br><span class="line">        return( dst );</span><br><span class="line">&#125;</span><br><span class="line">void * __cdecl memcpy (void * dst, const void * src,size_t count)</span><br><span class="line">&#123;</span><br><span class="line">        void * ret &#x3D; dst;&#x2F;&#x2F;可支持链式编程，一个函数完成两个功能。</span><br><span class="line">        while (count--) </span><br><span class="line">        &#123;</span><br><span class="line">                *(char *)dst &#x3D; *(char *)src;</span><br><span class="line">                dst &#x3D; (char *)dst + 1;</span><br><span class="line">                src &#x3D; (char *)src + 1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return(ret);</span><br><span class="line">&#125;</span><br><span class="line">memcpy和memmove区别是memcpy使用的时候必须保证内存不能重叠  </span><br><span class="line">memmove会对拷贝的数据作检查，确保内存没有覆盖，如果发现会覆盖数据，简单的实现是调转开始拷贝的位置，从尾部开始拷贝</span><br><span class="line">memmvoe会检测dest与src的位置，如果dest和src指向同样的对象，且src比dest地址小，拷贝的时候就会出错，应该从尾部开始拷贝</span><br></pre></td></tr></table></figure>
+<a href="https://www.jianshu.com/p/9c3784d8d8ad" target="_blank" rel="noopener">简书链接</a></li>
 </ul>
+<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><ul>
+<li>fstrem =ifstrem+ofstrem  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fstream mylog(&quot;.&#x2F;text.txt&quot;,ios::in);</span><br><span class="line"></span><br><span class="line">char buf[1024]&#x3D;&#123;0&#125;</span><br><span class="line">while (mylog.getline(buf,1024))   &#x2F;&#x2F;读取整个文件</span><br><span class="line">	&#123;</span><br><span class="line">		str &#x3D; str + buf;</span><br><span class="line">	&#125;</span><br><span class="line"> mylog.write(buf, size);   &#x2F;&#x2F;写</span><br><span class="line"> mylog.read(buf，count)&#x2F;&#x2F;  cout为读多少个字节，遇到\n不会返回</span><br><span class="line">mylog.eof();  &#x2F;&#x2F;判断是否到了文件末尾</span><br><span class="line">seekp：设置输出文件流的文件流指针位置</span><br><span class="line">seekg：设置输入文件流的文件流指针位置</span><br><span class="line">mylog.seekg(0, ios::beg);  &#x2F;&#x2F;回到文件头</span><br><span class="line">seekp( streampos pos );</span><br><span class="line">seekg( streampos pos );</span><br><span class="line">函数原型：</span><br></pre></td></tr></table></figure>
 
+<h1 id="字符串和整型转换"><a href="#字符串和整型转换" class="headerlink" title="字符串和整型转换"></a>字符串和整型转换</h1><ul>
+<li><p>_itoa_s 函数itoa_s(bumber, buf, 2);  //2 是2进制  </p>
+</li>
+<li><p>number=atoi(buf);  //转整型  </p>
+</li>
+</ul>
+<h1 id="顶底const"><a href="#顶底const" class="headerlink" title="顶底const"></a>顶底const</h1><ul>
+<li>顶层 const 表示的是 指针本身是一个常量， 底层 const 表示的是 指针所指的对象是一个常量<br>成员函数后面是const说的是this指针 底层的const </li>
+</ul>
+<h1 id="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><a href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，" class="headerlink" title="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"></a>写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</h1><p>#define OFFSET（type，member） ((size_t)&amp;(((type*)0)-&gt;member))</p>
+<h1 id="C-头文件"><a href="#C-头文件" class="headerlink" title="C++头文件"></a>C++头文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus </span><br><span class="line">extern &quot;C&quot; &#123; </span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;一段代码  头文件中，声名方式为C语言，这样才能在C库中找到对应的函数</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus </span><br><span class="line">&#125; </span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -662,7 +682,7 @@
               
                 <a href="/xzxaaa/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -748,7 +768,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#宏和模板"><span class="nav-number">1.</span> <span class="nav-text">宏和模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#智能指针"><span class="nav-number">2.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模板"><span class="nav-number">3.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器"><span class="nav-number">4.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键词"><span class="nav-number">5.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环队列"><span class="nav-number">6.</span> <span class="nav-text">循环队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#判断链表是否有环"><span class="nav-number">7.</span> <span class="nav-text">判断链表是否有环</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体对齐"><span class="nav-number">8.</span> <span class="nav-text">结构体对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-虚函数"><span class="nav-number">9.</span> <span class="nav-text">C++虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造函数什么情况下必须在初始化列表中进行初始化"><span class="nav-number">10.</span> <span class="nav-text">构造函数什么情况下必须在初始化列表中进行初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体初始化"><span class="nav-number">11.</span> <span class="nav-text">结构体初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-gcc支持的语法-attribute-属性设"><span class="nav-number">12.</span> <span class="nav-text">Linux gcc支持的语法 attribute 属性设</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#宏和模板"><span class="nav-number">1.</span> <span class="nav-text">宏和模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#智能指针"><span class="nav-number">2.</span> <span class="nav-text">智能指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模板"><span class="nav-number">3.</span> <span class="nav-text">模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器"><span class="nav-number">4.</span> <span class="nav-text">容器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键词"><span class="nav-number">5.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#循环队列"><span class="nav-number">6.</span> <span class="nav-text">循环队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#判断链表是否有环"><span class="nav-number">7.</span> <span class="nav-text">判断链表是否有环</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体对齐"><span class="nav-number">8.</span> <span class="nav-text">结构体对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-虚函数"><span class="nav-number">9.</span> <span class="nav-text">C++虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造函数什么情况下必须在初始化列表中进行初始化"><span class="nav-number">10.</span> <span class="nav-text">构造函数什么情况下必须在初始化列表中进行初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体初始化"><span class="nav-number">11.</span> <span class="nav-text">结构体初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-gcc支持的语法-attribute-属性设"><span class="nav-number">12.</span> <span class="nav-text">Linux gcc支持的语法 attribute 属性设</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高内聚低耦合"><span class="nav-number">13.</span> <span class="nav-text">高内聚低耦合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#strcpy和memcpy"><span class="nav-number">14.</span> <span class="nav-text">strcpy和memcpy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件操作"><span class="nav-number">15.</span> <span class="nav-text">文件操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串和整型转换"><span class="nav-number">16.</span> <span class="nav-text">字符串和整型转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顶底const"><span class="nav-number">17.</span> <span class="nav-text">顶底const</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><span class="nav-number">18.</span> <span class="nav-text">写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-头文件"><span class="nav-number">19.</span> <span class="nav-text">C++头文件</span></a></li></ol></div>
             
 
           </div>
