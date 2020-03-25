@@ -105,16 +105,16 @@
 
 
 
-<meta name="description" content="Linux下进程通信的八种方法： 管道(pipe)    命名管道(FIFO)   内存映射(mapped memeory)    消息队列(message queue)    共享内存(shared memory)     信号量(semaphore)     信号(signal)    套接字(Socket)">
+<meta name="description" content="Linux下进程通信的八种方法： 管道(pipe)    命名管道(FIFO)   内存映射(mapped memeory)    消息队列(message queue)    共享内存(shared memory)     信号量(semaphore)   临界区中可以调用引起阻塞API  信号(signal)    套接字(Socket)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux面试知识(偏应用)">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/18/inux%E9%9D%A2%E8%AF%95%E9%A2%98/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="Linux下进程通信的八种方法： 管道(pipe)    命名管道(FIFO)   内存映射(mapped memeory)    消息队列(message queue)    共享内存(shared memory)     信号量(semaphore)     信号(signal)    套接字(Socket)">
+<meta property="og:description" content="Linux下进程通信的八种方法： 管道(pipe)    命名管道(FIFO)   内存映射(mapped memeory)    消息队列(message queue)    共享内存(shared memory)     信号量(semaphore)   临界区中可以调用引起阻塞API  信号(signal)    套接字(Socket)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-18T10:22:00.000Z">
-<meta property="article:modified_time" content="2020-03-22T15:32:49.686Z">
+<meta property="article:modified_time" content="2020-03-25T12:43:13.353Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-22T23:32:49+08:00">
-                2020-03-22
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-25T20:43:13+08:00">
+                2020-03-25
               </time>
             
           </span>
@@ -456,11 +456,11 @@
 </li>
 <li><p>共享内存(shared memory)   </p>
 </li>
-<li><p>信号量(semaphore)   </p>
+<li><p>信号量(semaphore)   临界区中可以调用引起阻塞API</p>
 </li>
 <li><p>信号(signal)  </p>
 </li>
-<li><p>套接字(Socket)      </p>
+<li><p>套接字(Socket)     </p>
 <a id="more"></a>
 <h1 id="Linux系统中的线程间通信方式"><a href="#Linux系统中的线程间通信方式" class="headerlink" title="Linux系统中的线程间通信方式:"></a>Linux系统中的线程间通信方式:</h1></li>
 <li><p>锁机制：包括互斥锁、条件变量、读写锁和自旋锁。</p>
@@ -468,6 +468,8 @@
 <li><p>信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</p>
 </li>
 <li><p>信号机制(Signal)：类似进程间的信号处理</p>
+</li>
+<li><p>死锁原因<br>系统资源不足<br>资源分配不当<br>进程运行推进顺序不合适  </p>
 </li>
 </ul>
 <h1 id="Linux中底层一些函数"><a href="#Linux中底层一些函数" class="headerlink" title="Linux中底层一些函数"></a>Linux中底层一些函数</h1><ul>
@@ -495,65 +497,18 @@
 <h1 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h1><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠</p>
 <ul>
 <li>等待条件代码   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);  </span><br><span class="line">while (条件为假）  </span><br><span class="line">	     pthread_cond_wait(cond, mutex);  </span><br><span class="line">修改条件  </span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure></li>
-<li>给条件发送信号代码<pre><code class="code">pthread_mutex_lock(&amp;mutex);
-设置条件为真
-pthread_cond_signal(cond);
-pthread_mutex_unlock(&amp;mutex);</code></pre>
+<li>给条件发送信号代码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);</span><br><span class="line">设置条件为真</span><br><span class="line">pthread_cond_signal(cond);</span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br><span class="line">&#96;&#96;&#96;  </span><br><span class="line"></span><br><span class="line">有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是n-1 </span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"># gcc编译、静态库与动态库</span><br><span class="line">[链接](https:&#x2F;&#x2F;blog.csdn.net&#x2F;daidaihema&#x2F;article&#x2F;details&#x2F;80902012)  </span><br><span class="line">gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名</span><br><span class="line">* 动态库 ：gcc -shared -o libMyTest.so *.o  .so 为共享库</span><br><span class="line">* 静态库：ar rcs libMyTest.a *.o   .a是静态库</span><br><span class="line"></span><br><span class="line"># 线程共享资源</span><br><span class="line">一个进程内部的线程可以共享资源</span><br><span class="line">*	代码段</span><br><span class="line">*	数据段</span><br><span class="line">*	打开文件和信号</span><br><span class="line">* 线程和信号出来函数方面 ，每个线程有自己的信号掩码  </span><br><span class="line"> Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号</span><br><span class="line"></span><br><span class="line"># 超级块</span><br><span class="line">[参考](https:&#x2F;&#x2F;www.cnblogs.com&#x2F;linux-xin&#x2F;p&#x2F;8126999.html)  </span><br><span class="line">[参考2](http:&#x2F;&#x2F;www.360doc.com&#x2F;content&#x2F;15&#x2F;0514&#x2F;22&#x2F;12144668_470541788.shtml)</span><br><span class="line">查indoe命令 stat</span><br><span class="line">* 一个超级块对应一个文件系统</span><br><span class="line">* 内核单独使用一个简单的结构体将所有的super_block都链接起来  </span><br><span class="line">* Linux虚拟文件系统四大对象：</span><br><span class="line">* 查看超级块命令 #dumpe2fs  &#x2F;dev&#x2F;sd1</span><br><span class="line"></span><br><span class="line">1）超级块(super block)</span><br><span class="line"></span><br><span class="line">2）索引节点(inode)</span><br><span class="line"></span><br><span class="line">3）目录项(dentry)</span><br><span class="line"></span><br><span class="line">4）文件对象(file)</span><br><span class="line"></span><br><span class="line"># 嵌入式Linux开发常用命令总结</span><br><span class="line">[链接](https:&#x2F;&#x2F;blog.csdn.net&#x2F;czg13548930186&#x2F;article&#x2F;details&#x2F;77972081)</span><br><span class="line"></span><br><span class="line">* &#x2F;bin 系统的必备执行工具 所有的客户都可以使用</span><br><span class="line">* &#x2F;sbin 系统管理工具  要有管理员权限才能执行</span><br><span class="line">* &#x2F;usr&#x2F;bin 应用软件的必备工具</span><br><span class="line">* &#x2F;usr&#x2F;sbin 网络管理工具</span><br><span class="line">* top 查看系统性能</span><br><span class="line">* free查看内存使用情况</span><br><span class="line"></span><br><span class="line"># 七种文件类型</span><br><span class="line">* 普通文件类型 （-）</span><br><span class="line">* 目录文件 （d）</span><br><span class="line">* 块设备（b）</span><br><span class="line">* 字符设备（c）</span><br><span class="line">* 套接字文件 （s）</span><br><span class="line">* 管道文件 （p）</span><br><span class="line">* 符号链接（l）</span><br><span class="line"></span><br><span class="line"># 日志文件系统</span><br><span class="line">* 此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   </span><br><span class="line">由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。  </span><br><span class="line">然而，在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</span><br><span class="line"></span><br><span class="line"># 内核打印的信息</span><br><span class="line"></span><br><span class="line">* #dmesg命令 </span><br><span class="line">* 消息记录到文件(有时是&#x2F;var&#x2F;log&#x2F;dmesg或&#x2F;var&#x2F;log&#x2F;kernel)中</span><br><span class="line"> * &#x2F;var 目录，此目录存放一些可以改变的数据  </span><br><span class="line"> </span><br><span class="line"># 用了锁怎么保证中途退出的释放</span><br><span class="line">[参考链接](https:&#x2F;&#x2F;www.cnblogs.com&#x2F;guxuanqing&#x2F;p&#x2F;8385077.html)</span><br><span class="line">&#96;&#96;&#96;code</span><br><span class="line">终止处理程序</span><br><span class="line">void pthread_cleanup_push(void (*routine) (void  *),  void *arg)</span><br><span class="line">void pthread_cleanup_pop(int execute)</span><br><span class="line">pthread_cleanup_push()&#x2F;pthread_cleanup_pop()采用先入后出的栈结构管理，void routine(void *arg)函数在调用pthread_cleanup_push()时压入清理函数栈，多次对pthread_cleanup_push()的调用将在清理函数栈中形成一个函数链，在执行该函数链时按照压栈的相反顺序弹出。execute参数表示执行到pthread_cleanup_pop()时是否在弹出清理函数的同时执行该函数，为0表示不执行，非0为执行；这个参数并不影响异常终止时清理函数的执行（及当pthread_cleanup_pop()函数的参数为0时，仅仅在线程调用pthread_exit函数或者其它线程对本线程调用 pthread_cancel函数时，才在弹出“清理函数”的同时执行该“清理函数”）。</span><br><span class="line">线程的是int atexit(void (*function)(void));</span><br></pre></td></tr></table></figure>
+<h1 id="C-内存泄漏检测"><a href="#C-内存泄漏检测" class="headerlink" title="C++内存泄漏检测"></a>C++内存泄漏检测</h1></li>
+<li>windows下有 微软的Visual Leak Detector 配合VS可视化</li>
+<li>valgrind <a href="https://blog.csdn.net/gatieme/article/details/51959654" target="_blank" rel="noopener">使用方法</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">开源的valgrind工具还是相当不错的</span><br><span class="line">Memcheck。这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。这也是本文将重点介绍的部分。</span><br><span class="line">Callgrind。它主要用来检查程序中函数调用过程中出现的问题。</span><br><span class="line">Cachegrind。它主要用来检查程序中缓存使用出现的问题。</span><br><span class="line">Helgrind。它主要用来检查多线程程序中出现的竞争问题。</span><br><span class="line">Massif。它主要用来检查程序中堆栈使用中出现的问题。</span><br><span class="line">Extension。可以利用core提供的功能，自己编写特定的内存调试工具</span><br></pre></td></tr></table></figure>
+<h1 id="换行符："><a href="#换行符：" class="headerlink" title="换行符："></a>换行符：</h1></li>
+</ul>
+<ol>
+<li><p>windows中的换行符是\r\n，</p>
 </li>
-</ul>
-<p>有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是n-1 </p>
-<hr>
-<h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">链接</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名</p>
-<ul>
-<li>动态库 ：gcc -shared -o libMyTest.so *.o </li>
-<li>静态库：ar rcs libMyTest.a *.o  </li>
-</ul>
-<h1 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h1><p>一个进程内部的线程可以共享资源</p>
-<ul>
-<li>代码段</li>
-<li>数据段</li>
-<li>打开文件和信号</li>
-<li>线程和信号出来函数方面 ，每个线程有自己的信号掩码<br>Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号</li>
-</ul>
-<h1 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h1><p><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">参考</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">参考2</a><br>查indoe命令 indoe</p>
-<ul>
-<li>一个超级块对应一个文件系统</li>
-<li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
-<li>Linux虚拟文件系统四大对象：</li>
-<li>查看超级块命令 #dumpe2fs  /dev/sd1</li>
-</ul>
-<p>1）超级块(super block)</p>
-<p>2）索引节点(inode)</p>
-<p>3）目录项(dentry)</p>
-<p>4）文件对象(file)</p>
-<h1 id="嵌入式Linux开发常用命令总结"><a href="#嵌入式Linux开发常用命令总结" class="headerlink" title="嵌入式Linux开发常用命令总结"></a>嵌入式Linux开发常用命令总结</h1><p><a href="https://blog.csdn.net/czg13548930186/article/details/77972081" target="_blank" rel="noopener">链接</a></p>
-<ul>
-<li>/bin 系统的必备执行工具 所有的客户都可以使用</li>
-<li>/sbin 系统管理工具  要有管理员权限才能执行</li>
-<li>/usr/bin 应用软件的必备工具</li>
-<li>/usr/sbin 网络管理工具</li>
-<li>top 查看系统性能</li>
-<li>free查看内存使用情况</li>
-</ul>
-<h1 id="七种文件类型"><a href="#七种文件类型" class="headerlink" title="七种文件类型"></a>七种文件类型</h1><ul>
-<li>普通文件类型 （-）</li>
-<li>目录文件 （d）</li>
-<li>块设备（b）</li>
-<li>字符设备（c）</li>
-<li>套接字文件 （s）</li>
-<li>管道文件 （p）</li>
-<li>符号链接（l）</li>
-</ul>
-<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><ul>
-<li>此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。<br>由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。<br>然而，在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</li>
-</ul>
-<h1 id="内核打印的信息"><a href="#内核打印的信息" class="headerlink" title="内核打印的信息"></a>内核打印的信息</h1><ul>
-<li>#dmesg命令 </li>
-<li>消息记录到文件(有时是/var/log/dmesg或/var/log/kernel)中<ul>
-<li>/var 目录，此目录存放一些可以改变的数据</li>
-</ul>
+<li><p>linux/unix下的换行符是\n。</p>
 </li>
-</ul>
+</ol>
 
       
     </div>
@@ -771,7 +726,7 @@ pthread_mutex_unlock(&amp;mutex);</code></pre>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下进程通信的八种方法："><span class="nav-number">1.</span> <span class="nav-text">Linux下进程通信的八种方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux系统中的线程间通信方式"><span class="nav-number">2.</span> <span class="nav-text">Linux系统中的线程间通信方式:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中底层一些函数"><span class="nav-number">3.</span> <span class="nav-text">Linux中底层一些函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">4.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fork"><span class="nav-number">5.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.</span> <span class="nav-text">TCP可靠</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">7.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS"><span class="nav-number">8.</span> <span class="nav-text">VFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条件变量"><span class="nav-number">9.</span> <span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库"><span class="nav-number">10.</span> <span class="nav-text">gcc编译、静态库与动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程共享资源"><span class="nav-number">11.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#超级块"><span class="nav-number">12.</span> <span class="nav-text">超级块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#嵌入式Linux开发常用命令总结"><span class="nav-number">13.</span> <span class="nav-text">嵌入式Linux开发常用命令总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七种文件类型"><span class="nav-number">14.</span> <span class="nav-text">七种文件类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统"><span class="nav-number">15.</span> <span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">16.</span> <span class="nav-text">内核打印的信息</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下进程通信的八种方法："><span class="nav-number">1.</span> <span class="nav-text">Linux下进程通信的八种方法：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux系统中的线程间通信方式"><span class="nav-number">2.</span> <span class="nav-text">Linux系统中的线程间通信方式:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中底层一些函数"><span class="nav-number">3.</span> <span class="nav-text">Linux中底层一些函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">4.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fork"><span class="nav-number">5.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.</span> <span class="nav-text">TCP可靠</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll"><span class="nav-number">7.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS"><span class="nav-number">8.</span> <span class="nav-text">VFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#条件变量"><span class="nav-number">9.</span> <span class="nav-text">条件变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-内存泄漏检测"><span class="nav-number">10.</span> <span class="nav-text">C++内存泄漏检测</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#换行符："><span class="nav-number">11.</span> <span class="nav-text">换行符：</span></a></li></ol></div>
             
 
           </div>

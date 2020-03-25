@@ -113,8 +113,10 @@
 <meta property="og:description" content="Uboot启动分析链接">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bootz.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/chosen.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/parse_dtb.png">
 <meta property="article:published_time" content="2020-03-23T01:13:43.000Z">
-<meta property="article:modified_time" content="2020-03-24T03:48:18.243Z">
+<meta property="article:modified_time" content="2020-03-24T10:37:34.902Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
@@ -365,7 +367,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-24T11:48:18+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-24T18:37:34+08:00">
                 2020-03-24
               </time>
             
@@ -440,13 +442,19 @@
 <li>重定位向量表 board_init_f 并没有初始化所有的外设，还需要做一些后续工作，这<br>些后续工作就是由函数 board_init_r 来完成的，最后调用run_main_loop进入指令读取死循环</li>
 </ul>
 <h2 id="bootz命令解析"><a href="#bootz命令解析" class="headerlink" title="bootz命令解析"></a>bootz命令解析</h2><p><img src="/xzxaaa/images/bootz.png" alt="upload successful"></p>
+<ul>
+<li>设备树下chosen节点</li>
+</ul>
+<p><img src="/xzxaaa/images/chosen.png" alt="upload successful"></p>
 <h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
+<p><img src="/xzxaaa/images/parse_dtb.png" alt="upload successful"></p>
 <ul>
 <li>执行start_kernel ，通过调用众多的子函数来完成 Linux 启动之前的一些初始化工作</li>
 <li>start_kernel里面有一个rest_init 函数（也是最后一个）创建3个进程<br>init 进程的 PID 为 1 (init 进程一开始是内核进程)<br>PID 为 2的kthreadd进程负责所有内核进程的调度和管理。<br>PID 为0的是idle 进程，因为是内核进程，所以ps看不到<ul>
 <li>init进程 查看uboot传递过来的bootarg参数 ，  </li>
 </ul>
-1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它</li>
+1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它  </li>
+<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID</li>
 </ul>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
 <li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>
