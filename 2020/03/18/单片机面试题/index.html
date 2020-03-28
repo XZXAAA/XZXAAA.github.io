@@ -113,13 +113,16 @@
 <meta property="og:description" content="中断 Linux不用FIQ，只用到了IRQ 中断服务有没有参数主要是看中断发生在裸机上还是实时系统中  linux是分时操作系统。不是实时操作系统  linux中断流程Linux不用FIQ，只用到了IRQlinux的中断处理都是在SVC模式下处理的。当发生中断的时候，代码运行在内核空间IRQ执行的时候很快在IRQ回到SVC模式时候 R0存着irqnumber在SVC模式的内核栈上保存中断时候正在执">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bus.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/uart.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/i2c.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/SPI.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/P1.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/Makefile.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/flash.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/emmc.png">
 <meta property="article:published_time" content="2020-03-18T12:28:00.000Z">
-<meta property="article:modified_time" content="2020-03-25T04:26:21.730Z">
+<meta property="article:modified_time" content="2020-03-28T03:40:49.292Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
@@ -370,8 +373,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-25T12:26:21+08:00">
-                2020-03-25
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-28T11:40:49+08:00">
+                2020-03-28
               </time>
             
           </span>
@@ -537,7 +540,11 @@
 <p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
 <ul>
 <li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)</li>
+<li>UART是地位先发送，I2C和SPI是高位</li>
 </ul>
+<p><img src="/xzxaaa/images/uart.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/i2c.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/SPI.png" alt="upload successful"></p>
 <p><img src="/xzxaaa/images/P1.png" alt="upload successful"></p>
 <h1 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h1><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。</p>
 <h1 id="Linux-模块相关命令"><a href="#Linux-模块相关命令" class="headerlink" title="Linux 模块相关命令"></a>Linux 模块相关命令</h1><p>加载：insmod chrdevbase.ko或modprobe chrdevbase.ko</p>
@@ -591,8 +598,10 @@
 <li><p>NAND器件中的坏块是随机分布的。以前也曾有过消除坏块的努力，但发现成品率太低，代价太高，根本不划算。</p>
 </li>
 <li><p>优缺点   </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.Nor的成本相对高，容量相对小，比如常见的只有128KB，256KB，1MB，2MB等等，优</span><br><span class="line">点是读写数据时候，不容易出错。所以在应用领域方面，Nor Flash比较适合应用于存储少</span><br><span class="line">量的代码。  </span><br><span class="line">2.Nand flash成本相对低，说白了就是便宜，缺点是使用中数据读写容易出错，所以一般都</span><br><span class="line">需要有对应的软件或者硬件的数据校验算法，统称为ECC。但优点是，相对来说容量比较</span><br><span class="line">大，现在常见的Nand Flash都是1GB，2GB，更大的8GB的都有了，相对来说，价格便宜，</span><br><span class="line">因此适合用来存储大量的数据。其在嵌入式系统中的作用，相当于PC上的硬盘，用于存储</span><br><span class="line">大量数据。  </span><br><span class="line">3.Nor flash，有类似于dram之类的地址总线，因此可以直接和CPU相连，CPU可以直接通过地址总线对nor flash进行访问，而Nand Flash没有这类的总线，只有IO 接口，只能通过IO</span><br></pre></td></tr></table></figure>
-<p><img src="/xzxaaa/images/flash.png" alt="upload successful"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.Nor的成本相对高，容量相对小，比如常见的只有128KB，256KB，1MB，2MB等等，优</span><br><span class="line">点是读写数据时候，不容易出错。所以在应用领域方面，Nor Flash比较适合应用于存储少</span><br><span class="line">量的代码。  </span><br><span class="line">2.Nand flash成本相对低，说白了就是便宜，缺点是使用中数据读写容易出错，所以一般都</span><br><span class="line">需要有对应的软件或者硬件的数据校验算法，统称为ECC。但优点是，相对来说容量比较</span><br><span class="line">大，现在常见的Nand Flash都是1GB，2GB，更大的8GB的都有了，相对来说，价格便宜，</span><br><span class="line">因此适合用来存储大量的数据。其在嵌入式系统中的作用，相当于PC上的硬盘，用于存储</span><br><span class="line">大量数据。  </span><br><span class="line">3.Nor flash，有类似于dram之类的地址总线，因此可以直接和CPU相连，CPU可以直接通过地址总线对nor flash进行访问，而Nand Flash没有这类的总线，只有IO 接口，只能通过IO</span><br></pre></td></tr></table></figure></li>
+<li><p>SD卡有SD通讯模式和SPI </p>
+</li>
+<li><p>SD/emmc  的SD模式通常都是一条CLK线+一条CMD线+DATA[0:n]<br><img src="/xzxaaa/images/flash.png" alt="upload successful"></p>
 </li>
 </ul>
 <p><img src="/xzxaaa/images/emmc.png" alt="upload successful"></p>
@@ -602,6 +611,16 @@
 <li>kmalloc特殊之处在于它分配的内存是物理上连续的,这对于要进行DMA的设备十分重要. 而用vmalloc分配的内存只是线性地址连续,物理地址不一定连续,不能直接用于DMA</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1，vmalloc分配的一般为高端内存(在3G+内存以上)，只有当内存不够的时候才分配低端内存；kmallco从低端内存分配（在3G+内存）下面。这里说的高低是在虚拟内存那边，物理内存好像也是</span><br><span class="line"></span><br><span class="line">2，vmalloc分配的物理地址一般不连续，而kmalloc分配的地址连续，两者分配的虚拟地址都是连续的；</span><br><span class="line"></span><br><span class="line">　3，vmalloc分配的一般为大块内存，而kmaooc一般分配的为小块内存，（一般不超过128k);</span><br></pre></td></tr></table></figure>
+
+<h1 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h1><ul>
+<li>芯片厂家<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动</li>
+<li>linux内核编写<br>  input 核心层会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦  </li>
+</ul>
+<h1 id="死锁条件和打破"><a href="#死锁条件和打破" class="headerlink" title="死锁条件和打破"></a>死锁条件和打破</h1><p>[链接]</p>
+<ul>
+<li>四个条件<br>互斥<br>请求和保持<br>不剥夺<br>环路  </li>
+</ul>
+
       
     </div>
     
@@ -818,7 +837,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">2.</span> <span class="nav-text">用户态与内核态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">3.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">4.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C预处理命令"><span class="nav-number">5.</span> <span class="nav-text">C预处理命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M3"><span class="nav-number">6.</span> <span class="nav-text">Cortex-M3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">7.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">8.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-模块相关命令"><span class="nav-number">9.</span> <span class="nav-text">Linux 模块相关命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">10.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">11.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">12.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-目录"><span class="nav-number">13.</span> <span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C总线仲裁"><span class="nav-number">14.</span> <span class="nav-text">I2C总线仲裁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">15.</span> <span class="nav-text">MMU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储物质"><span class="nav-number">16.</span> <span class="nav-text">存储物质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kmalloc-Vmalloc"><span class="nav-number">17.</span> <span class="nav-text">Kmalloc Vmalloc</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">1.</span> <span class="nav-text">中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">2.</span> <span class="nav-text">用户态与内核态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">3.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">4.</span> <span class="nav-text">可重入函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C预处理命令"><span class="nav-number">5.</span> <span class="nav-text">C预处理命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cortex-M3"><span class="nav-number">6.</span> <span class="nav-text">Cortex-M3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C"><span class="nav-number">7.</span> <span class="nav-text">I2C</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">8.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-模块相关命令"><span class="nav-number">9.</span> <span class="nav-text">Linux 模块相关命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">10.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">11.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">12.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-目录"><span class="nav-number">13.</span> <span class="nav-text">Linux 目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#I2C总线仲裁"><span class="nav-number">14.</span> <span class="nav-text">I2C总线仲裁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">15.</span> <span class="nav-text">MMU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储物质"><span class="nav-number">16.</span> <span class="nav-text">存储物质</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kmalloc-Vmalloc"><span class="nav-number">17.</span> <span class="nav-text">Kmalloc Vmalloc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动分配"><span class="nav-number">18.</span> <span class="nav-text">驱动分配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁条件和打破"><span class="nav-number">19.</span> <span class="nav-text">死锁条件和打破</span></a></li></ol></div>
             
 
           </div>

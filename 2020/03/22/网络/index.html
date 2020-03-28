@@ -114,7 +114,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/icmp.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/dhcp.png">
 <meta property="article:published_time" content="2020-03-22T09:05:49.000Z">
-<meta property="article:modified_time" content="2020-03-24T12:40:07.744Z">
+<meta property="article:modified_time" content="2020-03-28T03:03:44.410Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/icmp.png">
@@ -365,8 +365,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-24T20:40:07+08:00">
-                2020-03-24
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-28T11:03:44+08:00">
+                2020-03-28
               </time>
             
           </span>
@@ -441,6 +441,13 @@
 </ul>
 <p>1.主机需要找出这个网络中的另一个主机的物理地址时，它就可以发送一个ARP请求报文，这个报文包好了发送方的MAC地址和IP地址以及接收方的IP地址  ,广播方式<br>2.局域网中的每一台主机都会接受并处理这个ARP请求报文，然后进行验证，查看接收方的IP地址是不是自己的地址，只有验证成功的主机才会返回一个ARP响应报文，这个响应报文包含接收方的IP地址和物理地址</p>
 <h1 id="TFTP-FTP"><a href="#TFTP-FTP" class="headerlink" title="TFTP FTP"></a>TFTP FTP</h1><p>FTP是完整、面向会话、常规用途文件传输协议。而TFTP用作bones bare-特殊目的文件传输协议。<br>交互使用FTP，TFTP允许仅单向传输的文件。<br>FТР H供身ti。而TFTP不。<br>FTP使用已知TCP端口号：20的数据和21用于连接对话框。TFTP用于UDP端口号69其文件传输活动。<br>因为TFTP不支持验证WindowsNT，所以FTP服务器服务不支持TFTP FTP依赖于TCP，是面向连接并提供可靠的控  件。TFTP依赖UDP，需要减少开销，几乎不提供控件。<br>TFTP不支持文件浏览  FTP支持</p>
+<h1 id="端口范围"><a href="#端口范围" class="headerlink" title="端口范围"></a>端口范围</h1><ul>
+<li>1-65535端口，其中0-1023为固定端口，也就是知名端口</li>
+<li>态端口（Dynamic Ports）动态端口的范围从1024到65535，这些端口号一般不固定分配给某个服务</li>
+<li></li>
+</ul>
+<h1 id="函数相关"><a href="#函数相关" class="headerlink" title="函数相关`"></a>函数相关`</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</span><br><span class="line"></span><br><span class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);</span><br><span class="line"></span><br><span class="line">write和read是一对</span><br><span class="line">send 和recv是一对 flags为0，则和read,write一样</span><br><span class="line">当send 中的flags 参数来控制读写操作.</span><br><span class="line"></span><br><span class="line">send函数专用于TCP链接，sendto函数专用与UDP连接。</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -658,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-DHCP"><span class="nav-number">1.</span> <span class="nav-text">ICMP DHCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFTP-FTP"><span class="nav-number">3.</span> <span class="nav-text">TFTP FTP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-DHCP"><span class="nav-number">1.</span> <span class="nav-text">ICMP DHCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFTP-FTP"><span class="nav-number">3.</span> <span class="nav-text">TFTP FTP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#端口范围"><span class="nav-number">4.</span> <span class="nav-text">端口范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数相关"><span class="nav-number">5.</span> <span class="nav-text">函数相关&#96;</span></a></li></ol></div>
             
 
           </div>
