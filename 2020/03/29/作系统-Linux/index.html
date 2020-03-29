@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xzxaaa/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xzxaaa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xzxaaa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/xzxaaa/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/xzxaaa/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/xzxaaa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/xzxaaa/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="操作系统Linux👷‍♂️," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨    内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段  当前进程运行的代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统(Linux)👷‍♂️">
+<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/index.html">
+<meta property="og:site_name" content="辛同学的博客">
+<meta property="og:description" content="用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨    内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段  当前进程运行的代码">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
+<meta property="article:published_time" content="2020-03-29T14:22:00.000Z">
+<meta property="article:modified_time" content="2020-03-29T14:24:52.344Z">
+<meta property="article:author" content="辛同学">
+<meta property="article:tag" content="操作系统Linux👷‍♂️">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xzxaaa/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/作系统-Linux/"/>
+
+
+
+
+
+  <title>操作系统(Linux)👷‍♂️ | 辛同学的博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0e0e23458f6ac565f6ef9f4cf0049800";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xzxaaa/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">辛同学的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xzxaaa/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xzxaaa/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xzxaaa/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-search">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="辛同学">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xzxaaa/images/boy-2945584_1920.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="辛同学的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">操作系统(Linux)👷‍♂️</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-29T22:22:00+08:00">
+                2020-03-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T22:24:52+08:00">
+                2020-03-29
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/xzxaaa/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/" class="leancloud_visitors" data-flag-title="操作系统(Linux)👷‍♂️">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+		  
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
+<li><p>Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。</p>
+</li>
+<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨  </p>
+</li>
+<li><p>内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段</p>
+</li>
+<li><p>当前进程运行的代码若属于内核代码段，则称当前进程处于内核态，若属于用户代码段，则称当前进程处于用户态。用户代码段和内核代码段的代码分别运行在用户栈上和内核栈上。  </p>
+</li>
+<li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
+<a id="more"></a></li>
+<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序,有点向内核注册回调函数类似    </p>
+</li>
+<li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
+</li>
+<li><p>驱动编写无法调用API，API是给应用层的。驱动属于内核空间  </p>
+</li>
+</ul>
+<h2 id="Linux下如何从用户态切换到内核态？"><a href="#Linux下如何从用户态切换到内核态？" class="headerlink" title="Linux下如何从用户态切换到内核态？"></a>Linux下如何从用户态切换到内核态？</h2><p> <a href="https://blog.csdn.net/shanghx_123/article/details/83151064" target="_blank" rel="noopener">详细切换过程🚎</a>      </p>
+<ul>
+<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。  </p>
+</li>
+<li><p>陷入内核后调用system_call()  </p>
+</li>
+<li><p>Linux为每个系统调用都进行了编号 （0—NR_syscall），同时在内核中保存了一张系统调用表 ，该表中保存了系统调用编号和其对应的服务例程</p>
+</li>
+<li><p>系统调入通过系统门陷入内核前，需要把系统调用号一并传入内核。<br>在x86上，这个传递动作是通过在执行int0x80前把调用号装入eax寄存器实现的。这样系统调用处理程序一旦运行，就可以从eax中得到数据，然后再去系统调用表中寻找相应服务例程了(API)</p>
+</li>
+<li><p>软中断会进入SVC模式，所以linux系统调用后再ARM工作在SVC模式✨  </p>
+</li>
+<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈和用户栈 ✨   </p>
+</li>
+</ul>
+<p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">  </p>
+<h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
+<ul>
+<li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换   </p>
+</li>
+<li><p>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中（面试+1✨） </p>
+</li>
+<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ执行的时候很快,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
+</li>
+<li><p>中断中不能进行系统调用，系统调用是通过中断进行的(对应linux不支持嵌套中断，而且内核态无法调用API)   </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">总结分为7点：  </span><br><span class="line">1️⃣. Linux对中断的扩展：硬件中断，软件中断  </span><br><span class="line">2️⃣. 中断处理原则1：不能嵌套  </span><br><span class="line">3️⃣. 中断处理原则2：越快越好  </span><br><span class="line">4️⃣. 要处理的事情实在太多：拆分为：上半部，下半部  </span><br><span class="line">5️⃣. 下半部的事情耗时不是太长：tasklet  </span><br><span class="line">6️⃣. 下半部要做的事情太多并且很复杂：工作队列  </span><br><span class="line">7️⃣. 新技术：threaded irq  </span><br><span class="line">tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</span><br></pre></td></tr></table></figure>
+<h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
+<ul>
+<li><p>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。   </p>
+</li>
+<li><p>Linux系统中，为了高效地调度进程，将进程分为两类：🟥实时进程和🟩普通进程(又称非实时进程或一般进程) 实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行</p>
+</li>
+<li><p>对于普通进程🔊调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的（统称为普通进程）？程度如何？最后决定给它的优先级做一定的调整。</p>
+</li>
+<li><p>对于实时进程🔊高优先级抢占低优先级。对于优先级相同的，有两种策略：1️⃣时间片轮转和2️⃣先进先出，在时间片轮转策略中。每个可执行实时进程轮流执行一个时间片，而先进先出策略每个进程按各自在运行队列中的顺序执行且顺序不能变化。  </p>
+</li>
+</ul>
+<h3 id="在Linux中，进程调度策略共定义了3类5种（表现方式）"><a href="#在Linux中，进程调度策略共定义了3类5种（表现方式）" class="headerlink" title="在Linux中，进程调度策略共定义了3类5种（表现方式）"></a>在Linux中，进程调度策略共定义了3类5种（表现方式）</h3><p><a href="https://blog.csdn.net/gatieme/article/details/51699889" target="_blank" rel="noopener">linux调度详细内容🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define SCHED_OTHER 0 &#x2F;&#x2F;交互式进程，主要处理I&#x2F;O任务，例如鼠标键盘操作</span><br><span class="line">#define SCHED_FIFO 1  &#x2F;&#x2F;主要处理对实时性要求很高的的任务，例如程序语言的编译程序, 数据库搜索引擎</span><br><span class="line">#define SCHED_RR 2  	以及科学计算实时进程(2个) RR是轮转，FIFO是先进先出</span><br><span class="line">#define SCHED_BATCH 3 &#x2F;&#x2F;批处理进程，主要处理优先级不高的任务，例如文本编辑程序和图形应用批处理程序（2个）</span><br><span class="line">#define SCHED_IDLE 5  &#x2F;&#x2F;</span><br><span class="line">0 3 5是普通进程算1类        1 2是实时进程算2类</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>进程创建时，默认是SCHED_OTHER，SCHED_OTHER表示普通进程，也按照轮转调度策略处理。</p>
+</li>
+<li><p>Linux系统中的每个进程用task_struct结构来描述，进程调度的依据是task—struct结构中的policy、priority、counter和rt_priority，<br>PCB中设置Policy数据项，其值用于反映针对不同类型的进程而采用的调度策略。1️⃣SCHED—RR和2️⃣SCHED—FIFO用于实时进程。分别表示轮转调度策略和先进先出调度策略,还有3️⃣SCHED—OTHER  </p>
+</li>
+<li><p>这三类调度策略均基于优先级，PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数。进程启动后该值随时钟周期递减。</p>
+</li>
+</ul>
+<h4 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h4><ul>
+<li>Linux中优先级级别只有0-139这140个级别，这是固定的，数字越小优先级别越高，进程调度规则设定系统调用：sched_setscheduler (<strong>pid_t __pid, int __policy,</strong>const struct sched_param *__param)</li>
+</ul>
+<h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">什么是可重入函数?🚎</a> </p>
+<ul>
+<li><p>可重入强调对单个线程执行时，重新进入同一个子程序，仍然是安全的。 </p>
+</li>
+<li><p>可重入函数是单线程上的概念✨  </p>
+</li>
+<li><p>若一个函数是可重入的，则该函数应当满足下述条件：  </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1️⃣不能含有静态（全局）非常量数据。  2️⃣不能返回静态（全局）非常量数据的地址。  </span><br><span class="line">3️⃣只能处理由调用者提供的数据。 	 4️⃣不能依赖于单实例模式资源的锁。  </span><br><span class="line">5️⃣调用的函数也必需是可重入的。  </span><br><span class="line">✨上述条件就是要求可重入函数使用的所有变量都保存在调用栈的当前函数帧（frame）上。因此，同一执行线程重入执行该函数时 加载了新的函数帧，与前一次执行该函数时使用的函数帧不冲突、不互相覆盖，从而保证了可重入执行安全。  </span><br><span class="line"></span><br><span class="line">多“用户&#x2F;对象&#x2F;进程优先级”以及多进程，一般会使得对可重入代码的控制变得复杂。同时，IO代码通常不是可重入的，因为他们依赖于像磁盘这样共享的、单独的资源(类似编程中的静态Static、全域Global资源)😮不是单线程的概念么？</span><br></pre></td></tr></table></figure>
+<h2 id="printf-是不可重入函数？"><a href="#printf-是不可重入函数？" class="headerlink" title="printf 是不可重入函数？"></a>printf 是不可重入函数？</h2><p><a href="https://www.codenong.com/3941271/" target="_blank" rel="noopener">详细讨论🚎</a></p>
+<ul>
+<li><p>理解🔊 1️⃣线程安全的 2️⃣异步信号安全 3️⃣可重入</p>
+</li>
+<li><p>printf和malloc都不可能被单个线程递归调用，因为它们是叶函数(它们既不调用自身也不调用任何可能进行递归调用的用户控制代码)。自2001年以来(通过使用锁)，它们针对多线程重入调用一直是线程安全的（通过全局（内核）锁实现互斥访问）</p>
+</li>
+<li><p>从根本上讲，这就是为什么任何带有锁的功能都不能重入的原因。</p>
+</li>
+<li><p>我的理解：printf是线程安全的，printf异步不安全（信号中断不可调用），可能死锁。✨</p>
+</li>
+</ul>
+<h1 id="VFS-虚拟文件系统"><a href="#VFS-虚拟文件系统" class="headerlink" title="VFS(虚拟文件系统)"></a>VFS(虚拟文件系统)</h1><p><a href="https://www.jianshu.com/p/3af93fe0855c" target="_blank" rel="noopener">初识VFS🚎</a><br><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">虚拟文件系统VFS—-超级块、inode、dentry、file🚎</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">补充参考2🚎</a></p>
+<ul>
+<li><p>VFS是一个抽象层，其向上提供了统一的文件访问接口，而向下则兼容了各种不同的文件系统。  </p>
+</li>
+<li><p>inode是文件的唯一表示，其中除了包含元数据和数据的索引之外，还包含关键操作的函数指针。比如对于文件读写和属性更改等操作接口都存在该结构体中 .如address_space、inode_operations和file_operations，其中每一个结构体中都包含很多函数指针。   </p>
+</li>
+<li><p>在挂载的时候就会将indoe中的address_space、inode_operations和file_operations函数指针初始化为Ext4文件系统的函数 ✨</p>
+</li>
+<li><p>通过目录项(dentry),把整个的文件结构串起来，dentry有个成员是indoe✨</p>
+</li>
+</ul>
+<h2 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h2><ul>
+<li>查看超级块命令 #dumpe2fs  /dev/sd1</li>
+<li>一个超级块对应一个文件系统</li>
+<li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
+<li>Linux虚拟文件系统四大对象：<br>1️⃣超级块(super block)2️⃣索引节点(inode)<br>3️⃣目录项(dentry)4️⃣文件对象(file)<br><img src="/xzxaaa/images/VFS.png" alt="upload successful"></li>
+</ul>
+<h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">MMU是什么？🚎</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考🚎</a>  </p>
+<ul>
+<li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
+</li>
+<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。</p>
+</li>
+</ul>
+<h2 id="为什么要有虚拟地址？"><a href="#为什么要有虚拟地址？" class="headerlink" title="为什么要有虚拟地址？"></a>为什么要有虚拟地址？</h2><p> 程序每次load的时候不用指定运行地址</p>
+<ul>
+<li>windows上的虚拟内存在linux叫交换空间 </li>
+<li>虚拟内存中，允许将一个作业分多次调入内存。  </li>
+</ul>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xzxaaa/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FLinux%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag"># 操作系统Linux👷‍♂️</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="next" title="C/C++知识👷‍♂️">
+                <i class="fa fa-chevron-left"></i> C/C++知识👷‍♂️
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xzxaaa/2020/03/29/Linux%E5%BA%94%E7%94%A8%E5%B1%82/" rel="prev" title="Linux应用层👷‍♂️">
+                Linux应用层👷‍♂️ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+	  
+	   
+
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/xzxaaa/images/boy-2945584_1920.jpg"
+                alt="辛同学" />
+            
+              <p class="site-author-name" itemprop="name">辛同学</p>
+              <p class="site-description motion-element" itemprop="description">无聊玩一玩</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/xzxaaa/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/xzxaaa/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/xzxaaa/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+		  
+					  
+		  
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/XZXAAA" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+	  
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.1.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Linux中，进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">2.1.1.</span> <span class="nav-text">在Linux中，进程调度策略共定义了3类5种（表现方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关API"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">相关API</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">3.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">4.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">4.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">5.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">5.1.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">6.1.</span> <span class="nav-text">RTOS栈空间</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+	
+
+
+		
+		<script type="text/javascript" charset="utf-8" src="/xzxaaa/js/tagcloud.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/xzxaaa/js/tagcanvas.js"></script>
+		<div class="widget-wrap">
+			<h3 class="widget-title">Tag Cloud</h3>
+			<div id="myCanvasContainer" class="widget tagcloud">
+				<canvas width="250" height="250" id="resCanvas" style="width:100%">
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/C-C-%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">C/C++👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E5%BA%94%E7%94%A8%E5%B1%82%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux应用层👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux驱动👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%F0%9F%9A%B4%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">使用工具🚴‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%F0%9F%A4%A6%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">函数底层实现🤦‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%8D%8F%E8%AE%AE%E4%B8%8E%E4%B8%80%E4%BA%9B%E7%A1%AC%E4%BB%B6%E7%9F%A5%E8%AF%86%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/" rel="tag">协议与一些硬件知识👩🏼‍🤝‍🧑🏻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FLinux%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">操作系统Linux👷‍♂️</a><span class="tag-list-count">1</span></li></ul>
+				</canvas>
+			</div>
+		</div>
+			
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">辛同学</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/xzxaaa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/xzxaaa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xzxaaa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/xzxaaa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: true,
+        appId: 'spCDftnh2nLGISldIkqbpkaj-gzGzoHsz',
+        appKey: 'OJ4MjT4aDuj83BBxMp3KMH1R',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("spCDftnh2nLGISldIkqbpkaj-gzGzoHsz", "OJ4MjT4aDuj83BBxMp3KMH1R");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+ 
+
+ 
+</body>
+</html>
+
+ <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
+

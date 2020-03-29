@@ -107,12 +107,12 @@
 
 <meta name="description" content="快速排序 参考资料B站资料—&gt;链接    主要思路：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="1.快速排序">
+<meta property="og:title" content="算法">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/index.html">
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="快速排序 参考资料B站资料—&gt;链接    主要思路：">
 <meta property="article:published_time" content="2020-03-08T08:24:00.000Z">
-<meta property="article:modified_time" content="2020-03-18T10:23:25.946Z">
+<meta property="article:modified_time" content="2020-03-29T15:19:43.437Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 
@@ -150,7 +150,7 @@
 
 
 
-  <title>1.快速排序 | 辛同学的博客</title>
+  <title>算法 | 辛同学的博客</title>
   
 
 
@@ -255,16 +255,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/xzxaaa/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-search">
           <a href="/xzxaaa/" rel="section">
             
@@ -334,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">1.快速排序</h1>
+          <h1 class="post-title" itemprop="name headline">算法</h1>
         
 
         <div class="post-meta">
@@ -362,8 +352,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-18T18:23:25+08:00">
-                2020-03-18
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T23:19:43+08:00">
+                2020-03-29
               </time>
             
           </span>
@@ -408,7 +398,7 @@
 
           
           
-             <span id="/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="leancloud_visitors" data-flag-title="1.快速排序">
+             <span id="/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" class="leancloud_visitors" data-flag-title="算法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -475,7 +465,7 @@
 <li>接下来就是3的左边和右边继续找index的位置，每次都能找到一个index的位置<br>就是{1，2}和{5，6，4}，再做一个递归就可以完成整个数组的排序  </li>
 </ol>
 <hr>
-<h1 id="思考过的问题"><a href="#思考过的问题" class="headerlink" title="思考过的问题"></a>思考过的问题</h1><ol>
+<h2 id="思考过的问题"><a href="#思考过的问题" class="headerlink" title="思考过的问题"></a>思考过的问题</h2><ol>
 <li>在步骤2中，移动end的时候如果遇到等于怎么办，start同理 </li>
 <li>在看视频的过程中，发现找到index位置后是不用判断数组第一个元素和index元素大小，直接交换的。是这样的吗？</li>
 </ol>
@@ -489,7 +479,7 @@
 </li>
 </ol>
 <hr>
-<h1 id="代码-附带测试程序"><a href="#代码-附带测试程序" class="headerlink" title="代码,附带测试程序"></a>代码,附带测试程序</h1> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"> #include &lt;iostream&gt;  &#x2F;&#x2F;&#x2F;&#x2F;环境是VS2013  C++</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int fastorder(T* arr,int start,int end)</span><br><span class="line">&#123;</span><br><span class="line">	int index &#x3D; 0;</span><br><span class="line">	T temp;</span><br><span class="line">	if (start &gt;&#x3D; end)</span><br><span class="line">		return 0;</span><br><span class="line">	index &#x3D; getindex(arr, start, end);</span><br><span class="line">	if (arr[start]&gt;arr[index])</span><br><span class="line">	&#123;</span><br><span class="line">		temp &#x3D; arr[index];</span><br><span class="line">		arr[index] &#x3D; arr[start];</span><br><span class="line">		arr[start] &#x3D; temp;</span><br><span class="line">	&#125;</span><br><span class="line">	fastorder(arr, start ,index-1);</span><br><span class="line">	fastorder(arr, index+1,end);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int getindex(T* arr, int start, int end)</span><br><span class="line">&#123;</span><br><span class="line">	T target &#x3D; arr[start];</span><br><span class="line">	int ss &#x3D; start;</span><br><span class="line">	T temp;</span><br><span class="line">	start++;</span><br><span class="line">	while (start &lt; end)</span><br><span class="line">	&#123;</span><br><span class="line">		while (start&lt;end &amp;&amp; arr[end]&gt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		while (start&lt;end &amp;&amp; arr[start]&lt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			start++;</span><br><span class="line">		&#125;</span><br><span class="line">		if (start !&#x3D; end)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">			temp &#x3D; arr[end];</span><br><span class="line">			arr[end] &#x3D; arr[start];</span><br><span class="line">			arr[start] &#x3D; temp;</span><br><span class="line">				end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return start;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 6, 5, 1, 4 &#125;;</span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 2, 2, 2, 1 &#125;;</span><br><span class="line"></span><br><span class="line">	int arr[] &#x3D; &#123; 2, 6 &#125;;</span><br><span class="line"></span><br><span class="line">	fastorder(arr, 0, 1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	for (int i &#x3D; 0; i &lt; 2; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; arr[i] &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	getchar();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码-附带测试程序"><a href="#代码-附带测试程序" class="headerlink" title="代码,附带测试程序"></a>代码,附带测试程序</h2> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"> #include &lt;iostream&gt;  &#x2F;&#x2F;&#x2F;&#x2F;环境是VS2013  C++</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int fastorder(T* arr,int start,int end)</span><br><span class="line">&#123;</span><br><span class="line">	int index &#x3D; 0;</span><br><span class="line">	T temp;</span><br><span class="line">	if (start &gt;&#x3D; end)</span><br><span class="line">		return 0;</span><br><span class="line">	index &#x3D; getindex(arr, start, end);</span><br><span class="line">	if (arr[start]&gt;arr[index])</span><br><span class="line">	&#123;</span><br><span class="line">		temp &#x3D; arr[index];</span><br><span class="line">		arr[index] &#x3D; arr[start];</span><br><span class="line">		arr[start] &#x3D; temp;</span><br><span class="line">	&#125;</span><br><span class="line">	fastorder(arr, start ,index-1);</span><br><span class="line">	fastorder(arr, index+1,end);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int getindex(T* arr, int start, int end)</span><br><span class="line">&#123;</span><br><span class="line">	T target &#x3D; arr[start];</span><br><span class="line">	int ss &#x3D; start;</span><br><span class="line">	T temp;</span><br><span class="line">	start++;</span><br><span class="line">	while (start &lt; end)</span><br><span class="line">	&#123;</span><br><span class="line">		while (start&lt;end &amp;&amp; arr[end]&gt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		while (start&lt;end &amp;&amp; arr[start]&lt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			start++;</span><br><span class="line">		&#125;</span><br><span class="line">		if (start !&#x3D; end)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">			temp &#x3D; arr[end];</span><br><span class="line">			arr[end] &#x3D; arr[start];</span><br><span class="line">			arr[start] &#x3D; temp;</span><br><span class="line">				end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return start;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 6, 5, 1, 4 &#125;;</span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 2, 2, 2, 1 &#125;;</span><br><span class="line"></span><br><span class="line">	int arr[] &#x3D; &#123; 2, 6 &#125;;</span><br><span class="line"></span><br><span class="line">	fastorder(arr, 0, 1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	for (int i &#x3D; 0; i &lt; 2; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; arr[i] &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	getchar();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -513,18 +503,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/xzxaaa/2020/03/07/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/xzxaaa/2020/03/18/inux%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="prev" title="Linux面试知识(偏应用)">
-                Linux面试知识(偏应用) <i class="fa fa-chevron-right"></i>
+              <a href="/xzxaaa/2020/03/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%B8%89%E7%BA%A7%E8%80%83%E8%AF%95/" rel="prev" title="嵌入式三级考试">
+                嵌入式三级考试 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -618,9 +604,9 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/xzxaaa/%7C%7C%20archive">
+                <a href="/xzxaaa/archives">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -642,7 +628,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/xzxaaa/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -706,7 +692,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number">1.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思考过的问题"><span class="nav-number">2.</span> <span class="nav-text">思考过的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码-附带测试程序"><span class="nav-number">3.</span> <span class="nav-text">代码,附带测试程序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序"><span class="nav-number">1.</span> <span class="nav-text">快速排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#思考过的问题"><span class="nav-number">1.1.</span> <span class="nav-text">思考过的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码-附带测试程序"><span class="nav-number">1.2.</span> <span class="nav-text">代码,附带测试程序</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -723,7 +709,7 @@
 			<h3 class="widget-title">Tag Cloud</h3>
 			<div id="myCanvasContainer" class="widget tagcloud">
 				<canvas width="250" height="250" id="resCanvas" style="width:100%">
-					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li></ul>
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/C-C-%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">C/C++👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E5%BA%94%E7%94%A8%E5%B1%82%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux应用层👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux驱动👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%F0%9F%9A%B4%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">使用工具🚴‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%F0%9F%A4%A6%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">函数底层实现🤦‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%8D%8F%E8%AE%AE%E4%B8%8E%E4%B8%80%E4%BA%9B%E7%A1%AC%E4%BB%B6%E7%9F%A5%E8%AF%86%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/" rel="tag">协议与一些硬件知识👩🏼‍🤝‍🧑🏻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FLinux%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">操作系统Linux👷‍♂️</a><span class="tag-list-count">1</span></li></ul>
 				</canvas>
 			</div>
 		</div>

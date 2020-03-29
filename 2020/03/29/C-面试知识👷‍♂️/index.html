@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/xzxaaa/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/xzxaaa/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/xzxaaa/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/xzxaaa/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/xzxaaa/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/xzxaaa/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/xzxaaa/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C/C++👷‍♂️," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="C++绝佳总结网址🚎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C&#x2F;C++知识👷‍♂️">
+<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/index.html">
+<meta property="og:site_name" content="辛同学的博客">
+<meta property="og:description" content="C++绝佳总结网址🚎">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/it.png">
+<meta property="article:published_time" content="2020-03-29T14:21:00.000Z">
+<meta property="article:modified_time" content="2020-03-29T16:08:54.833Z">
+<meta property="article:author" content="辛同学">
+<meta property="article:tag" content="C&#x2F;C++👷‍♂️">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/it.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/xzxaaa/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/C-面试知识👷‍♂️/"/>
+
+
+
+
+
+  <title>C/C++知识👷‍♂️ | 辛同学的博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?0e0e23458f6ac565f6ef9f4cf0049800";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/xzxaaa/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">辛同学的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/xzxaaa/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/xzxaaa/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/xzxaaa/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-search">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-search"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/xzxaaa/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="辛同学">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/xzxaaa/images/boy-2945584_1920.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="辛同学的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C/C++知识👷‍♂️</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-29T22:21:00+08:00">
+                2020-03-29
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-30T00:08:54+08:00">
+                2020-03-30
+              </time>
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" class="leancloud_visitors" data-flag-title="C/C++知识👷‍♂️">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+		  
+		  
+		  
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="C-绝佳总结网址🚎"><a href="#C-绝佳总结网址🚎" class="headerlink" title="C++绝佳总结网址🚎"></a><a href="https://interview.huihut.com/#/?id=%E2%9E%95-cc" target="_blank" rel="noopener">C++绝佳总结网址🚎</a></h1><a id="more"></a>  
+
+<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><ul>
+<li>override：  表示要重写该函数，如果父类继承过来的没有能够继承，则编译报错</li>
+<li>final ： 一个类不想被继承或一个函数不想被重写</li>
+<li>inline：  实现宏的效果，减少进栈出栈过程，不用宏是因为容易出错</li>
+<li>static 在嵌入式系统中，要时刻懂得移植的重要性，程序可能是很多程序员共同协作同时完成，在定义变量及函数的过程，可能会重名，这给系统的集成带来麻烦，因此保证不冲突的办法是显示的表示此变量或者函数是本地的，static即可。在Linux的模块编程中，这一条很明显，所有的函数和全局变量都要用static关键字声明，将其作用域限制在本模块内部，与其他模块共享的函数或者变量要EXPORT到内核中。<br>只能再定义中使用，如果在头文件用的话，那是各自的变量而已</li>
+<li>const 可以是 volatile （如只读的状态寄存器）  </li>
+<li>位域 <a href="https://www.cnblogs.com/bigrabbit/archive/2012/09/20/2695543.html" target="_blank" rel="noopener">资料🚎</a>  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct bs</span><br><span class="line">&#123;</span><br><span class="line">　　int a:8;😊</span><br><span class="line">　　int b:2;</span><br><span class="line">　　int c:6;</span><br><span class="line">&#125;data; </span><br><span class="line">1️⃣一个位域必须存储在同一个字节中，不能跨两个字节</span><br><span class="line">2️⃣由于位域不允许跨两个字节，因此位域的长度不能大于一个字节的长度。</span><br><span class="line">3️⃣位域可以无位域名，这时它只用来作填充或调整位置。无名的位域是不能使用的</span><br><span class="line">位域在内存中的布局是与机器有关的</span><br><span class="line">位域的类型必须是整型或枚举类型，带符号类型中的位域的行为将因具体实现而定</span><br><span class="line">取地址</span><br><span class="line">运算符（&amp;）不能作用于位域，任何指针都无法指向类的位域</span><br></pre></td></tr></table></figure>
+<ul>
+<li>union 联合可以把同一个数据解释成两种不同的东西，而不是把两个不同的数据解释为同一个东西<br>如socket 时候填的是in_addr  传进去的时候是addr    </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef union &#123;  &#x2F;&#x2F;&#x2F;位域  打印的时候可以一个字节一个字节打印</span><br><span class="line">    BYTE n;</span><br><span class="line">    struct &#123;</span><br><span class="line">          BYTE x:2;</span><br><span class="line">          BYTE y:3;</span><br><span class="line">          BYTE z:3;</span><br><span class="line">    &#125;s;</span><br><span class="line">&#125; U;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h1><h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><ul>
+<li><p>deque是一个双向队列，优化了对序列两端元素进行添加和删除操作的基本序列容器（有点vector+list的感觉）  </p>
+</li>
+<li><p>string的size用法不包含’\0’</p>
+</li>
+<li><p>c++11新加入了emplace_back():<br>如果要将一个临时变量push到容器的末尾，push_back()需要先构造临时对象，再将这个对象拷贝到容器的末尾，而emplace_back()则直接在容器的末尾构造对象，这样就省去了拷贝的过程。 有点类似右值引用</p>
+</li>
+<li><p>链表的缺点：<br>不能随机查找，必须从第一个开始遍历，查找效率低</p>
+</li>
+</ul>
+<ul>
+<li><p>双向链表和单向链表:<br>双向链表占用空间大</p>
+</li>
+<li><p>vec.push_back()加入一个对象都要检查容器内部维护的内存是否够用，不够用的话需要重新申请内存，花费大量时间</p>
+</li>
+<li><p>哈希表不适合遍历  </p>
+</li>
+<li><p>forward_list    单向链表  </p>
+</li>
+<li><p>优先队列，又称为优先级队列、堆。优先队列是一种特殊的队列，除了具有队列的先入先出，队列头出，队列尾入的结构特点，优先队列最重要的就是要实现快速得到队列中优先级最高的元素</p>
+</li>
+</ul>
+<h3 id="容器的swap"><a href="#容器的swap" class="headerlink" title="容器的swap"></a>容器的swap</h3><ul>
+<li>交换2个容器  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在容器vector中，其内存占用的空间是只增不减的，比如说首先分配了10,000个字节，然后erase掉后面9,999个，则虽然有效元素只有一个，但是内存占用仍为10,000个。所有内存空间在vector析构时回收。</span><br><span class="line">capacity就是显示占用内存的</span><br><span class="line">vector&lt;int&gt;().swap(myvector);</span><br></pre></td></tr></table></figure>
+
+<h3 id="容器的选择："><a href="#容器的选择：" class="headerlink" title="容器的选择："></a>容器的选择：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1️⃣强调快速随机访问，则vector比list好得多。</span><br><span class="line">2️⃣已知要存储元素的个数。vector好于list。</span><br><span class="line">3️⃣强调增删且不要在两端插入修改元素，则list显然要比vector好。</span><br><span class="line">4️⃣除非我们需要在容器首部插入和删除元素，deque好于vector。  </span><br><span class="line">5️⃣循环链表应用场景，缓冲区，因为要利用前面空留的空间</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代器的失效"><a href="#迭代器的失效" class="headerlink" title="迭代器的失效"></a>迭代器的失效</h2><p><img src="/xzxaaa/images/it.png" alt="upload successful">  </p>
+<h2 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h2><p><a href="https://blog.csdn.net/u012864854/article/details/81562738" target="_blank" rel="noopener">参考博客🚎</a></p>
+<p>  当队空时：front=rear<br>  当队满时：front=rear 亦成立</p>
+<p> 1️⃣ 增加一个引用计数count；</p>
+<p> 2️⃣少用一个元素空间，约定以“队列头指针front在队尾指针rear的下一个位置上”作为队列“满”状态的标志。即：<br>  队空时： front=rear  ✨<br>  队满时： (rear+1)%maxsize=front✨</p>
+<h2 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h2><p><a href="https://www.jianshu.com/p/83eed68cbb46" target="_blank" rel="noopener">参考🚎</a>  </p>
+<ul>
+<li>定义两个指针，同时从链表的头节点出发，一个指针一次走一步，另一个指针一次走两步。如果走得快的指针追上了走得慢的指针，那么链表就是环形链表；如果走得快的指针走到了链表的末尾（next指向 NULL）都没有追上第一个指针，那么链表就不是环形链表。</li>
+</ul>
+<ul>
+<li><p>可以在快慢指针第一次相遇的地方重置快指针的位置，使快指针回到链表入口✨，慢指针不动。然后，两个指针以相同的速度在运动，再次相遇的地方就是环入口。</p>
+</li>
+<li><p>快两倍的时候是一定可以相遇的，快3.4.5…需要分析具体情况，根据公式s+(k-1)t=nR  </p>
+</li>
+</ul>
+<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p><a href="https://blog.csdn.net/diaodi1938/article/details/101491552" target="_blank" rel="noopener">链接🚎</a></p>
+<ul>
+<li><p>工程中的智能指针是一个类模板<br>  通过构造函数接管申请的内存<br>  通过析构函数确保堆内存被及时释放<br>  通过重载指针运算符* 和 -&gt; 来模拟指针的行为<br>  通过重载比较运算符 == 和 != 来模拟指针的比较</p>
+</li>
+<li><p>智能指针能过管理数组吗?    有些可以有些不行<br>不行是因为STL中智能指针析构用的是delete  在delete数组时候需要 delete[] 所以要管理数组应该要重写析构  </p>
+</li>
+<li><p>那管理string呢？ string 可以   </p>
+</li>
+<li><p>C++ STL 能指针    1️⃣auto_ptr2️⃣ unique_ptr3️⃣shared_ptr4️⃣weak_ptr<br>unique_ptr(可数组)  shared_ptr(不可以数组)<br>多个unique_ptr 对象不可以管理同一个内存<br>shared_ptr 对象可以管理同一个内存</p>
+</li>
+</ul>
+<h1 id="结构体初始化"><a href="#结构体初始化" class="headerlink" title="结构体初始化"></a>结构体初始化</h1><ul>
+<li>不能比较两个联合体，也不能比较两个结构</li>
+<li>结构体初始化方式有3种</li>
+</ul>
+<p>结构体定义如下<br> struct obj_type{char a; int b; float c;double d;}</p>
+<p>第1种，位置对应赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">位置对应必须按序列出</span><br><span class="line"> struct obj_type obj &#x3D;</span><br><span class="line"> &#123;</span><br><span class="line">     10,</span><br><span class="line">     1000,</span><br><span class="line">     1.1,</span><br><span class="line">     1.1111</span><br><span class="line"> &#125;</span><br><span class="line">按序未列出的即无关参数，但缺省参数必须是排在最后</span><br><span class="line">struct obj_type obj &#x3D;</span><br><span class="line">&#123;</span><br><span class="line">    10,</span><br><span class="line">    1000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第2种，点号访问赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">点号访问可以指哪打哪，对感兴趣的参数赋值，无关参数缺省，并且赋值项清晰明了</span><br><span class="line">1 struct obj_type obj &#x3D;</span><br><span class="line">2 &#123;</span><br><span class="line">3     .a &#x3D;10,</span><br><span class="line">4     .c &#x3D;1.1</span><br><span class="line">5 &#125;</span><br></pre></td></tr></table></figure>
+<p>第3种，冒号指示赋值  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">同点号赋值</span><br><span class="line"> struct obj_type obj &#x3D;</span><br><span class="line"> &#123;</span><br><span class="line">    a: 10,</span><br><span class="line">    c: 1.1</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><ul>
+<li>fstrem =ifstrem+ofstrem  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">fstream mylog(&quot;.&#x2F;text.txt&quot;,ios::in);</span><br><span class="line"></span><br><span class="line">char buf[1024]&#x3D;&#123;0&#125;</span><br><span class="line">while (mylog.getline(buf,1024))   &#x2F;&#x2F;读取整个文件</span><br><span class="line">	&#123;</span><br><span class="line">		str &#x3D; str + buf;</span><br><span class="line">	&#125;</span><br><span class="line"> mylog.write(buf, size);   &#x2F;&#x2F;写</span><br><span class="line"> mylog.read(buf，count)&#x2F;&#x2F;  cout为读多少个字节，遇到\n不会返回</span><br><span class="line">mylog.eof();  &#x2F;&#x2F;判断是否到了文件末尾</span><br><span class="line">seekp：设置输出文件流的文件流指针位置</span><br><span class="line">seekg：设置输入文件流的文件流指针位置</span><br><span class="line">mylog.seekg(0, ios::beg);  &#x2F;&#x2F;回到文件头</span><br><span class="line">seekp( streampos pos );</span><br><span class="line">seekg( streampos pos );</span><br><span class="line">函数原型</span><br></pre></td></tr></table></figure>
+
+<h1 id="构造函数什么情况下必须在初始化列表中进行初始化"><a href="#构造函数什么情况下必须在初始化列表中进行初始化" class="headerlink" title="构造函数什么情况下必须在初始化列表中进行初始化"></a>构造函数什么情况下必须在初始化列表中进行初始化</h1><ul>
+<li>在父类对象只有有参构造函数的情况下  </li>
+<li>类初始化父类的私有成员，需要在(并且也只能在)参数初始化列表中显示调用父类的构造函数  </li>
+<li>对象引用或者cosnt修饰的数据成员   </li>
+</ul>
+<h1 id="C-虚函数"><a href="#C-虚函数" class="headerlink" title="C++虚函数"></a>C++虚函数</h1><ul>
+<li><p>虚函数，多态，只对指针和引用有效 -&gt;多态的表现方式 </p>
+</li>
+<li><p>虚函数重写，虚表确实一个更换了<br>但是调用虚表就必须用引用或者指针<br>对象是不会用到虚表的<br>会直接用一个在全局空间的函数的地址指针</p>
+</li>
+<li><p>父类转换成子类可以吗？为什么不可以<br>向下类型转换dynamic_cast&lt;&gt;<br>向上类型转换不需特殊操作.  </p>
+</li>
+</ul>
+<h1 id="C-聚合类"><a href="#C-聚合类" class="headerlink" title="C++聚合类"></a>C++聚合类</h1><ul>
+<li>聚合关系和组合<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">聚合关系是面向对象中的对象与对象之间的关系，这种关系就手机和电池的关系一样，一台手机需要一个电池，这样它才能工作。但是假设手机坏了，电池却没有损坏，这时电池就是可用的，它可以放在别的同型号手机上使用。</span><br><span class="line">聚合与组合是有区别的，组合则是整体要是完了，局部也会跟着完蛋。</span><br><span class="line">在C++中聚合和关联实际上是一样的实现，比如</span><br><span class="line">class A</span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;成员</span><br><span class="line">&#125;;</span><br><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">A *point; &#x2F;&#x2F;指向A类的指针，如果是组合则是A obj;，即包含A类的一个对象，类B要是被销毁了，那还会有这个obj对象吗？</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>聚合类<br>合类定义：<br>1️⃣所有的成员都是public的。<br>2️⃣没有定义任何构造函数。<br>3️⃣没有类内初始值。<br>5️⃣没有基类，也没有virtual函数。<br>聚合类的初始化：我们可以提供一个花括号括起来的成员函数初始值列表，并用它初始化聚合类的数据成员： 例如：Data   val={0,”Anna”};</li>
+</ul>
+<h1 id="结构体对齐"><a href="#结构体对齐" class="headerlink" title="结构体对齐"></a>结构体对齐</h1><p>内存对齐作用：<br>1️⃣平台原因(移植原因)：不是所有的硬件平台都能访问任意地址上的任意数据的；某些硬件平台只能在某些地址处取某些特定类型的数据，否则抛出硬件异常。<br>2️⃣性能原因：数据结构(尤其是栈)应该尽可能地在自然边界上对齐。原因在于，为了访问未对齐的内存，处理器需要作两次内存访问；而对齐的内存访问仅需要一次访问。  </p>
+<h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><ul>
+<li><p>模板分为类模板与函数模板，特化分为1️⃣全特化与2️⃣偏特化。<br>全特化就是限定死模板实现的具体类型，<br>偏特化就是如果这个模板有多个类型，那么只限定其中的一部分。  </p>
+</li>
+<li><p>而对于函数模板，却只有全特化，不能偏特化<br>至于为什么函数不能偏特化，似乎不是因为语言实现不了，而是因为偏特化的功能可以通过函数的重载完成。</p>
+<h2 id="宏和模板"><a href="#宏和模板" class="headerlink" title="宏和模板"></a>宏和模板</h2></li>
+<li><p>宏：没有类型检查，在有的时候会出现二义  ，当参数为 a++时候</p>
+</li>
+</ul>
+<h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h2><ul>
+<li>高内聚指的是:一个好的内聚模块应当恰好做一件事  </li>
+<li>耦合是软件结构中各模块之间相互连接的一种度量，耦合强弱取决于模块间接口的复杂程度、进入或访问一个模块的点以及通过接口的数据。</li>
+<li>低耦合指的是接口复杂度低    </li>
+</ul>
+<h2 id="顶底const"><a href="#顶底const" class="headerlink" title="顶底const"></a>顶底const</h2><ul>
+<li>顶层 const 表示的是 指针本身是一个常量， 底层 const 表示的是 指针所指的对象是一个常量<br>成员函数后面是const说的是this指针 底层的const   </li>
+</ul>
+<h2 id="C-头文件"><a href="#C-头文件" class="headerlink" title="C++头文件"></a>C++头文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#ifdef __cplusplus </span><br><span class="line">extern &quot;C&quot; &#123; </span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;一段代码  头文件中，声名方式为C语言，这样才能在C库中找到对应的函数</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus </span><br><span class="line">&#125; </span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><ul>
+<li>int printf(const char* format, …);  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdarg.h&gt;  </span><br><span class="line">int VarArgFunc(int dwFixedArg, ...)&#123; &#x2F;&#x2F;以固定参数的地址为起点依次确定各变参的内存起始地址</span><br><span class="line"></span><br><span class="line">    va_list pArgs &#x3D; NULL;  &#x2F;&#x2F;定义va_list类型的指针pArgs，用于存储参数地址</span><br><span class="line"></span><br><span class="line">   1️⃣ va_start(pArgs, dwFixedArg); &#x2F;&#x2F;初始化pArgs指针，使其指向第一个可变参数。该宏第二个参数是变参列表的前一个参数，即最后一个固定参数</span><br><span class="line"></span><br><span class="line">   2️⃣ int dwVarArg &#x3D; va_arg(pArgs, int); &#x2F;&#x2F;该宏返回变参列表中的当前变参值并使pArgs指向列表中的下个变参。该宏第二个参数是要返回的当前变参类型</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;若函数有多个可变参数，则依次调用va_arg宏获取各个变参</span><br><span class="line"></span><br><span class="line">   3️⃣  va_end(pArgs);  &#x2F;&#x2F;将指针pArgs置为无效，结束变参的获取</span><br><span class="line"></span><br><span class="line">    &#x2F;* Code Block using variable arguments *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Empty</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">          Empty();                  &#x2F;&#x2F;   缺省构造函数</span><br><span class="line">          Empty(const   Empty&amp;);    &#x2F;&#x2F;   拷贝构造函数</span><br><span class="line">          ~Empty();                 &#x2F;&#x2F;   析构函数</span><br><span class="line">          Empty&amp; perator&#x3D;(const Empty&amp;); &#x2F;&#x2F;   赋值运算符</span><br><span class="line">           Empty* operator&amp;();              &#x2F;&#x2F;   取值运算符</span><br><span class="line">          const Empty* operator&amp;() const;   &#x2F;&#x2F;   取值运算符</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="C预处理命令"><a href="#C预处理命令" class="headerlink" title="C预处理命令"></a>C预处理命令</h2><p>按照ANSI标准的定义，预处理程序应该处理以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#if #ifdef #ifndef #else #elif</span><br><span class="line">#endif</span><br><span class="line">#define</span><br><span class="line">#undef</span><br><span class="line">#line</span><br><span class="line">#error</span><br><span class="line">#pragma  </span><br><span class="line">#include</span><br></pre></td></tr></table></figure>
+
+<h1 id="字符串和整型转换"><a href="#字符串和整型转换" class="headerlink" title="字符串和整型转换"></a>字符串和整型转换</h1><ul>
+<li><p>_itoa_s 函数itoa_s(bumber, buf, 2);  //2 是2进制  </p>
+</li>
+<li><p>number=atoi(buf);  //转整型   </p>
+</li>
+</ul>
+<h1 id="Linux-gcc支持的语法-attribute-属性设"><a href="#Linux-gcc支持的语法-attribute-属性设" class="headerlink" title="Linux gcc支持的语法 attribute 属性设"></a>Linux gcc支持的语法 attribute 属性设</h1><p> <a href="http://www.bubuko.com/infodetail-1807545.html?__cf_chl_jschl_tk__=ac57d06d45ccb79eea89515784b28eb183d82dfc-1584689502-0-AdC8JOyXSl9idgS1ojv7Ol8LsKJ0PSRg6wjY8fjK4_N2DtnlgkJzODeWN-RI4Opx5WWFcyu-Mz-jee-le7i8HnP4iw9EncJVzBtf0aj3BF47Ci1KelVoEHAfcHVN-arKrtWeF7dcOYeLnyxmu4k4KwyaZkcjJx6a3-plgm3BeVUkOuubowiFaF_54uQyzYzn47Gl9OsjBACAY5zgD85Wqn0VRoZX_YidNmTGr0abESWrbg0m29TsrIYUcoj8mBDdChvGZn-pD9wpMfJG_vHg83nBMgl5v973td7wgWZf9J38XyJGQp5hKBV5zqvwU4Mg2A" target="_blank" rel="noopener">参考🚎</a></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">* weak属性：使得cpu_mmc_init是一个弱标号（我估计是内部链接），而不是一个全局标号 </span><br><span class="line">，另外即使cpu_mmc_init函数没有定义，调用cpu_mmc_init编译器也是不会报错的，不过 </span><br><span class="line">没有意义，所以一般会和alias属性连用。</span><br><span class="line"></span><br><span class="line">* alias属性：指定cpu_mmc_init是后面 &quot;__def_mmc_init&quot; 函数的一个别名，所以 </span><br><span class="line">cpu_mmc_init函数如果没有定义，那么调用cpu_mmc_init其实就是会调用__def_mmc_init </span><br><span class="line">函数，如果定义就不会调用这个了，注意__def_mmc_init函数是一定要有定义的。</span><br><span class="line"></span><br><span class="line">* unused属性：指定这个变量或者函数如果没有被使用也不要输出警告信息。</span><br><span class="line"></span><br><span class="line">* section属性：指定该函数或者是变量最后链接在我们的指定段中，用法：section </span><br><span class="line">(&quot;.u_boot_cmd&quot;)，注意了，我们链接脚本中使用的段名其实就是一个变量的形式，他是 </span><br><span class="line">不需要定义的，能够直接用，也就是说，我们可以在连接脚本中随意使用一个段名，如果 </span><br><span class="line">我们在我们的C中有该段的内容就会链接到该段中，如果没有就直接跳过。注意在我们的 </span><br><span class="line">内核驱动中一般是用 __section__ 来代替我们的section，具体差别不详。</span><br><span class="line">__attribute__ ((__section__(&quot;.u_kernel_cmd&quot;)))</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">struct fd&#123;  </span><br><span class="line">...  </span><br><span class="line">...  </span><br><span class="line">&#125;__sttribute__ ((align(4))) fd; &#x2F;&#x2F;指定struct fd类的字节对齐方式</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><h3 id="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><a href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，" class="headerlink" title="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"></a>写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</h3><p>#define OFFSET（type，member） ((size_t)&amp;(((type*)0)-&gt;member))   </p>
+<h2 id="gcc和g-的主要区别"><a href="#gcc和g-的主要区别" class="headerlink" title="gcc和g++的主要区别"></a>gcc和g++的主要区别</h2><p>1️⃣对于 <em>.c和</em>.cpp文件，gcc分别当做c和cpp文件编译（c和cpp的语法强度是不一样的）<br>2️⃣对于 <em>.c和</em>.cpp文件，g++则统一当做cpp文件编译</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/xzxaaa/tags/C-C-%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag"># C/C++👷‍♂️</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="next" title="Linux 驱动👷‍♂️">
+                <i class="fa fa-chevron-left"></i> Linux 驱动👷‍♂️
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/" rel="prev" title="操作系统(Linux)👷‍♂️">
+                操作系统(Linux)👷‍♂️ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="SOHUCS"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+	  
+	   
+
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/xzxaaa/images/boy-2945584_1920.jpg"
+                alt="辛同学" />
+            
+              <p class="site-author-name" itemprop="name">辛同学</p>
+              <p class="site-description motion-element" itemprop="description">无聊玩一玩</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/xzxaaa/archives">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/xzxaaa/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/xzxaaa/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+		  
+					  
+		  
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/XZXAAA" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/yourname" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+	  
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-绝佳总结网址🚎"><span class="nav-number">1.</span> <span class="nav-text">C++绝佳总结网址🚎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关键字"><span class="nav-number">2.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STL"><span class="nav-number">3.</span> <span class="nav-text">STL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器"><span class="nav-number">3.1.</span> <span class="nav-text">容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的swap"><span class="nav-number">3.1.1.</span> <span class="nav-text">容器的swap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的选择："><span class="nav-number">3.1.2.</span> <span class="nav-text">容器的选择：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代器的失效"><span class="nav-number">3.2.</span> <span class="nav-text">迭代器的失效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#循环队列"><span class="nav-number">3.3.</span> <span class="nav-text">循环队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断链表是否有环"><span class="nav-number">3.4.</span> <span class="nav-text">判断链表是否有环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智能指针"><span class="nav-number">3.5.</span> <span class="nav-text">智能指针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体初始化"><span class="nav-number">4.</span> <span class="nav-text">结构体初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文件操作"><span class="nav-number">5.</span> <span class="nav-text">文件操作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造函数什么情况下必须在初始化列表中进行初始化"><span class="nav-number">6.</span> <span class="nav-text">构造函数什么情况下必须在初始化列表中进行初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-虚函数"><span class="nav-number">7.</span> <span class="nav-text">C++虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-聚合类"><span class="nav-number">8.</span> <span class="nav-text">C++聚合类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构体对齐"><span class="nav-number">9.</span> <span class="nav-text">结构体对齐</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模板"><span class="nav-number">10.</span> <span class="nav-text">模板</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#宏和模板"><span class="nav-number">10.1.</span> <span class="nav-text">宏和模板</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项"><span class="nav-number">11.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#高内聚低耦合"><span class="nav-number">11.1.</span> <span class="nav-text">高内聚低耦合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顶底const"><span class="nav-number">11.2.</span> <span class="nav-text">顶底const</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-头文件"><span class="nav-number">11.3.</span> <span class="nav-text">C++头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变参数"><span class="nav-number">11.4.</span> <span class="nav-text">可变参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认构造函数"><span class="nav-number">11.5.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C预处理命令"><span class="nav-number">11.6.</span> <span class="nav-text">C预处理命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串和整型转换"><span class="nav-number">12.</span> <span class="nav-text">字符串和整型转换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-gcc支持的语法-attribute-属性设"><span class="nav-number">13.</span> <span class="nav-text">Linux gcc支持的语法 attribute 属性设</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">13.1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><span class="nav-number">13.1.1.</span> <span class="nav-text">写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gcc和g-的主要区别"><span class="nav-number">13.2.</span> <span class="nav-text">gcc和g++的主要区别</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+	
+
+
+		
+		<script type="text/javascript" charset="utf-8" src="/xzxaaa/js/tagcloud.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/xzxaaa/js/tagcanvas.js"></script>
+		<div class="widget-wrap">
+			<h3 class="widget-title">Tag Cloud</h3>
+			<div id="myCanvasContainer" class="widget tagcloud">
+				<canvas width="250" height="250" id="resCanvas" style="width:100%">
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/C-C-%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">C/C++👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E5%BA%94%E7%94%A8%E5%B1%82%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux应用层👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux驱动👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%F0%9F%9A%B4%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">使用工具🚴‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%F0%9F%A4%A6%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">函数底层实现🤦‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%8D%8F%E8%AE%AE%E4%B8%8E%E4%B8%80%E4%BA%9B%E7%A1%AC%E4%BB%B6%E7%9F%A5%E8%AF%86%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/" rel="tag">协议与一些硬件知识👩🏼‍🤝‍🧑🏻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FLinux%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">操作系统Linux👷‍♂️</a><span class="tag-list-count">1</span></li></ul>
+				</canvas>
+			</div>
+		</div>
+			
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">辛同学</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/xzxaaa/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/xzxaaa/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/xzxaaa/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/xzxaaa/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/xzxaaa/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/xzxaaa/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: true,
+        appId: 'spCDftnh2nLGISldIkqbpkaj-gzGzoHsz',
+        appKey: 'OJ4MjT4aDuj83BBxMp3KMH1R',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("spCDftnh2nLGISldIkqbpkaj-gzGzoHsz", "OJ4MjT4aDuj83BBxMp3KMH1R");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+ 
+
+ 
+</body>
+</html>
+
+ <!-- 页面点击小红心 -->
+<script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
+

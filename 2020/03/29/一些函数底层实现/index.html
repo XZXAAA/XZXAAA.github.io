@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="hexo学习," />
+  <meta name="keywords" content="函数底层实现🤦‍♂️," />
 
 
 
@@ -105,19 +105,17 @@
 
 
 
-<meta name="description" content="标题学习C++绝佳总结网址 123456# 这是一级标题## 这是二级标题### 这是三级标题#### 这是四级标题##### 这是五级标题###### 这是六级标题">
+<meta name="description" content="内存的分配和管理12345malloc、calloc、realloc、allocamalloc：申请指定字节数的内存。申请到的内存中的初始值不确定。calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Makedown_学习">
-<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/07/Makedown-learn/index.html">
+<meta property="og:title" content="一些函数底层实现🤦‍♂️">
+<meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="标题学习C++绝佳总结网址 123456# 这是一级标题## 这是二级标题### 这是三级标题#### 这是四级标题##### 这是五级标题###### 这是六级标题">
-<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/pasted-1.png">
-<meta property="article:published_time" content="2020-03-07T02:56:00.000Z">
-<meta property="article:modified_time" content="2020-03-25T12:54:47.547Z">
+<meta property="og:description" content="内存的分配和管理12345malloc、calloc、realloc、allocamalloc：申请指定字节数的内存。申请到的内存中的初始值不确定。calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。">
+<meta property="article:published_time" content="2020-03-29T13:08:00.000Z">
+<meta property="article:modified_time" content="2020-03-29T15:15:36.366Z">
 <meta property="article:author" content="辛同学">
-<meta property="article:tag" content="hexo学习">
+<meta property="article:tag" content="函数底层实现🤦‍♂️">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/pasted-1.png">
 
 
 
@@ -147,13 +145,13 @@
 
 
 
-  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/07/Makedown-learn/"/>
+  <link rel="canonical" href="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/一些函数底层实现/"/>
 
 
 
 
 
-  <title>Makedown_学习 | 辛同学的博客</title>
+  <title>一些函数底层实现🤦‍♂️ | 辛同学的博客</title>
   
 
 
@@ -258,16 +256,6 @@
         </li>
       
         
-        <li class="menu-item menu-item-archives">
-          <a href="/xzxaaa/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-search">
           <a href="/xzxaaa/" rel="section">
             
@@ -320,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/07/Makedown-learn/">
+    <link itemprop="mainEntityOfPage" href="https://xzxaaaa.gitee.io/xzxaaa/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="辛同学">
@@ -337,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Makedown_学习</h1>
+          <h1 class="post-title" itemprop="name headline">一些函数底层实现🤦‍♂️</h1>
         
 
         <div class="post-meta">
@@ -349,8 +337,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-07T10:56:00+08:00">
-                2020-03-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-29T21:08:00+08:00">
+                2020-03-29
               </time>
             
 
@@ -365,12 +353,34 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-25T20:54:47+08:00">
-                2020-03-25
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T23:15:36+08:00">
+                2020-03-29
               </time>
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/xzxaaa/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -380,8 +390,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/xzxaaa/2020/03/07/Makedown-learn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/07/Makedown-learn/" itemprop="commentCount"></span>
+                <a href="/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -389,7 +399,7 @@
 
           
           
-             <span id="/xzxaaa/2020/03/07/Makedown-learn/" class="leancloud_visitors" data-flag-title="Makedown_学习">
+             <span id="/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/" class="leancloud_visitors" data-flag-title="一些函数底层实现🤦‍♂️">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -423,74 +433,29 @@
       
 
       
-        <h1 id="标题学习"><a href="#标题学习" class="headerlink" title="标题学习"></a>标题学习</h1><p><a href="https://interview.huihut.com/#/?id=%E2%9E%95-cc" target="_blank" rel="noopener">C++绝佳总结网址</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这是一级标题</span></span><br><span class="line"><span class="comment">## 这是二级标题</span></span><br><span class="line"><span class="comment">### 这是三级标题</span></span><br><span class="line"><span class="comment">#### 这是四级标题</span></span><br><span class="line"><span class="comment">##### 这是五级标题</span></span><br><span class="line"><span class="comment">###### 这是六级标题</span></span><br></pre></td></tr></table></figure>
+        <h1 id="内存的分配和管理"><a href="#内存的分配和管理" class="headerlink" title="内存的分配和管理"></a>内存的分配和管理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">malloc、calloc、realloc、alloca</span><br><span class="line">malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</span><br><span class="line">calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。</span><br><span class="line">realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。</span><br><span class="line">alloca：在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca 不具可移植性, 而且在没有传统堆栈的机器上很难实现。alloca 不宜使用在必须广泛移植的程序中。C99 中支持变长数组 (VLA)，可以用来替代 alloca。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>linux平台下堆的malloc堆申请 更底层用的是brk或者sbrk ，栈是alloca ✨</p>
 <a id="more"></a>
-<h1 id="这是一级标题"><a href="#这是一级标题" class="headerlink" title="这是一级标题"></a>这是一级标题</h1><h2 id="这是二级标题"><a href="#这是二级标题" class="headerlink" title="这是二级标题"></a>这是二级标题</h2><h3 id="这是三级标题"><a href="#这是三级标题" class="headerlink" title="这是三级标题"></a>这是三级标题</h3><h4 id="这是四级标题"><a href="#这是四级标题" class="headerlink" title="这是四级标题"></a>这是四级标题</h4><h5 id="这是五级标题"><a href="#这是五级标题" class="headerlink" title="这是五级标题"></a>这是五级标题</h5><h6 id="这是六级标题"><a href="#这是六级标题" class="headerlink" title="这是六级标题"></a>这是六级标题</h6><h2 id="二级标题，-后有个空格的"><a href="#二级标题，-后有个空格的" class="headerlink" title="二级标题， ##后有个空格的"></a>二级标题， ##后有个空格的</h2><h1 id="段落"><a href="#段落" class="headerlink" title="段落"></a>段落</h1><p>Test  打断 后面要留2个空格<br>直接回车就好了<br>测试</p>
-<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*斜体文本*    </span><br><span class="line">_斜体文本_  </span><br><span class="line">**粗体文本**  </span><br><span class="line">__粗体文本__  </span><br><span class="line">***粗斜体文本***  </span><br><span class="line">___粗斜体文本___</span><br></pre></td></tr></table></figure>
-<p><em>斜体文本</em><br><em>斜体文本</em><br><strong>粗体文本</strong><br><strong>粗体文本</strong><br><strong><em>粗斜体文本</em></strong><br><strong><em>粗斜体文本</em></strong></p>
-<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><blockquote>
-<p>引用</p>
-<blockquote>
-<p>引用</p>
-<blockquote>
-<p>引用</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h1><p>三个以上的-或*</p>
-<p>一条虚线在下面</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">***</span><br></pre></td></tr></table></figure>
-<hr>
-<hr>
-<h1 id="引用图片"><a href="#引用图片" class="headerlink" title="引用图片"></a>引用图片</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接粘贴就可以了//已经配置好</span><br></pre></td></tr></table></figure>
-<p><img src="/xzxaaa/images/pasted-1.png" alt="upload successful" title="图片">  </p>
-<h1 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[超链接名字](超链接地址 <span class="string">"超链接title"</span>)</span><br></pre></td></tr></table></figure>
-<p><a href="www.baidu.com" title="百度">超链接</a></p>
-<h1 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h1><h2 id="无序列表"><a href="#无序列表" class="headerlink" title="无序列表"></a>无序列表</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- 列表内容  </span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容  </span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
-<ul>
-<li>列表内容   </li>
-</ul>
-<ul>
-<li>列表内容</li>
-</ul>
-<ul>
-<li>列表内容  </li>
-</ul>
-<h2 id="有序列表"><a href="#有序列表" class="headerlink" title="有序列表"></a>有序列表</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 列表内容  </span><br><span class="line">2. 列表内容  </span><br><span class="line">3. 列表内容   </span><br><span class="line">   注意空格</span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>列表内容  </li>
-<li>列表内容  </li>
-<li>列表内容  </li>
-</ol>
-<h2 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h2> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">* 嵌套   </span><br><span class="line">   * 嵌套</span><br><span class="line">       * 嵌套</span><br><span class="line">           1. 嵌套</span><br><span class="line">           2. 嵌套</span><br><span class="line">           3. 嵌套</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="linux-malloc底层实现原"><a href="#linux-malloc底层实现原" class="headerlink" title="linux-malloc底层实现原"></a>linux-malloc底层实现原</h1><p><a href="https://blog.csdn.net/mmshixing/article/details/51679571" target="_blank" rel="noopener">详细连接🚎</a></p>
+<ul>
+<li>进程会管理一个break指针，指针指向堆尾  </li>
+<li>每次申请的时候先在堆尾创建一个结构体，描述申请的内存(大小，可用等)</li>
+<li>去可用的内存空闲链表中寻找满足大小的内存，并映射到break(此时break已经移动一个结构体的距离)并返回映射的首地址</li>
+</ul>
+<h1 id="Kmalloc-Vmalloc"><a href="#Kmalloc-Vmalloc" class="headerlink" title="Kmalloc Vmalloc"></a>Kmalloc Vmalloc</h1><p><a href="https://www.jianshu.com/p/9780673ee4c2" target="_blank" rel="noopener">简书连接🚎</a><br><a href="https://zhidao.baidu.com/question/1541354265673904547.html" target="_blank" rel="noopener">百度知道🚎</a></p>
+<ul>
+<li>在设备驱动程序或者内核模块中动态开辟内存，不是用malloc，而是kmalloc ,vmalloc释放内存用的是kfree,vfree  </li>
+<li>kmalloc特殊之处在于它分配的内存是物理上连续的,这对于要进行DMA的设备十分重要. 而用vmalloc分配的内存只是线性地址连续,物理地址不一定连续,不能直接用于DMA</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1️⃣ vmalloc分配的一般为高端内存(在3G+内存以上)，只有当内存不够的时候才分配低端内存；kmallco从低端内存分配（在3G+内存）下面。这里说的高低是在虚拟内存那边，物理内存好像也是</span><br><span class="line">2️⃣vmalloc分配的物理地址一般不连续，而kmalloc分配的地址连续，两者分配的虚拟地址都是连续的；</span><br><span class="line">3️⃣vmalloc分配的一般为大块内存，而kmaooc一般分配的为小块内存，（一般不超过128k);</span><br></pre></td></tr></table></figure>
 
-<hr>
-<h1 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> 表头|表头|表头</span><br><span class="line">---|:--:|---:</span><br><span class="line">内容|内容|内容</span><br><span class="line">内容|内容|内容</span><br><span class="line">第二行分割表头和内容。</span><br><span class="line">-有一个就行，为了对齐,可以多加几个;</span><br><span class="line">文字默认居左</span><br><span class="line">-两边加：表示文字居中;</span><br><span class="line">-右边加：表示文字居右。</span><br></pre></td></tr></table></figure>
 
-<table>
-<thead>
-<tr>
-<th align="left">表头1</th>
-<th align="center">表头2</th>
-<th align="right">表头3</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">11</td>
-<td align="center">12</td>
-<td align="right">13</td>
-</tr>
-<tr>
-<td align="left">21</td>
-<td align="center">22</td>
-<td align="right">23</td>
-</tr>
-</tbody></table>
-<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><h2 id="单行代码"><a href="#单行代码" class="headerlink" title="单行代码"></a>单行代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% codeblock %&#125;</span><br><span class="line">代码内容</span><br><span class="line">&#123;% endcodeblock %&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">代码内容</span><br></pre></td></tr></table></figure>
-<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cs 和三个`</span><br></pre></td></tr></table></figure>
+<h1 id="strcpy和memcpy"><a href="#strcpy和memcpy" class="headerlink" title="strcpy和memcpy"></a>strcpy和memcpy</h1><p><a href="https://www.jianshu.com/p/9c3784d8d8ad" target="_blank" rel="noopener">简书链接🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">char * __cdecl strcpy(char * dst, const char * src)</span><br><span class="line">&#123;</span><br><span class="line">        char * cp &#x3D; dst;</span><br><span class="line"> </span><br><span class="line">        while( *cp++ &#x3D; *src++ )</span><br><span class="line">                ;               &#x2F;* Copy src over dst *&#x2F;</span><br><span class="line"> </span><br><span class="line">        return( dst );</span><br><span class="line">&#125;</span><br><span class="line">void * __cdecl memcpy (void * dst, const void * src,size_t count)</span><br><span class="line">&#123;</span><br><span class="line">        void * ret &#x3D; dst;&#x2F;&#x2F;可支持链式编程，一个函数完成两个功能。</span><br><span class="line">        while (count--) </span><br><span class="line">        &#123;</span><br><span class="line">                *(char *)dst &#x3D; *(char *)src;</span><br><span class="line">                dst &#x3D; (char *)dst + 1;</span><br><span class="line">                src &#x3D; (char *)src + 1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return(ret);</span><br><span class="line">&#125;</span><br><span class="line">memcpy和memmove区别是memcpy使用的时候必须保证内存不能重叠  </span><br><span class="line">memmove会对拷贝的数据作检查，确保内存没有覆盖，如果发现会覆盖数据，简单的实现是调转开始拷贝的位置，从尾部开始拷贝✨</span><br><span class="line">memmvoe会检测dest与src的位置，如果dest和src指向同样的对象，且src比dest地址小，拷贝的时候就会出错，应该从尾部开始拷贝</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -507,7 +472,7 @@
       
         <div class="post-tags">
           
-            <a href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag"># hexo学习</a>
+            <a href="/xzxaaa/tags/%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%F0%9F%A4%A6%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag"># 函数底层实现🤦‍♂️</a>
           
         </div>
       
@@ -520,14 +485,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/" rel="next" title="Linux移植">
+                <i class="fa fa-chevron-left"></i> Linux移植
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/xzxaaa/2020/03/07/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
+              <a href="/xzxaaa/2020/03/29/%E5%B7%A5%E5%85%B7/" rel="prev" title="使用工具🚴‍♂️">
+                使用工具🚴‍♂️ <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -621,9 +590,9 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/xzxaaa/%7C%7C%20archive">
+                <a href="/xzxaaa/archives">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -645,7 +614,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/xzxaaa/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -709,7 +678,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标题学习"><span class="nav-number">1.</span> <span class="nav-text">标题学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#这是一级标题"><span class="nav-number">2.</span> <span class="nav-text">这是一级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#这是二级标题"><span class="nav-number">2.1.</span> <span class="nav-text">这是二级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#这是三级标题"><span class="nav-number">2.1.1.</span> <span class="nav-text">这是三级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#这是四级标题"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">这是四级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#这是五级标题"><span class="nav-number">2.1.1.1.1.</span> <span class="nav-text">这是五级标题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#这是六级标题"><span class="nav-number">2.1.1.1.1.1.</span> <span class="nav-text">这是六级标题</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二级标题，-后有个空格的"><span class="nav-number">2.2.</span> <span class="nav-text">二级标题， ##后有个空格的</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#段落"><span class="nav-number">3.</span> <span class="nav-text">段落</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字体"><span class="nav-number">4.</span> <span class="nav-text">字体</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">5.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分割线"><span class="nav-number">6.</span> <span class="nav-text">分割线</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用图片"><span class="nav-number">7.</span> <span class="nav-text">引用图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#超链接"><span class="nav-number">8.</span> <span class="nav-text">超链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列表"><span class="nav-number">9.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#无序列表"><span class="nav-number">9.1.</span> <span class="nav-text">无序列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序列表"><span class="nav-number">9.2.</span> <span class="nav-text">有序列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌套"><span class="nav-number">9.3.</span> <span class="nav-text">嵌套</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#表格"><span class="nav-number">10.</span> <span class="nav-text">表格</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">11.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单行代码"><span class="nav-number">11.1.</span> <span class="nav-text">单行代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码块"><span class="nav-number">11.2.</span> <span class="nav-text">代码块</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存的分配和管理"><span class="nav-number">1.</span> <span class="nav-text">内存的分配和管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-malloc底层实现原"><span class="nav-number">2.</span> <span class="nav-text">linux-malloc底层实现原</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kmalloc-Vmalloc"><span class="nav-number">3.</span> <span class="nav-text">Kmalloc Vmalloc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#strcpy和memcpy"><span class="nav-number">4.</span> <span class="nav-text">strcpy和memcpy</span></a></li></ol></div>
             
 
           </div>
@@ -726,7 +695,7 @@
 			<h3 class="widget-title">Tag Cloud</h3>
 			<div id="myCanvasContainer" class="widget tagcloud">
 				<canvas width="250" height="250" id="resCanvas" style="width:100%">
-					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Hello-World/" rel="tag">Hello World</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/hexo%E5%AD%A6%E4%B9%A0/" rel="tag">hexo学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li></ul>
+					<ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/C-C-%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">C/C++👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E5%BA%94%E7%94%A8%E5%B1%82%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux应用层👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/Linux%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">Linux驱动👷‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%F0%9F%9A%B4%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">使用工具🚴‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%F0%9F%A4%A6%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">函数底层实现🤦‍♂️</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%8D%8F%E8%AE%AE%E4%B8%8E%E4%B8%80%E4%BA%9B%E7%A1%AC%E4%BB%B6%E7%9F%A5%E8%AF%86%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/" rel="tag">协议与一些硬件知识👩🏼‍🤝‍🧑🏻</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag">嵌入式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/xzxaaa/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FLinux%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/" rel="tag">操作系统Linux👷‍♂️</a><span class="tag-list-count">1</span></li></ul>
 				</canvas>
 			</div>
 		</div>
