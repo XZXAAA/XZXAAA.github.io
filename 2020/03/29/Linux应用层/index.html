@@ -113,7 +113,7 @@
 <meta property="og:description" content="进程与线程Linux下进程通信的方法12341️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  3️⃣ 信号(signal)  5️⃣ 套接字(Socket) (不同主机之间的进程通讯)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
 <meta property="article:published_time" content="2020-03-29T14:31:00.000Z">
-<meta property="article:modified_time" content="2020-03-29T14:13:33.065Z">
+<meta property="article:modified_time" content="2020-03-30T12:09:30.656Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux应用层👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T22:13:33+08:00">
-                2020-03-29
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-30T20:09:30+08:00">
+                2020-03-30
               </time>
             
           </span>
@@ -444,7 +444,7 @@
 <h2 id="Linux系统中的线程间同步方式"><a href="#Linux系统中的线程间同步方式" class="headerlink" title="Linux系统中的线程间同步方式"></a>Linux系统中的线程间同步方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1️⃣锁机制：包括互斥锁、条件变量、读写锁和自旋锁。</span><br><span class="line"></span><br><span class="line">2️⃣信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</span><br><span class="line"></span><br><span class="line">3️⃣信号机制(Signal)：类似进程间的信号处理</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠  </p>
+<h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠，而且也没有原子操作</p>
 <ul>
 <li>等待条件代码     </li>
 </ul>
@@ -471,7 +471,7 @@
 <li>子进程的未决告警被清除✨     </li>
 </ul>
 <h2 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h2><ul>
-<li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣    数据段3️⃣    打开文件和信号  </p>
+<li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣    数据段3️⃣    打开文件和信号 4️⃣堆 </p>
 </li>
 <li><p>线程和信号出来函数方面 ，每个线程有自己的信号掩码<br>Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号 </p>
 </li>
@@ -497,8 +497,9 @@
 在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</code></pre>
 <h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">参考链接🚎</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名✨</p>
 <ul>
-<li>动态库 ：gcc -shared -o libMyTest.so *.o  .so 为共享库</li>
-<li>静态库：ar rcs libMyTest.a *.o   .a是静态库  </li>
+<li>动态库 ：gcc -shared -o libMyTest.so *.o  </li>
+<li>静态库：ar rcs libMyTest.a *.o </li>
+<li>.a是静态库 ， .so 为共享库</li>
 </ul>
 <h1 id="网络方面"><a href="#网络方面" class="headerlink" title="网络方面"></a>网络方面</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a>  </p>
 <ul>

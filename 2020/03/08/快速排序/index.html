@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="快速排序 参考资料B站资料—&gt;链接    主要思路：">
 <meta property="article:published_time" content="2020-03-08T08:24:00.000Z">
-<meta property="article:modified_time" content="2020-03-29T15:19:43.437Z">
+<meta property="article:modified_time" content="2020-03-30T16:51:23.465Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 
@@ -352,8 +352,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T23:19:43+08:00">
-                2020-03-29
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-31T00:51:23+08:00">
+                2020-03-31
               </time>
             
           </span>
@@ -458,7 +458,7 @@
        循环结束后 一定是start==end
        这个时候数组是{3，2，1，5，6，4} start==end =2
 
-       再把arr[0]和arr[2]比较  如果arr[0]小就不用交换位置，反之交换
+       再把arr[0]和arr[2]比较  如果arr[0]小就不用交换位置❗（错误，需要往前以位再交换arr[0]和arr[1]），反之直接交换
        这个时候start =2 就是第2步要的index
        交换后就是数组{1,2,3,5,6,4}，同时也得到index3.
        可以这么想，3此时的位置就是排序最后的位置  </code></pre><ol start="3">
