@@ -113,7 +113,7 @@
 <meta property="og:description" content="驱动分配 芯片厂家编写  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备，如RTC SPI_I2C适配器的驱动。 LCD屏幕驱动">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/CMSIS.png">
 <meta property="article:published_time" content="2020-03-29T13:51:00.000Z">
-<meta property="article:modified_time" content="2020-03-29T14:00:53.186Z">
+<meta property="article:modified_time" content="2020-04-01T04:44:34.698Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux驱动👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -355,8 +355,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T22:00:53+08:00">
-                2020-03-29
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-01T12:44:34+08:00">
+                2020-04-01
               </time>
             
           </span>
@@ -443,6 +443,11 @@
 <li><p>_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备  </p>
 </li>
 </ul>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interrupt-parent &#x3D; &lt;&amp;gpio1&gt;;</span><br><span class="line">interrupts &#x3D; &lt;5 IRQ_TYPE_EDGE_RISING&gt;;  &#x2F;&#x2F;&#x2F;设备树</span><br><span class="line">1️⃣它表示要使用gpio1里的第5号中断，hwirq就是5。</span><br><span class="line">2️⃣但是我们在驱动中会使用request_irq(irq, handler)这样的函数来注册中断，irq是什么？它是软件中断号，它应该从“gpio1的第5号中断”转换得来。</span><br><span class="line">3️⃣谁把hwirq转换为irq？由gpio1的相关数据结构，就是gpio1对应的irq_domain结构体。  </span><br><span class="line">irq_desc</span><br><span class="line">&#123;	irq_data</span><br><span class="line">    &#123; unsigned int		irq;</span><br><span class="line">	unsigned long		hwirq;</span><br><span class="line">    struct irq_chip		*chip;</span><br><span class="line">	struct irq_domain	*domain;</span><br><span class="line">    &#125;</span><br><span class="line">    irq_flow_handler_t	handle_irq;</span><br><span class="line">    struct irqaction	*action;(多个GPIO多一个中断入口，通过这个串起来)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 <h1 id="模块化-标准接口耦合"><a href="#模块化-标准接口耦合" class="headerlink" title="模块化+标准接口耦合"></a>模块化+标准接口耦合</h1><ul>
 <li>ARM CMSIS<br>ARM 与芯片厂商建立<br><img src="/xzxaaa/images/CMSIS.png" alt="upload successful"></li>
 </ul>
@@ -669,7 +674,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动分配"><span class="nav-number">1.</span> <span class="nav-text">驱动分配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块化-标准接口耦合"><span class="nav-number">2.</span> <span class="nav-text">模块化+标准接口耦合</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动分配"><span class="nav-number">1.</span> <span class="nav-text">驱动分配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">2.</span> <span class="nav-text">中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关结构体"><span class="nav-number">2.1.</span> <span class="nav-text">相关结构体</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块化-标准接口耦合"><span class="nav-number">3.</span> <span class="nav-text">模块化+标准接口耦合</span></a></li></ol></div>
             
 
           </div>
