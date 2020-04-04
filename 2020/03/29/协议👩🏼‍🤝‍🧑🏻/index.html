@@ -105,12 +105,12 @@
 
 
 
-<meta name="description" content="IIC 8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读 IIC 速度能到达400K  SPI:50M   IC为什么用开漏输出和上拉电阻    1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.    模">
+<meta name="description" content="IIC 8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读 IIC 速度能到达400K  SPI:50M   IC为什么用开漏输出和上拉电阻    1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="协议与一些硬件知识👩🏼‍🤝‍🧑🏻">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/%E5%8D%8F%E8%AE%AE%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="IIC 8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读 IIC 速度能到达400K  SPI:50M   IC为什么用开漏输出和上拉电阻    1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.    模">
+<meta property="og:description" content="IIC 8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读 IIC 速度能到达400K  SPI:50M   IC为什么用开漏输出和上拉电阻    1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/uart.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/i2c.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/SPI.png">
@@ -120,7 +120,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/mem.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bus.png">
 <meta property="article:published_time" content="2020-03-29T13:40:00.000Z">
-<meta property="article:modified_time" content="2020-03-31T12:54:48.134Z">
+<meta property="article:modified_time" content="2020-04-02T14:28:04.743Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="协议与一些硬件知识👩🏼‍🤝‍🧑🏻">
 <meta name="twitter:card" content="summary">
@@ -362,8 +362,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-31T20:54:48+08:00">
-                2020-03-31
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-02T22:28:04+08:00">
+                2020-04-02
               </time>
             
           </span>
@@ -447,14 +447,14 @@
 <li>IIC 速度能到达400K  SPI:50M  </li>
 <li>IC为什么用开漏输出和上拉电阻  </li>
 </ul>
-<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
+<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
 <ul>
 <li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)<a id="more"></a>
 
 </li>
 </ul>
 <h2 id="I2C总线仲裁"><a href="#I2C总线仲裁" class="headerlink" title="I2C总线仲裁"></a>I2C总线仲裁</h2><ul>
-<li>假设主控器1要发送的数据DATA1为“101 ……”；主控器2要发送的数据DATA2为“1001 ……”<br>当主控器1发送第3位数据“1”时（主控器2发送“0” ），由于“线与”的结果SDA上的电平为“0”，这样当主控器1检测自己的输出电平时，就会测到一个与自身不相符的“0”电平。这时主控器1只好放弃对总线的控制权。<br>1️⃣ 对于整个仲裁过程主控器1和主控器2都不会丢失数据；<br>2️⃣ 各个主控器没有对总线实施控制的优先级别，他们遵循“低电平优先✨”的原则，即谁先发送低电平谁就会掌握对总线的控制权。</li>
+<li>假设主控器1要发送的数据DATA1为“101 ……”；主控器2要发送的数据DATA2为“1001 ……”<br>当主控器1发送第3位数据“1”时（主控器2发送“0” ），由于“线与”的结果SDA上的电平为“0”，这样当主控器1检测自己的输出电平时，就会测到一个与自身不相符的“0”电平。这时主控器1只好放弃对总线的控制权。<br>1️⃣ 对于整个仲裁过程主控器1和主控器2都不会丢失数据；<br>2️⃣ 各个主控器没有对总线实施控制的优先级别，他们遵循“低电平优先✨”的原则，即谁先发送低电平谁就会掌握对总线的控制权。<br>3️⃣体现为线与操作，因为是开漏的原因。</li>
 </ul>
 <h1 id="协议时序"><a href="#协议时序" class="headerlink" title="协议时序"></a>协议时序</h1><p><img src="/xzxaaa/images/uart.png" alt="upload successful"></p>
 <p><img src="/xzxaaa/images/i2c.png" alt="upload successful"></p>
