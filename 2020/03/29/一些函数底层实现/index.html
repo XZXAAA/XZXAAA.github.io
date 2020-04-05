@@ -112,7 +112,7 @@
 <meta property="og:site_name" content="辛同学的博客">
 <meta property="og:description" content="内存的分配和管理12345malloc、calloc、realloc、allocamalloc：申请指定字节数的内存。申请到的内存中的初始值不确定。calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。">
 <meta property="article:published_time" content="2020-03-29T13:08:00.000Z">
-<meta property="article:modified_time" content="2020-03-29T15:15:36.366Z">
+<meta property="article:modified_time" content="2020-04-05T11:06:15.753Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="函数底层实现🤦‍♂️">
 <meta name="twitter:card" content="summary">
@@ -353,8 +353,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-03-29T23:15:36+08:00">
-                2020-03-29
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-05T19:06:15+08:00">
+                2020-04-05
               </time>
             
           </span>
@@ -444,7 +444,14 @@
 <ul>
 <li>进程会管理一个break指针，指针指向堆尾  </li>
 <li>每次申请的时候先在堆尾创建一个结构体，描述申请的内存(大小，可用等)</li>
-<li>去可用的内存空闲链表中寻找满足大小的内存，并映射到break(此时break已经移动一个结构体的距离)并返回映射的首地址</li>
+<li>去可用的内存空闲链表中寻找满足大小的内存，并映射到break(此时break已经移动一个结构体的距离)并返回映射的首地址  </li>
+<li>free产生的错误<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">malloc(p);</span><br><span class="line">free(p);  &#x2F;&#x2F;P&#x3D;NULL;</span><br><span class="line">free(p);	&#x2F;&#x2F;第二次释放的时候，找不到指针，到这里会报错</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
 </ul>
 <h1 id="Kmalloc-Vmalloc"><a href="#Kmalloc-Vmalloc" class="headerlink" title="Kmalloc Vmalloc"></a>Kmalloc Vmalloc</h1><p><a href="https://www.jianshu.com/p/9780673ee4c2" target="_blank" rel="noopener">简书连接🚎</a><br><a href="https://zhidao.baidu.com/question/1541354265673904547.html" target="_blank" rel="noopener">百度知道🚎</a></p>
 <ul>

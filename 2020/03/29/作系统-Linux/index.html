@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/image1.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-29T14:22:00.000Z">
-<meta property="article:modified_time" content="2020-04-03T16:45:18.494Z">
+<meta property="article:modified_time" content="2020-04-05T12:58:19.244Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="操作系统Linux👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -357,8 +357,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-04T00:45:18+08:00">
-                2020-04-04
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-05T20:58:19+08:00">
+                2020-04-05
               </time>
             
           </span>
@@ -474,19 +474,19 @@
 <p><img src="/xzxaaa/images/image1.png" alt="upload successful"></p>
 <h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
 <ul>
-<li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，内核态的陷入属于软件中断(SWI)</p>
+<li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，API调用进入内核态的陷入属于软件中断(SWI)</p>
 </li>
 <li><p>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中（面试+1✨） </p>
 </li>
-<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ执行的时候很快,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
+<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
 </li>
-<li><p>中断中不能进行系统调用，系统调用是通过中断进行的(对应linux不支持嵌套中断，而且内核态无法调用API)   </p>
+<li><p>中断中不能进行系统调用，系统调用是给用户态的代码的，而且内核态无调用API函数  </p>
 </li>
 <li><p>在进入IRQ的时候硬件会帮我们禁止IRQ中断，所以不支持嵌套，如果必要的话要自己打开中断。</p>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">总结分为7点：  </span><br><span class="line">1️⃣. Linux对中断的扩展：硬件中断，软件中断  </span><br><span class="line">2️⃣. 中断处理原则1：不能嵌套  </span><br><span class="line">3️⃣. 中断处理原则2：越快越好  </span><br><span class="line">4️⃣. 要处理的事情实在太多：拆分为：上半部，下半部  </span><br><span class="line">5️⃣. 下半部的事情耗时不是太长：tasklet  </span><br><span class="line">6️⃣. 下半部要做的事情太多并且很复杂：工作队列  </span><br><span class="line">7️⃣. 新技术：threaded irq  </span><br><span class="line">tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</span><br></pre></td></tr></table></figure>
-<h2 id="中断编程注意"><a href="#中断编程注意" class="headerlink" title="中断编程注意"></a>中断编程注意</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1️⃣睡眠或者放弃CPU。</span><br><span class="line">      这样做的后果是灾难性的，因为内核在进入中断之前会关闭进程调度，一旦睡眠或者放弃CPU，这时内核无法调度别的进程来执行，系统就会死掉</span><br><span class="line">2️⃣尝试获得信号量</span><br><span class="line">      如果获得不到信号量，代码就会睡眠，会产生和上面相同的情况</span><br><span class="line">3️⃣执行耗时的任务</span><br><span class="line">      中断处理应该尽可能快，因为内核要响应大量服务和请求，中断上下文占用CPU时间太长会严重影响系统功能。</span><br><span class="line">4️⃣访问用户空间的虚拟地址</span><br><span class="line">      因为中断上下文是和特定进程无关的，它是内核代表硬件运行在内核空间，所以在终端上下文无法访问用户空间的虚拟地址。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">总结分为7点：  </span><br><span class="line">1️⃣. Linux对中断的扩展：硬件中断，软中断，软中断的实现是靠守护进程，软中断执行过程中不允许睡眠和进程切换;</span><br><span class="line">2️⃣. 中断处理原则1：不能嵌套  </span><br><span class="line">3️⃣. 中断处理原则2：越快越好  </span><br><span class="line">4️⃣. 要处理的事情实在太多：拆分为：上半部，下半部  </span><br><span class="line">5️⃣. 下半部的事情耗时不是太长：tasklet  </span><br><span class="line">6️⃣. 下半部要做的事情太多并且很复杂：工作队列  </span><br><span class="line">7️⃣. 新技术：threaded irq  </span><br><span class="line">tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</span><br></pre></td></tr></table></figure>
+<h2 id="中断编程注意"><a href="#中断编程注意" class="headerlink" title="中断编程注意"></a>中断编程注意</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1️⃣睡眠或者放弃CPU。</span><br><span class="line">      这样做的后果是灾难性的，因为内核在进入中断之前会关闭进程调度✨，一旦睡眠或者放弃CPU，这时内核无法调度别的进程来执行，系统就会死掉</span><br><span class="line">2️⃣尝试获得信号量</span><br><span class="line">      如果获得不到信号量，代码就会睡眠，会产生和上面相同的情况</span><br><span class="line">3️⃣执行耗时的任务</span><br><span class="line">      中断处理应该尽可能快，因为内核要响应大量服务和请求，中断上下文占用CPU时间太长会严重影响系统功能。</span><br><span class="line">4️⃣访问用户空间的虚拟地址</span><br><span class="line">      因为中断上下文是和特定进程无关的，它是内核代表硬件运行在内核空间，所以在终端上下文无法访问用户空间的虚拟地址。</span><br></pre></td></tr></table></figure>
 <h2 id="Linux之时钟中断"><a href="#Linux之时钟中断" class="headerlink" title="Linux之时钟中断"></a>Linux之时钟中断</h2><p><a href="https://blog.csdn.net/farmwang/article/details/70173139" target="_blank" rel="noopener">连接🚎</a>  </p>
 <ul>
 <li>在Linux的0号中断是一个定时器中断。在固定的时间间隔都发生一次中断，也是说每秒发生该中断的频率都是固定的。该频率是常量HZ，该值一般是在100 ~ 1000之间。该中断的作用是为了定时更新系统日期和时间，使系统时间不断地得到跳转。另外该中断的中断处理函数除了更新系统时间外，还需要更新本地CPU统计数。指的是调用scheduler_tick递减进程的时间片，若进程的时间片递减到0，进程则被调度出去而放弃CPU使用权。</li>
@@ -521,6 +521,8 @@
 </li>
 <li><p>可重入函数是单线程上的概念✨  </p>
 </li>
+<li><p>信号处理函数中不能通过自旋锁来处理，也不可以用互斥量(可能会发生连续使用2次互斥量获锁而死锁，这个跟下面的printf差不多)</p>
+</li>
 <li><p>若一个函数是可重入的，则该函数应当满足下述条件：  </p>
 </li>
 </ul>
@@ -533,9 +535,40 @@
 </li>
 <li><p>从根本上讲，这就是为什么任何带有锁的功能都不能重入的原因。</p>
 </li>
-<li><p>我的理解：printf是线程安全的，printf异步不安全（信号中断不可调用），可能死锁。✨</p>
+<li><p>我的理解：printf是线程安全的，printf异步不安全（信号中断不可调用），可能死锁。✨  </p>
 </li>
 </ul>
+<h2 id="总结下各种情况的互斥锁-信号量-和自旋锁的使用"><a href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用" class="headerlink" title="总结下各种情况的互斥锁(信号量)和自旋锁的使用"></a>总结下各种情况的互斥锁(信号量)和自旋锁的使用</h2><ul>
+<li><p>自旋锁获取锁后会关闭本地抢占 ,关闭中断✨  </p>
+</li>
+<li><p>异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">锁类型</th>
+<th align="center">内核代码</th>
+<th align="center">中断</th>
+<th align="center">用户代码</th>
+<th align="center">用户异步处理代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">自旋锁</td>
+<td align="center">可以</td>
+<td align="center">可以(内核代码在获取时候会关闭中断，在单核操作系统中断中一定会获锁成功)</td>
+<td align="center">可以</td>
+<td align="center">不可以(会出现连续2次获锁情况导致死锁，中断可以是因为内核代码会关闭中断）</td>
+</tr>
+<tr>
+<td align="left">互斥量(信号量)</td>
+<td align="center">可以</td>
+<td align="center">不可以(可能会引起休眠)</td>
+<td align="center">可以</td>
+<td align="center">不可以(会出现连续2次获锁情况导致死锁,导致死锁)</td>
+</tr>
+</tbody></table>
 <h1 id="VFS-虚拟文件系统"><a href="#VFS-虚拟文件系统" class="headerlink" title="VFS(虚拟文件系统)"></a>VFS(虚拟文件系统)</h1><p><a href="https://www.jianshu.com/p/3af93fe0855c" target="_blank" rel="noopener">初识VFS🚎</a><br><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">虚拟文件系统VFS—-超级块、inode、dentry、file🚎</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">补充参考2🚎</a></p>
 <ul>
 <li><p>VFS是一个抽象层，其向上提供了统一的文件访问接口，而向下则兼容了各种不同的文件系统。  </p>
@@ -544,7 +577,11 @@
 </li>
 <li><p>在挂载的时候就会将indoe中的address_space、inode_operations和file_operations函数指针初始化为Ext4文件系统的函数 ✨</p>
 </li>
-<li><p>通过目录项(dentry),把整个的文件结构串起来，dentry有个成员是indoe✨</p>
+<li><p>通过目录项(dentry),把整个的文件结构串起来，dentry有个成员是indoe✨    </p>
+</li>
+<li><p>struct files_struct 是PCB块的一个成员，记录了fd的最大值,里面有struct file **成员</p>
+</li>
+<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来</p>
 </li>
 </ul>
 <h2 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h2><ul>
@@ -557,15 +594,36 @@
 <ul>
 <li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
 </li>
-<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。</p>
+<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
+</li>
+<li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制</p>
 </li>
 </ul>
+<h2 id="MMU作用"><a href="#MMU作用" class="headerlink" title="MMU作用"></a>MMU作用</h2><p>1️⃣完成虚拟空间到物理空间的映射;把虚拟地址空间分成一个个固定大小的块, 把物理内存的地址空间也分成同样大小的页;页的大小分为粗粒度和细粒度两种;<br>2️⃣存储器访问权限控制<br>3️⃣设置虚拟存储空间的缓冲特性;</p>
 <h2 id="为什么要有虚拟地址？"><a href="#为什么要有虚拟地址？" class="headerlink" title="为什么要有虚拟地址？"></a>为什么要有虚拟地址？</h2><p> 程序每次load的时候不用指定运行地址</p>
 <ul>
 <li>windows上的虚拟内存在linux叫交换空间 </li>
 <li>虚拟内存中，允许将一个作业分多次调入内存。  </li>
 </ul>
-<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。过这种方式来检测任务栈是否溢出了。</p>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。过这种方式来检测任务栈是否溢出了。    </p>
+<h2 id="DMA和一致性缓存"><a href="#DMA和一致性缓存" class="headerlink" title="DMA和一致性缓存"></a>DMA和一致性缓存</h2><p> <a href="https://blog.csdn.net/jasonchen_gbd/article/details/79462064" target="_blank" rel="noopener">为什么会有缓存不一致🚎</a>  </p>
+<ul>
+<li>缓存不一致性出现的原因？<br>1️⃣DMA直接与主存的数据交互，导致CPU中的cache内容与主存内容不一致；<br>2️⃣多组缓存中，直写和回写造成的不一致(多核) </li>
+</ul>
+<ul>
+<li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射</li>
+</ul>
+<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><p> <a href>连接🚎</a></p>
+<ul>
+<li>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入</li>
+<li>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </li>
+<li>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过链表，将同种类型的数据串联起来  </li>
+</ul>
+<h1 id="一些常见术语"><a href="#一些常见术语" class="headerlink" title="一些常见术语"></a>一些常见术语</h1><ul>
+<li>进程上下文 ，用户空间的代码将通过“系统调用（操作系统提供给用户空间的接口函数）进入内核空间</li>
+<li>中断上下文，当由硬件通过触发信号，导致内核调用中断处理程序，进入内核空间  </li>
+<li>Linux 中断分层，上半部和下半部</li>
+</ul>
 
       
     </div>
@@ -789,7 +847,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">2.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">2.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.3.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Linux中，进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">2.3.1.</span> <span class="nav-text">在Linux中，进程调度策略共定义了3类5种（表现方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关API"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">相关API</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">3.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">4.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">4.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">5.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">5.1.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">6.1.</span> <span class="nav-text">RTOS栈空间</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">2.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">2.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.3.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Linux中，进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">2.3.1.</span> <span class="nav-text">在Linux中，进程调度策略共定义了3类5种（表现方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关API"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">相关API</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">3.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用"><span class="nav-number">3.2.</span> <span class="nav-text">总结下各种情况的互斥锁(信号量)和自旋锁的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">4.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">4.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">5.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MMU作用"><span class="nav-number">5.1.</span> <span class="nav-text">MMU作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">5.2.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">6.1.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DMA和一致性缓存"><span class="nav-number">6.2.</span> <span class="nav-text">DMA和一致性缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核中常见的数据结构"><span class="nav-number">7.</span> <span class="nav-text">Linux内核中常见的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常见术语"><span class="nav-number">8.</span> <span class="nav-text">一些常见术语</span></a></li></ol></div>
             
 
           </div>
