@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Linux应用层👷‍♂️</title>
+    <url>/xzxaaa/2020/03/29/Linux%E5%BA%94%E7%94%A8%E5%B1%82/</url>
+    <content><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+<h3 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h3><ul>
+<li>有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是1-n。  </li>
+</ul>
+<hr>
+<h2 id="Linux系统中的线程间同步方式"><a href="#Linux系统中的线程间同步方式" class="headerlink" title="Linux系统中的线程间同步方式"></a>Linux系统中的线程间同步方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣锁机制：包括互斥锁、条件变量、读写锁和自旋锁。</span><br><span class="line"></span><br><span class="line">2️⃣信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</span><br><span class="line"></span><br><span class="line">3️⃣信号机制(Signal)：类似进程间的信号处理</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>提问：互斥锁与信号量的区别？<br>答：互斥锁用于线程的互斥，信号量用于线程的同步。这是互斥锁和信号量的根本区别，也就是互斥和同步之间的区别。同时互斥锁的作用域仅仅在于线程，信号量可以作用于线程和进程。 </li>
+</ul>
+<h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠，而且也没有原子操作</p>
+<ul>
+<li>等待条件代码     </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);    </span><br><span class="line">while (条件为假）     </span><br><span class="line">	     pthread_cond_wait(cond, mutex);    </span><br><span class="line">修改条件       </span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>给条件发送信号代码   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pthread_mutex_lock(&amp;mutex);  </span><br><span class="line">设置条件为真  </span><br><span class="line">pthread_cond_signal(cond);  </span><br><span class="line">pthread_mutex_unlock(&amp;mutex);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Linux-内核的同步方式"><a href="#Linux-内核的同步方式" class="headerlink" title="Linux 内核的同步方式"></a>Linux 内核的同步方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">原子操作,信号量（semaphore）</span><br><span class="line">读写信号量（rw_semaphore）</span><br><span class="line">自旋锁（spinlock）  中断中同步的方式✨</span><br><span class="line">大内核锁（BKL，Big Kernel Lock）</span><br><span class="line">读写锁（rwlock）</span><br><span class="line">大读者锁（brlock-Big Reader Lock）</span><br><span class="line">读-拷贝修改(RCU，Read-Copy Update)</span><br><span class="line">顺序锁（seqlock）</span><br></pre></td></tr></table></figure>
+
+<h2 id="死锁条件和预防"><a href="#死锁条件和预防" class="headerlink" title="死锁条件和预防"></a>死锁条件和预防</h2><p><a href="https://blog.csdn.net/guaiguaihenguai/article/details/80303835" target="_blank" rel="noopener">参考文章🚎</a></p>
+<h3 id="死锁原因"><a href="#死锁原因" class="headerlink" title="死锁原因"></a>死锁原因</h3><p>1️⃣系统资源不足<br>2️⃣资源分配不当<br>3️⃣进程运行推进顺序不合适  </p>
+<h3 id="四个条件"><a href="#四个条件" class="headerlink" title="四个条件"></a>四个条件</h3><p>1️⃣互斥  2️⃣占有且等待 3️⃣不可抢占 4️⃣循环等待<br>四个必要条件同时存在,可能会发生死锁;发生死锁了,四个必要条件必然满足;</p>
+<h3 id="预防"><a href="#预防" class="headerlink" title="预防"></a>预防</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">🤷‍♂️</span><br><span class="line">打破互斥条件：改造独占性资源为虚拟资源，大部分资源已无法改造。  </span><br><span class="line">打破不可抢占条件：当一进程占有一独占性资源后又申请一独占性资源而无法满足，则退出原占有的资源。 </span><br><span class="line">打破占有且申请条件：采用资源预先分配策略，即进程运行前申请全部资源，满足则运行，不然就等待，这样就不会占有且申请。  </span><br><span class="line">打破循环等待条件：实现资源有序分配策略，对所有设备实现分类编号，所有进程只能采用按序号递增的形式申请资源。  </span><br><span class="line">有序资源分配法  </span><br><span class="line">银行家算法</span><br></pre></td></tr></table></figure>
+<h3 id="用了锁怎么保证中途退出的释放"><a href="#用了锁怎么保证中途退出的释放" class="headerlink" title="用了锁怎么保证中途退出的释放"></a>用了锁怎么保证中途退出的释放</h3><p><a href="https://www.cnblogs.com/guxuanqing/p/8385077.html" target="_blank" rel="noopener">参考链接🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">终止处理程序</span><br><span class="line">void pthread_cleanup_push(void (*routine) (void  *),  void *arg)</span><br><span class="line">void pthread_cleanup_pop(int execute)</span><br><span class="line">pthread_cleanup_push()&#x2F;pthread_cleanup_pop()采用先入后出的栈结构管理，void routine(void *arg)函数在调用pthread_cleanup_push()时压入清理函数栈，多次对pthread_cleanup_push()的调用将在清理函数栈中形成一个函数链</span><br><span class="line">	在执行该函数链时按照压栈的相反顺序弹出。execute参数表示执行到pthread_cleanup_pop()时是否在弹出清理函数的同时执行该函数，为0表示不执行，非0为执行；这个参数并不影响❗异常终止时清理函数的执行及当pthread_cleanup_pop()函数的参数为0时，仅仅在线程调用pthread_exit函数或者其它线程对本线程调用 pthread_cancel函数时，才在弹出“清理函数”的同时执行该“清理函数”）。</span><br><span class="line">线程的是int atexit(void (*function)(void));✨</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">如果主线程调用return，表示进程退出 则子线程全部终止，</span><br><span class="line">按照POSIX标准定义，当主线程在子线程终止之前调用pthread_exit()时，子线程是不会退出的。</span><br><span class="line">注意：这里在main函数中调用pthread_exit()只会是主线程退出，而进程并未退出</span><br></pre></td></tr></table></figure>
+
+<h2 id="linux-内存映像分布"><a href="#linux-内存映像分布" class="headerlink" title="linux 内存映像分布"></a>linux 内存映像分布</h2><p><img src="/xzxaaa/images/memfengbu.png" alt="upload successful"></p>
+<h2 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h2><ul>
+<li>父进程设置的锁，子进程不继承✨</li>
+<li>子进程的未决告警被清除✨   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">子进程继承父进程：</span><br><span class="line">○用户号UIDs和用户组号GIDs○环境Environment</span><br><span class="line">○堆栈○共享内存○打开文件的描述符</span><br><span class="line">○执行时关闭（Close-on-exec）标志</span><br><span class="line">○信号（Signal）控制设定</span><br><span class="line">○进程组号○当前工作目录</span><br><span class="line">○根目录○文件方式创建屏蔽字</span><br><span class="line">○资源限制○控制终端 </span><br><span class="line">子进程独有的：</span><br><span class="line">○进程号PID○不同的父进程号</span><br><span class="line">○自己的文件描述符和目录流的拷贝</span><br><span class="line">○子进程不继承父进程的进程正文（text），数据和其他锁定内存（memory locks）</span><br><span class="line">○不继承异步输入和输出</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子进程从父进程继承的主要有：用户号和用户组号；堆栈；共享内存；目录（当前目录、根目录）；打开文件的描述符；但父进程和子进程拥有独立的地址空间和PID参数、不同的父进程号、自己的文件描述符。 </li>
+<li>每个进程在内核中都有一个进程控制块（PCB）来维护进程相关的信息</li>
+</ul>
+<h2 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h2><ul>
+<li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣    数据段3️⃣    打开文件和信号 4️⃣堆 </p>
+</li>
+<li><p>线程和信号出来函数方面 ，每个线程有自己的信号掩码<br>Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号 </p>
+</li>
+<li><p>共享地址空间, 不用切换页表(调度的时候)</p>
+</li>
+<li><p>Linux内核其实不区分进程和线程，内核把执行单元叫做任务(task)</p>
+</li>
+</ul>
+<h2 id="进程和线程优劣"><a href="#进程和线程优劣" class="headerlink" title="进程和线程优劣"></a>进程和线程优劣</h2><p><img src="/xzxaaa/images/U4.png" alt="upload successful">     </p>
+<ul>
+<li>多进程更健壮，一个进程死了不影响其他进程  </li>
+<li>进程性能大于线程，每个进程独立地址空间和资源，而多个线程是一起共享了同个进程里的空间和资源</li>
+</ul>
+<h2 id="进程和线程的选择"><a href="#进程和线程的选择" class="headerlink" title="进程和线程的选择"></a>进程和线程的选择</h2><p><img src="/xzxaaa/images/choice.png" alt="upload successful">  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣创建和销毁较频繁使用线程，因为创建进程花销大嘛。</span><br><span class="line">2️⃣需要大量数据传送使用线程，因为多线程切换速度快，不需要跨越进程边界。</span><br><span class="line">3️⃣并行操作使用线程。线程是为了实现并行操作的一个手段，也就是刚才说的需要多个并行操作“合作完成大事”，当然是使用线程啦。</span><br><span class="line">4️⃣最后可以总结为：安全稳定选进程；快速频繁选线程；</span><br></pre></td></tr></table></figure>
+
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
+<li>一个进程可以创建多少线程，和什么有关<br>答：一个进程创建线程的个数由虚拟内存和分配给线程的调用栈大小决定。</li>
+</ul>
+<h1 id="目录-amp-amp-命令"><a href="#目录-amp-amp-命令" class="headerlink" title="目录&amp;&amp;命令"></a>目录&amp;&amp;命令</h1><h2 id="七种文件类型"><a href="#七种文件类型" class="headerlink" title="七种文件类型"></a>七种文件类型</h2><p>1️⃣ 普通文件类型 （-）2️⃣目录文件 （d）3️⃣块设备（b）<br>4️⃣字符设备（c）5️⃣套接字文件 （s）6️⃣ 管道文件 （p）<br>7️⃣符号链接（l）  </p>
+<h2 id="关键目录"><a href="#关键目录" class="headerlink" title="关键目录"></a>关键目录</h2><p>1️⃣ /bin 系统的必备执行工具 所有的客户都可以使用<br>2️⃣ /sbin 系统管理工具  要有管理员权限才能执行<br>3️⃣ /usr/bin 应用软件的必备工具<br>4️⃣ /usr/sbin 网络管理工具</p>
+<h2 id="内核打印的信息"><a href="#内核打印的信息" class="headerlink" title="内核打印的信息"></a>内核打印的信息</h2><ul>
+<li>#dmesg命令 </li>
+<li>消息记录到文件(有时是/var/log/dmesg或/var/log/kernel)中</li>
+<li>/var 目录，此目录存放一些可以改变的数据  </li>
+</ul>
+<h2 id="Linux-模块加载相关命令"><a href="#Linux-模块加载相关命令" class="headerlink" title="Linux 模块加载相关命令"></a>Linux 模块加载相关命令</h2><p>加载：insmod chrdevbase.ko或modprobe chrdevbase.ko<br>卸载： rmmod chrdevbase.ko<br>mknod /dev/globalmem  c 230 0     //创建设备节点;  主设备号 和次设备号;</p>
+<h2 id="export和source区别"><a href="#export和source区别" class="headerlink" title="export和source区别"></a>export和source区别</h2><p><a href="https://zhuanlan.zhihu.com/p/80881864" target="_blank" rel="noopener">连接🚎</a>  </p>
+<ul>
+<li>source把脚本中的变量传递给父shell</li>
+</ul>
+<h2 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h2><ul>
+<li>/opt目录：这是给主机额外安装软件所摆放的目录    </li>
+<li>/tmp:暂时放置档案的地方; FHS甚至建议在开机时，应该要将/tmp下的资料都删除</li>
+<li>top 查看系统性能</li>
+<li>free查看内存使用情况  </li>
+<li>查indoe命令 stat   </li>
+<li>/etc/network/interfaces  配置网卡信息  </li>
+<li>ulimit -a指令 ，查看一些限制大小的信息</li>
+<li>cat /proc/version 查看内核版本 </li>
+<li>ps -T  显示进程的SPID，SPID一一system process id,，表示 操作系统进程ID </li>
+<li>example: ps -eo pid,user,args –sort user✨    -o表示要显示的内容，有什么内容可以在#man ps 最下面查看  </li>
+<li>#arch命令查看操作系统是几位的  </li>
+<li>查看CPU是否64位的方法：如果/proc/cpuinfo内的flags字段中含有”lm”就是64位</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">	proc文件系统常常被放置于Linux系统的&#x2F;proc目录下，常常用于查看有关硬件、进程的状态。 proc是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，储存系统运行信息文件。</span><br><span class="line">	系统启动后以&#x2F;sys目录作为 sysfs 文件系统的挂载点 ,sysfs 是一个类似于 proc 的殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</span><br><span class="line">* linux下的cmdline是uboot的bootargs参数传过去的</span><br></pre></td></tr></table></figure>
+
+<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   </span><br><span class="line">由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。 </span><br><span class="line">  在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</span><br></pre></td></tr></table></figure>
+
+<h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">参考链接🚎</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名✨</p>
+<ul>
+<li>动态库 ：gcc -shared -o libMyTest.so *.o  </li>
+<li>静态库：ar rcs libMyTest.a *.o </li>
+<li>.a是静态库 ， .so 为共享库</li>
+</ul>
+<h1 id="网络方面"><a href="#网络方面" class="headerlink" title="网络方面"></a>网络方面</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a><br><a href="https://blog.csdn.net/vjhghjghj/article/details/100985674#epoll_ctl()" target="_blank" rel="noopener">参考</a></p>
+<ul>
+<li><p>就绪列表的数据结构<br>就绪列表引用着就绪的 socket，所以它应能够快速的插入数据。<br>程序可能随时调用 epoll_ctl 添加监视 socket，也可能随时删除。当删除时，若该 socket 已经存放在就绪列表中，它也应该被移除。所以就绪列表应是一种能够快速插入和删除的数据结构。<br>双向链表就是这样一种数据结构，epoll 使用双向链表来实现就绪队列。✨</p>
+</li>
+<li><p>索引结构<br>既然 epoll 将“维护监视队列”和“进程阻塞”分离，也意味着需要有个数据结构来保存监视的 socket，至少要方便地添加和移除，还要便于搜索，以避免重复添加。<br>红黑树是一种自平衡二叉查找树，搜索、插入和删除时间复杂度都是O(log(N))，效率较好，epoll 使用了红黑树作为索引结构。✨  </p>
+</li>
+</ul>
+<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.iteye.com/blog/uule-2429131" target="_blank" rel="noopener">可靠如何保证🚎</a>  </p>
+<ul>
+<li>TCP头的窗口是在向对方声明自己的接受窗口大小，拥塞窗口是指发送窗口，为了避免超时重传，拥塞窗口的控制很重要，也比较复杂。 总而言之就是发送窗口要发送数据，其大小根据1️⃣接收窗口和2️⃣网络共同影响，为了避免超时重传，需要合理设置。  关键字:慢启动阈值 ，拥塞控制算法  </li>
+</ul>
+<h1 id="杂项-1"><a href="#杂项-1" class="headerlink" title="杂项"></a>杂项</h1><h2 id="换行符："><a href="#换行符：" class="headerlink" title="换行符："></a>换行符：</h2><ul>
+<li>windows中的换行符是\r\n，</li>
+<li>linux/unix下的换行符是\n。<h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2></li>
+<li>一个session只能有一个终端  </li>
+<li>会话期：是一个或者多个进程组的集合，通常一个会话期开始与用户登录，终止于用户退出。在此期间，该用户运行的所有进程都属于这个会话期。  </li>
+<li>创建新会话的进程不能是进程组组长  </li>
+<li>守护进程不受终端控制   </li>
+</ul>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><a href="https://blog.csdn.net/li528405176/article/details/82810342" target="_blank" rel="noopener">参考🚎</a>  </p>
+<pre><code class="text">SSH本身提供两种级别的验证方法：
+
+第一种级别（基于口令的安全验证）：只要你知道自己帐号和口令，就可以登录到远程主机。所有传输的数据都会被加密，但是不能保证你正在连接的服务器就是你想连接的服务器。可能会有别的服务器在冒充真正的服务器，也就是受到“中间人攻击”这种方式的攻击。
+
+第二种级别（基于密钥的安全验证）：你必须为自己创建一对密钥，并把公钥放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，请求用你的密钥进行安全验证。服务器收到请求之后，先在该服务器上你的主目录下寻找你的公钥，然后把它和你发送过来的公钥进行比较。如果两个密钥一致，服务器就用公钥加密“质询”(challenge)并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的私钥在本地解密再把它发送给服务器完成登录。与第一种级别相比，第二种级别不仅加密所有传输的数据，也不需要在网络上传送口令，因此安全性更高，可以有效防止中间人攻击。  </code></pre>
+<h2 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h2><p><a href="https://blog.csdn.net/iter_zc/article/details/39291647" target="_blank" rel="noopener">参考🚎</a><br><a href="https://www.cnblogs.com/fatmanhappycode/p/12399074.html" target="_blank" rel="noopener">参考2🚎</a>  </p>
+<ul>
+<li><p>阻塞 / 非阻塞描述的是函数，指访问某个函数时是否会阻塞线程(block，线程进入阻塞状态)。 </p>
+</li>
+<li><p>同步 / 异步描述的是执行IO操作的主体是谁，同步是由用户进程自己去执行最终的IO操作。异步是用户进程自己不关系实际IO操作的过程，只需要由内核在IO完成后通知它既可，由内核进程来执行最终的IO操作。（用户需要注册回调函数到内核）</p>
+</li>
+</ul>
+<h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p><a href="https://www.jianshu.com/p/275602182f39" target="_blank" rel="noopener">参考🚎</a>  </p>
+<ul>
+<li>mmap 优化 将内核的file文件缓冲区映射到用户空间 ——少去了内核拷贝到用户空间的过程 </li>
+<li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中</li>
+</ul>
+]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>Linux应用层👷‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>操作系统(Linux)👷‍♂️</title>
+    <url>/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/</url>
+    <content><![CDATA[<h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
+<li><p>Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。</p>
+</li>
+<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨  </p>
+</li>
+<li><p>内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段</p>
+</li>
+<li><p>当前进程运行的代码若属于内核代码段，则称当前进程处于内核态，若属于用户代码段，则称当前进程处于用户态。用户代码段和内核代码段的代码分别运行在用户栈上和内核栈上。  </p>
+</li>
+<li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
+<a id="more"></a></li>
+<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序,有点向内核注册回调函数类似    </p>
+</li>
+<li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
+</li>
+<li><p>驱动编写无法调用API，API是给应用层的。驱动属于内核空间  </p>
+</li>
+</ul>
+<h2 id="Linux下如何从用户态切换到内核态？"><a href="#Linux下如何从用户态切换到内核态？" class="headerlink" title="Linux下如何从用户态切换到内核态？"></a>Linux下如何从用户态切换到内核态？</h2><p> <a href="https://blog.csdn.net/shanghx_123/article/details/83151064" target="_blank" rel="noopener">详细切换过程🚎</a>      </p>
+<ul>
+<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。  </p>
+</li>
+<li><p>陷入内核后调用system_call()  </p>
+</li>
+<li><p>Linux为每个系统调用都进行了编号 （0—NR_syscall），同时在内核中保存了一张系统调用表 ，该表中保存了系统调用编号和其对应的服务例程</p>
+</li>
+<li><p>系统调入通过系统门陷入内核前，需要把系统调用号一并传入内核。<br>在x86上，这个传递动作是通过在执行int0x80前把调用号装入eax寄存器实现的。这样系统调用处理程序一旦运行，就可以从eax中得到数据，然后再去系统调用表中寻找相应服务例程了(API)</p>
+</li>
+<li><p>软中断会进入SVC模式，所以linux系统调用后再ARM工作在SVC模式✨  </p>
+</li>
+<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈和用户栈 ✨   </p>
+</li>
+</ul>
+<p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">   </p>
+<p><img src="/xzxaaa/images/image1.png" alt="upload successful"></p>
+<h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
+<ul>
+<li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，API调用进入内核态的陷入属于软件中断(SWI)</p>
+</li>
+<li><p>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中（面试+1✨） </p>
+</li>
+<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
+</li>
+<li><p>中断中不能进行系统调用，系统调用是给用户态的代码的，而且内核态无调用API函数  </p>
+</li>
+<li><p>在进入IRQ的时候硬件会帮我们禁止IRQ中断，所以不支持嵌套，如果必要的话要自己打开中断。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">总结分为7点：  </span><br><span class="line">1️⃣. Linux对中断的扩展：硬件中断，软中断，软中断的实现是靠守护进程，软中断执行过程中不允许睡眠和进程切换;</span><br><span class="line">2️⃣. 中断处理原则1：不能嵌套  </span><br><span class="line">3️⃣. 中断处理原则2：越快越好  </span><br><span class="line">4️⃣. 要处理的事情实在太多：拆分为：上半部，下半部  </span><br><span class="line">5️⃣. 下半部的事情耗时不是太长：tasklet  </span><br><span class="line">6️⃣. 下半部要做的事情太多并且很复杂：工作队列  </span><br><span class="line">7️⃣. 新技术：threaded irq  </span><br><span class="line">tasklet 因为有一个计数值：多个中断的下半部是汇聚在一起执行的。它不是硬件那边的软中断，是系统模拟</span><br></pre></td></tr></table></figure>
+<h2 id="中断编程注意"><a href="#中断编程注意" class="headerlink" title="中断编程注意"></a>中断编程注意</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣睡眠或者放弃CPU。</span><br><span class="line">      这样做的后果是灾难性的，因为内核在进入中断之前会关闭进程调度✨，一旦睡眠或者放弃CPU，这时内核无法调度别的进程来执行，系统就会死掉</span><br><span class="line">2️⃣尝试获得信号量</span><br><span class="line">      如果获得不到信号量，代码就会睡眠，会产生和上面相同的情况</span><br><span class="line">3️⃣执行耗时的任务</span><br><span class="line">      中断处理应该尽可能快，因为内核要响应大量服务和请求，中断上下文占用CPU时间太长会严重影响系统功能。</span><br><span class="line">4️⃣访问用户空间的虚拟地址</span><br><span class="line">      因为中断上下文是和特定进程无关的，它是内核代表硬件运行在内核空间，所以在终端上下文无法访问用户空间的虚拟地址。</span><br></pre></td></tr></table></figure>
+<h2 id="Linux之时钟中断"><a href="#Linux之时钟中断" class="headerlink" title="Linux之时钟中断"></a>Linux之时钟中断</h2><p><a href="https://blog.csdn.net/farmwang/article/details/70173139" target="_blank" rel="noopener">连接🚎</a>  </p>
+<ul>
+<li>在Linux的0号中断是一个定时器中断。在固定的时间间隔都发生一次中断，也是说每秒发生该中断的频率都是固定的。该频率是常量HZ，该值一般是在100 ~ 1000之间。该中断的作用是为了定时更新系统日期和时间，使系统时间不断地得到跳转。另外该中断的中断处理函数除了更新系统时间外，还需要更新本地CPU统计数。指的是调用scheduler_tick递减进程的时间片，若进程的时间片递减到0，进程则被调度出去而放弃CPU使用权。</li>
+</ul>
+<h1 id="Linux进程调度"><a href="#Linux进程调度" class="headerlink" title="Linux进程调度"></a>Linux进程调度</h1><h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
+<ul>
+<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。</li>
+</ul>
+<h2 id="进程分类"><a href="#进程分类" class="headerlink" title="进程分类"></a>进程分类</h2><ul>
+<li><p>Linux系统中，为了高效地调度进程，将进程分为两类：🟥实时进程和🟩普通进程(又称非实时进程或一般进程) 实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行</p>
+</li>
+<li><p>对于普通进程🔊调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的（统称为普通进程）？程度如何？最后决定给它的优先级做一定的调整。</p>
+</li>
+<li><p>对于实时进程🔊高优先级抢占低优先级。对于优先级相同的，有两种策略：1️⃣时间片轮转和2️⃣先进先出，在时间片轮转策略中。每个可执行实时进程轮流执行一个时间片，而先进先出策略每个进程按各自在运行队列中的顺序执行且顺序不能变化。  </p>
+</li>
+</ul>
+<h2 id="进程调度策略共定义了3类5种（表现方式）"><a href="#进程调度策略共定义了3类5种（表现方式）" class="headerlink" title="进程调度策略共定义了3类5种（表现方式）"></a>进程调度策略共定义了3类5种（表现方式）</h2><p><a href="https://blog.csdn.net/gatieme/article/details/51699889" target="_blank" rel="noopener">linux调度详细内容🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#define SCHED_OTHER 0 &#x2F;&#x2F;交互式进程，主要处理I&#x2F;O任务，例如鼠标键盘操作</span><br><span class="line">#define SCHED_FIFO 1  &#x2F;&#x2F;主要处理对实时性要求很高的的任务，例如程序语言的编译程序, 数据库搜索引擎</span><br><span class="line">#define SCHED_RR 2  	以及科学计算实时进程(2个) RR是轮转，FIFO是先进先出</span><br><span class="line">#define SCHED_BATCH 3 &#x2F;&#x2F;批处理进程，主要处理优先级不高的任务，例如文本编辑程序和图形应用批处理程序（2个）</span><br><span class="line">#define SCHED_IDLE 5  &#x2F;&#x2F;</span><br><span class="line">0 3 5是普通进程算1类，分时调度     1 2是实时进程算2类，实时调度策略，先到先服务，实时调度策略，时间片轮转  </span><br><span class="line"></span><br><span class="line">SCHED_DEADLINE 新支持的实时进程调度策略，针对突发型计算</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>进程创建时，默认是SCHED_OTHER，SCHED_OTHER表示普通进程，也按照分时调度策略处理。</p>
+</li>
+<li><p>Linux系统中的每个进程用task_struct结构来描述，进程调度的依据是task—struct结构中的policy、priority、counter和rt_priority，<br>PCB中设置Policy数据项，其值用于反映针对不同类型的进程而采用的调度策略。1️⃣SCHED—RR和2️⃣SCHED—FIFO用于实时进程。分别表示轮转调度策略和先进先出调度策略,还有3️⃣SCHED—OTHER  </p>
+</li>
+<li><p>这三类调度策略均基于优先级，PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数。进程启动后该值随时钟周期递减。 </p>
+</li>
+<li><p>当相同优先级的FIFO和RR进程执行时，RR相对吃亏，因为FIFO一旦抢占会执行到主动放弃。  </p>
+</li>
+<li><p>CPU根据算法进行进程调度。有的进程因此而需要等待，而不能及时得到资源，这就叫饥饿。进程得到资源时，再完成已经不再具有意义，这就叫做饿死。 </p>
+</li>
+</ul>
+<h2 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h2><ul>
+<li><p>一个调度器类可以用一种或者多种调度策略调度某一类进程, 也可以用于特殊情况或者调度特殊功能的进程.  </p>
+</li>
+<li><p>每个调度器对应一种或多种调度算法  </p>
+</li>
+</ul>
+<h2 id="调度实体"><a href="#调度实体" class="headerlink" title="调度实体"></a>调度实体</h2><ul>
+<li>一个调度对象，可以为一个进程，也可以为一个进程组.</li>
+<li>三个调度实体，sched_dl_entity，sched_rt_entity，CFS调度实体。每个调度实体对应一种调度器</li>
+</ul>
+<h2 id="linux调度器的演变"><a href="#linux调度器的演变" class="headerlink" title="linux调度器的演变"></a>linux调度器的演变</h2><ul>
+<li>一开始的调度器是复杂度为O(n)的始调度算法  </li>
+<li>从linux2.5开始引入赫赫有名的O(1)调度器  </li>
+<li>在O(1)调度器风光了没几天就又被另一个更优秀的调度器取代了，它就是CFS调度器Completely Fair Scheduler. 这个也是在2.6内核中引入的，具体为2.6.23，即从此版本开始</li>
+</ul>
+<h2 id="进程调度一般的算法"><a href="#进程调度一般的算法" class="headerlink" title="进程调度一般的算法"></a>进程调度一般的算法</h2><p>1️⃣先来先服务(FCFS) 2️⃣短进程优先(SPF)<br>3️⃣轮转法调度  4️⃣优先级调度<br>5️⃣多级反馈队列</p>
+<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><p><a href="https://blog.csdn.net/u012459903/article/details/81110583" target="_blank" rel="noopener">详细参考🚎</a></p>
+<ul>
+<li>Linux中优先级级别只有0-139这140个级别，这是固定的，数字越小优先级别越高，进程调度规则设定系统调用：sched_setscheduler (<strong>pid_t __pid, int __policy,</strong>const struct sched_param *__param)<br>这个pid在应用层对应的应该是spid</li>
+<li>执行程序的时候需要加sudo权限</li>
+<li>getpid()只能获取到主线程的pid，同时也是内核中主线程spid。子线程的spid不中知怎么获取，不过测试了很多次都是主线程的spid+n ，经测试可以通过线程中spid+n来设置线程的调度策略 </li>
+<li>子线程创建的时候 调度策略默认跟主线程一样，测试过了</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">例：创建优先级为10的线程   </span><br><span class="line">pthread_attr_t   attr;  </span><br><span class="line">struct   sched_param   param;  </span><br><span class="line">pthread_attr_init(&amp;attr);  </span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr, SCHED_RR);  </span><br><span class="line">param.sched_priority   &#x3D;   10;  </span><br><span class="line">pthread_attr_setschedparam(&amp;attr,  &amp;param);  </span><br><span class="line">pthread_create(xxx , &amp;attr, xxx,xxx);  </span><br><span class="line">例：设置最高优先级</span><br><span class="line">pthread_attr_t attr;</span><br><span class="line">struct sched_param  param;</span><br><span class="line">pthread_t  thread &#x3D; pthread_self();&#x2F;&#x2F;当前程序线程号</span><br><span class="line">int rs &#x3D; pthread_attr_init( &amp;attr );</span><br><span class="line">                   assert( rs &#x3D;&#x3D; 0 );</span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr,SCHED_FIFO);&#x2F;&#x2F;设置线程调度策略</span><br><span class="line">param.sched_priority   &#x3D;  sched_get_priority_max(SCHED_FIFO); &#x2F;&#x2F;优先级设定</span><br><span class="line">rs &#x3D; pthread_attr_setschedparam( &amp;attr,  &amp;param );&#x2F;&#x2F;设置和获取schedparam属性pthread_attr_destroy(&amp;attr);</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">什么是可重入函数?🚎</a> </p>
+<ul>
+<li><p>可重入强调对单个线程执行时，重新进入同一个子程序，仍然是安全的。 </p>
+</li>
+<li><p>可重入函数是单线程上的概念✨  </p>
+</li>
+<li><p>信号处理函数中不能通过自旋锁来处理，也不可以用互斥量(可能会发生连续使用2次互斥量获锁而死锁，这个跟下面的printf差不多)</p>
+</li>
+<li><p>若一个函数是可重入的，则该函数应当满足下述条件：  </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣不能含有静态（全局）非常量数据。  2️⃣不能返回静态（全局）非常量数据的地址。  </span><br><span class="line">3️⃣只能处理由调用者提供的数据。 	 4️⃣不能依赖于单实例模式资源的锁。  </span><br><span class="line">5️⃣调用的函数也必需是可重入的。  </span><br><span class="line">✨上述条件就是要求可重入函数使用的所有变量都保存在调用栈的当前函数帧（frame）上。因此，同一执行线程重入执行该函数时 加载了新的函数帧，与前一次执行该函数时使用的函数帧不冲突、不互相覆盖，从而保证了可重入执行安全。  </span><br><span class="line"></span><br><span class="line">多“用户&#x2F;对象&#x2F;进程优先级”以及多进程，一般会使得对可重入代码的控制变得复杂。同时，IO代码通常不是可重入的，因为他们依赖于像磁盘这样共享的、单独的资源(类似编程中的静态Static、全域Global资源)😮不是单线程的概念么？</span><br></pre></td></tr></table></figure>
+<h2 id="printf-是不可重入函数？"><a href="#printf-是不可重入函数？" class="headerlink" title="printf 是不可重入函数？"></a>printf 是不可重入函数？</h2><p><a href="https://www.codenong.com/3941271/" target="_blank" rel="noopener">详细讨论🚎</a></p>
+<ul>
+<li><p>理解🔊 1️⃣线程安全的 2️⃣异步信号安全 3️⃣可重入</p>
+</li>
+<li><p>printf和malloc都不可能被单个线程递归调用，因为它们是叶函数(它们既不调用自身也不调用任何可能进行递归调用的用户控制代码)。自2001年以来(通过使用锁)，它们针对多线程重入调用一直是线程安全的（通过全局（内核）锁实现互斥访问）</p>
+</li>
+<li><p>从根本上讲，这就是为什么任何带有锁的功能都不能重入的原因。</p>
+</li>
+<li><p>我的理解：printf是线程安全的，printf异步不安全（信号中断不可调用），可能死锁。✨  </p>
+</li>
+</ul>
+<h2 id="总结下各种情况的互斥锁-信号量-和自旋锁的使用"><a href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用" class="headerlink" title="总结下各种情况的互斥锁(信号量)和自旋锁的使用"></a>总结下各种情况的互斥锁(信号量)和自旋锁的使用</h2><ul>
+<li><p>自旋锁获取锁后会关闭本地抢占 ,关闭中断✨  </p>
+</li>
+<li><p>异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">锁类型</th>
+<th align="center">内核代码</th>
+<th align="center">中断</th>
+<th align="center">用户代码</th>
+<th align="center">用户异步处理代码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">自旋锁</td>
+<td align="center">可以</td>
+<td align="center">可以(内核代码在获取时候会关闭中断，在单核操作系统中断中一定会获锁成功)</td>
+<td align="center">可以</td>
+<td align="center">不可以(会出现连续2次获锁情况导致死锁，中断可以是因为内核代码会关闭中断）</td>
+</tr>
+<tr>
+<td align="left">互斥量(信号量)</td>
+<td align="center">可以</td>
+<td align="center">不可以(可能会引起休眠)</td>
+<td align="center">可以</td>
+<td align="center">不可以(会出现连续2次获锁情况导致死锁,导致死锁)</td>
+</tr>
+</tbody></table>
+<h1 id="VFS-虚拟文件系统"><a href="#VFS-虚拟文件系统" class="headerlink" title="VFS(虚拟文件系统)"></a>VFS(虚拟文件系统)</h1><p><a href="https://www.jianshu.com/p/3af93fe0855c" target="_blank" rel="noopener">初识VFS🚎</a><br><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">虚拟文件系统VFS—-超级块、inode、dentry、file🚎</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">补充参考2🚎</a></p>
+<ul>
+<li><p>VFS是一个抽象层，其向上提供了统一的文件访问接口，而向下则兼容了各种不同的文件系统。  </p>
+</li>
+<li><p>inode是文件的唯一表示，其中除了包含元数据和数据的索引之外，还包含关键操作的函数指针。比如对于文件读写和属性更改等操作接口都存在该结构体中 .如address_space、inode_operations和file_operations，其中每一个结构体中都包含很多函数指针。   </p>
+</li>
+<li><p>在挂载的时候就会将indoe中的address_space、inode_operations和file_operations函数指针初始化为Ext4文件系统的函数 ✨</p>
+</li>
+<li><p>通过目录项(dentry),把整个的文件结构串起来，dentry有个成员是indoe✨    </p>
+</li>
+<li><p>struct files_struct 是PCB块的一个成员，记录了fd的最大值,里面有struct file **成员</p>
+</li>
+<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来</p>
+</li>
+</ul>
+<h2 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h2><ul>
+<li>查看超级块命令 #dumpe2fs  /dev/sd1</li>
+<li>一个超级块对应一个文件系统</li>
+<li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
+<li>Linux虚拟文件系统四大对象：<br>1️⃣超级块(super block)2️⃣索引节点(inode)<br>3️⃣目录项(dentry)4️⃣文件对象(file)<br><img src="/xzxaaa/images/VFS.png" alt="upload successful"></li>
+</ul>
+<h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">MMU是什么？🚎</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考🚎</a><br><a href="https://www.jianshu.com/p/755338d11865" target="_blank" rel="noopener">mmap🚎</a></p>
+<ul>
+<li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
+</li>
+<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
+</li>
+<li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制  </p>
+</li>
+<li><p>虚拟内存系统通过将虚拟内存分割为称作虚拟页(Virtual Page，VP)大小固定的块，一般情况下，每个虚拟页的大小默认是4096字节。同样的，物理内存也被分割为物理页(Physical Page，PP)，也为4096字节。</p>
+</li>
+</ul>
+<h2 id="MMU作用"><a href="#MMU作用" class="headerlink" title="MMU作用"></a>MMU作用</h2><p>1️⃣完成虚拟空间到物理空间的映射;把虚拟地址空间分成一个个固定大小的块, 把物理内存的地址空间也分成同样大小的页;页的大小分为粗粒度和细粒度两种;<br>2️⃣存储器访问权限控制<br>3️⃣设置虚拟存储空间的缓冲特性;</p>
+<h2 id="为什么要有虚拟地址？"><a href="#为什么要有虚拟地址？" class="headerlink" title="为什么要有虚拟地址？"></a>为什么要有虚拟地址？</h2><p> 程序每次load的时候不用指定运行地址</p>
+<ul>
+<li>windows上的虚拟内存在linux叫交换空间 </li>
+<li>虚拟内存中，允许将一个作业分多次调入内存。    </li>
+</ul>
+<h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。过这种方式来检测任务栈是否溢出了。    </p>
+<h2 id="DMA和一致性缓存"><a href="#DMA和一致性缓存" class="headerlink" title="DMA和一致性缓存"></a>DMA和一致性缓存</h2><p> <a href="https://blog.csdn.net/jasonchen_gbd/article/details/79462064" target="_blank" rel="noopener">为什么会有缓存不一致🚎</a>  </p>
+<ul>
+<li>缓存不一致性出现的原因？<br>1️⃣DMA直接与主存的数据交互，导致CPU中的cache内容与主存内容不一致；<br>2️⃣多组缓存中，直写和回写造成的不一致(多核) </li>
+</ul>
+<ul>
+<li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射</li>
+</ul>
+<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><p> <a href>连接🚎</a></p>
+<ul>
+<li>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入</li>
+<li>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </li>
+<li>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过链表，将同种类型的数据串联起来  </li>
+</ul>
+<h1 id="一些常见术语"><a href="#一些常见术语" class="headerlink" title="一些常见术语"></a>一些常见术语</h1><ul>
+<li>进程上下文 ，用户空间的代码将通过“系统调用（操作系统提供给用户空间的接口函数）进入内核空间</li>
+<li>中断上下文，当由硬件通过触发信号，导致内核调用中断处理程序，进入内核空间  </li>
+<li>Linux 中断分层，上半部和下半部 </li>
+<li>POSIX是一个操作系统标准。现在世面上几乎所有操作系统都实现了POSIX标准包括Windows  </li>
+<li>Linux是Unix的开源实现 </li>
+<li>Linux于1991年由芬兰大学生Linus开发出来，是一个类Unix系统，但是其代码不源自任何Unix版本，完全不是Unix的一个分支，而是一个开源版的模仿。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>操作系统Linux👷‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C/C++知识👷‍♂️</title>
+    <url>/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/</url>
+    <content><![CDATA[<h1 id="C-绝佳总结网址🚎"><a href="#C-绝佳总结网址🚎" class="headerlink" title="C++绝佳总结网址🚎"></a><a href="https://interview.huihut.com/#/?id=%E2%9E%95-cc" target="_blank" rel="noopener">C++绝佳总结网址🚎</a></h1><a id="more"></a>  
+
+<h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><ul>
+<li><p>override：  表示要重写该函数，如果父类继承过来的没有能够继承，则编译报错</p>
+</li>
+<li><p>final ： 一个类不想被继承或一个函数不想被重写</p>
+</li>
+<li><p>inline：  实现宏的效果，减少进栈出栈过程，不用宏是因为容易出错</p>
+</li>
+<li><p>static 在嵌入式系统中，要时刻懂得移植的重要性，程序可能是很多程序员共同协作同时完成，在定义变量及函数的过程，可能会重名，这给系统的集成带来麻烦，因此保证不冲突的办法是显示的表示此变量或者函数是本地的，static即可。在Linux的模块编程中，这一条很明显，所有的函数和全局变量都要用static关键字声明，将其作用域限制在本模块内部，与其他模块共享的函数或者变量要EXPORT到内核中。<br>只能再定义中使用，如果在头文件用的话，那是各自的变量而已</p>
+</li>
+<li><p>const 可以是 volatile （如只读的状态寄存器）  </p>
+</li>
+<li><p>位域 <a href="https://www.cnblogs.com/bigrabbit/archive/2012/09/20/2695543.html" target="_blank" rel="noopener">资料🚎</a>  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct bs</span><br><span class="line">&#123;</span><br><span class="line">　　int a:8;😊</span><br><span class="line">　　int b:2;</span><br><span class="line">　　int c:6;</span><br><span class="line">&#125;data;</span><br><span class="line">1️⃣一个位域必须存储在同一个字节中，不能跨两个字节</span><br><span class="line">2️⃣由于位域不允许跨两个字节，因此位域的长度不能大于一个字节的长度。</span><br><span class="line">3️⃣位域可以无位域名，这时它只用来作填充或调整位置。无名的位域是不能使用的</span><br><span class="line">位域在内存中的布局是与机器有关的</span><br><span class="line">位域的类型必须是整型或枚举类型，带符号类型中的位域的行为将因具体实现而定</span><br><span class="line">取地址  </span><br><span class="line">运算符（&amp;）不能作用于位域，任何指针都无法指向类的位域</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>union 联合可以把同一个数据解释成两种不同的东西，而不是把两个不同的数据解释为同一个东西  如socket 时候填的是in_addr传进去的时候是addr  </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">typedef union &#123;  &#x2F;&#x2F;&#x2F;位域  打印的时候可以一个字节一个字节打印</span><br><span class="line">    BYTE n;</span><br><span class="line">    struct &#123;</span><br><span class="line">          BYTE x:2;</span><br><span class="line">          BYTE y:3;</span><br><span class="line">          BYTE z:3;</span><br><span class="line">    &#125;s;</span><br><span class="line">&#125; U;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>volatile应用场景   </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣中断服务程序中修改的供其它程序检测的变量，需要加volatile  </span><br><span class="line">2️⃣多任务环境下各任务间共享的标志，应该加volatile  </span><br><span class="line">3️⃣存储器映射的硬件寄存器通常也要加volatile说明，因为每次对它的读写都可能由不同意义；(指针访问设备地址，输出突然改变)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>new和malloc<br>1️⃣ new是C++关键字，malloc是C库函数<br>2️⃣ new=malloc + 构造函数<br>3️⃣new返回的元素类型是确定的，malloc返回void</p>
+<ul>
+<li>普通引用在声明时必须用其它的变量进行初始化，引用作为函数参数声明时不进行初始化  </li>
+<li></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="STL"><a href="#STL" class="headerlink" title="STL"></a>STL</h1><h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><ul>
+<li><p>deque是一个双向队列，优化了对序列两端元素进行添加和删除操作的基本序列容器（有点vector+list的感觉）  </p>
+</li>
+<li><p>string的size用法不包含’\0’</p>
+</li>
+<li><p>c++11新加入了emplace_back():<br>如果要将一个临时变量push到容器的末尾，push_back()需要先构造临时对象，再将这个对象拷贝到容器的末尾，而emplace_back()则直接在容器的末尾构造对象，这样就省去了拷贝的过程。 有点类似右值引用</p>
+</li>
+<li><p>链表的缺点：<br>不能随机查找，必须从第一个开始遍历，查找效率低</p>
+</li>
+</ul>
+<ul>
+<li><p>双向链表和单向链表:<br>双向链表占用空间大</p>
+</li>
+<li><p>vec.push_back()加入一个对象都要检查容器内部维护的内存是否够用，不够用的话需要重新申请内存，花费大量时间</p>
+</li>
+<li><p>哈希表不适合遍历 </p>
+</li>
+<li><p>forward_list    单向链表  </p>
+</li>
+<li><p>优先队列，又称为优先级队列、堆。优先队列是一种特殊的队列，除了具有队列的先入先出，队列头出，队列尾入的结构特点，优先队列最重要的就是要实现快速得到队列中优先级最高的元素  </p>
+</li>
+<li><p>最大堆和最小堆<a href="https://www.jianshu.com/p/62b651797ad8" target="_blank" rel="noopener">?🚎</a>(STL中的优先队列就是最大堆)  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">它是一颗完全二叉树,它可以是空</span><br><span class="line">树中结点的值总是不大于或者不小于其孩子结点的值</span><br><span class="line">每一个结点的子树也是一个堆</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li>unorder_map中进行hash的对象是键，不是值  </li>
+</ul>
+<p><img src="/xzxaaa/images/unorder.png" alt="upload successful"></p>
+<h3 id="容器的swap"><a href="#容器的swap" class="headerlink" title="容器的swap"></a>容器的swap</h3><ul>
+<li>交换2个容器  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在容器vector中，其内存占用的空间是只增不减的，比如说首先分配了10,000个字节，然后erase掉后面9,999个，则虽然有效元素只有一个，但是内存占用仍为10,000个。所有内存空间在vector析构时回收。</span><br><span class="line">capacity就是显示占用内存的</span><br><span class="line">vector&lt;int&gt;().swap(myvector);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="容器的选择："><a href="#容器的选择：" class="headerlink" title="容器的选择："></a>容器的选择：</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣强调快速随机访问，则vector比list好得多。</span><br><span class="line">2️⃣已知要存储元素的个数。vector好于list。</span><br><span class="line">3️⃣强调增删且不要在两端插入修改元素，则list显然要比vector好。</span><br><span class="line">4️⃣除非我们需要在容器首部插入和删除元素，deque好于vector。  </span><br><span class="line">5️⃣循环链表，循环队列应用场景，缓冲区，因为要利用前面空留的空间   </span><br><span class="line">6️⃣队列应用，就绪列表，广度优先遍历，消息队列  </span><br><span class="line">7️⃣1.数制转换2.括号匹配3.表达式求值</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代器的失效"><a href="#迭代器的失效" class="headerlink" title="迭代器的失效"></a>迭代器的失效</h2><p><img src="/xzxaaa/images/it.png" alt="upload successful">  </p>
+<h2 id="循环队列"><a href="#循环队列" class="headerlink" title="循环队列"></a>循环队列</h2><p><a href="https://blog.csdn.net/u012864854/article/details/81562738" target="_blank" rel="noopener">参考博客🚎</a></p>
+<p>  当队空时：front=rear<br>  当队满时：front=rear 亦成立</p>
+<p> 1️⃣ 增加一个引用计数count；</p>
+<p> 2️⃣少用一个元素空间，约定以“队列头指针front在队尾指针rear的下一个位置上”作为队列“满”状态的标志。即：<br>  队空时： front=rear  ✨<br>  队满时： (rear+1)%maxsize=front✨</p>
+<h2 id="判断链表是否有环"><a href="#判断链表是否有环" class="headerlink" title="判断链表是否有环"></a>判断链表是否有环</h2><p><a href="https://www.jianshu.com/p/83eed68cbb46" target="_blank" rel="noopener">参考🚎</a>  </p>
+<ul>
+<li>定义两个指针，同时从链表的头节点出发，一个指针一次走一步，另一个指针一次走两步。如果走得快的指针追上了走得慢的指针，那么链表就是环形链表；如果走得快的指针走到了链表的末尾（next指向 NULL）都没有追上第一个指针，那么链表就不是环形链表。</li>
+</ul>
+<ul>
+<li><p>可以在快慢指针第一次相遇的地方重置快指针的位置，使快指针回到链表入口✨，慢指针不动。然后，两个指针以相同的速度在运动，再次相遇的地方就是环入口。</p>
+</li>
+<li><p>快两倍的时候是一定可以相遇的，快3.4.5…需要分析具体情况，根据公式s+(k-1)t=nR  </p>
+</li>
+</ul>
+<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p><a href="https://blog.csdn.net/diaodi1938/article/details/101491552" target="_blank" rel="noopener">链接🚎</a></p>
+<ul>
+<li><p>工程中的智能指针是一个类模板<br>  通过构造函数接管申请的内存<br>  通过析构函数确保堆内存被及时释放<br>  通过重载指针运算符* 和 -&gt; 来模拟指针的行为<br>  通过重载比较运算符 == 和 != 来模拟指针的比较</p>
+</li>
+<li><p>智能指针能过管理数组吗?    有些可以有些不行<br>不行是因为STL中智能指针析构用的是delete  在delete数组时候需要 delete[] 所以要管理数组应该要重写析构  </p>
+</li>
+<li><p>那管理string呢？ string 可以   </p>
+</li>
+<li><p>C++ STL 能指针    1️⃣auto_ptr2️⃣ unique_ptr3️⃣shared_ptr4️⃣weak_ptr<br>unique_ptr(可数组)  shared_ptr(不可以数组)<br>多个unique_ptr 对象不可以管理同一个内存<br>shared_ptr 对象可以管理同一个内存  </p>
+</li>
+</ul>
+<h2 id="lower-bound-与-upper-bound-函数"><a href="#lower-bound-与-upper-bound-函数" class="headerlink" title="lower_bound 与 upper_bound 函数"></a>lower_bound 与 upper_bound 函数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lower_bound(起始地址，结束地址，要查找的数值) 返回的是数值 第一个 出现的位置。</span><br><span class="line">upper_bound(起始地址，结束地址，要查找的数值) 返回的是数值 最后一个 出现的位置。</span><br><span class="line">binary_search(起始地址，结束地址，要查找的数值)  返回的是是否存在这么一个数，是一个bool值。</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><ul>
+<li>fstrem =ifstrem+ofstrem  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fstream mylog(&quot;.&#x2F;text.txt&quot;,ios::in);</span><br><span class="line"></span><br><span class="line">char buf[1024]&#x3D;&#123;0&#125;</span><br><span class="line">while (!mylog.eof())  &#x2F;&#x2F;C++读取整个文件</span><br><span class="line">&#123;</span><br><span class="line">		mylog.read(buf, 1024);</span><br><span class="line">		str &#x3D; str + buf;</span><br><span class="line">&#125;</span><br><span class="line"> mylog.write(buf, size);   &#x2F;&#x2F;写</span><br><span class="line"> mylog.read(buf，count)&#x2F;&#x2F;  cout为读多少个字节，遇到\n不会返回</span><br><span class="line">mylog.eof();  &#x2F;&#x2F;判断是否到了文件末尾</span><br><span class="line">seekp：设置输出文件流的文件流指针位置</span><br><span class="line">seekg：设置输入文件流的文件流指针位置</span><br><span class="line">mylog.seekg(0, ios::beg);  &#x2F;&#x2F;回到文件头</span><br><span class="line">seekp( streampos pos );</span><br><span class="line">seekg( streampos pos );</span><br><span class="line">函数原型</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h1><ul>
+<li><p>模板分为类模板与函数模板，特化分为1️⃣全特化与2️⃣偏特化。<br>全特化就是限定死模板实现的具体类型，<br>偏特化就是如果这个模板有多个类型，那么只限定其中的一部分。  </p>
+</li>
+<li><p>而对于函数模板，却只有全特化，不能偏特化<br>没有函数偏特化，仅仅是因为C++标准语言说不行，因为偏特化的功能可以通过函数的重载完成。</p>
+</li>
+</ul>
+<h2 id="宏和模板"><a href="#宏和模板" class="headerlink" title="宏和模板"></a>宏和模板</h2><ul>
+<li>宏：没有类型检查，在有的时候会出现二义  ，当参数为 a++时候</li>
+</ul>
+<hr>
+<h1 id="多态总结"><a href="#多态总结" class="headerlink" title="多态总结"></a>多态总结</h1><p><a href="https://blog.csdn.net/Shuffle_Ts/article/details/98618661" target="_blank" rel="noopener">参考🚎</a>   </p>
+<h2 id="C-虚函数"><a href="#C-虚函数" class="headerlink" title="C++虚函数"></a>C++虚函数</h2><ul>
+<li><p>虚函数，多态，只对指针和引用有效 -&gt;多态的表现方式 </p>
+</li>
+<li><p>虚函数重写，虚表确实一个更换了<br>但是调用虚表就必须用引用或者指针<br>对象是不会用到虚表的<br>会直接用一个在全局空间的函数的地址指针</p>
+</li>
+<li><p>父类转换成子类可以吗？为什么不可以<br>向下类型转换dynamic_cast&lt;&gt;<br>向上类型转换不需特殊操作.  </p>
+</li>
+</ul>
+<h2 id="静态多态-😲"><a href="#静态多态-😲" class="headerlink" title="静态多态 😲"></a>静态多态 😲</h2><ul>
+<li>静态多态包含函数重载和泛型编程 ✨ </li>
+<li>动态多态是由继承机制以及虚函实现的 ✨ </li>
+<li>静态多态在系统编译期间就可以确定程序执行到这里将要执行哪个函数 ,函数重载</li>
+<li>通过函数模板做接口推断出接口类型，从而得到接口应该的具化，再调用对应函数  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; crtp.cpp</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">template &lt;typename Derived&gt;</span><br><span class="line">struct Base&#123;</span><br><span class="line">  void interface()&#123;</span><br><span class="line">    static_cast&lt;Derived*&gt;(this)-&gt;implementation();</span><br><span class="line">  &#125;</span><br><span class="line">  void implementation()&#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;Implementation Base&quot; &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">struct Derived1: Base&lt;Derived1&gt;&#123;</span><br><span class="line">  void implementation()&#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;Implementation Derived1&quot; &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">struct Derived2: Base&lt;Derived2&gt;&#123;</span><br><span class="line">  void implementation()&#123;</span><br><span class="line">    std::cout &lt;&lt; &quot;Implementation Derived2&quot; &lt;&lt; std::endl;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">struct Derived3: Base&lt;Derived3&gt;&#123;&#125;;</span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">void execute(T&amp; base)&#123;</span><br><span class="line">    base.interface();</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;  </span><br><span class="line">  std::cout &lt;&lt; std::endl;  </span><br><span class="line">  Derived1 d1;</span><br><span class="line">  execute(d1);    </span><br><span class="line">  Derived2 d2;</span><br><span class="line">  execute(d2);</span><br><span class="line">  Derived3 d3;</span><br><span class="line">  execute(d3); </span><br><span class="line">  std::cout &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="谈谈C-类型安全"><a href="#谈谈C-类型安全" class="headerlink" title="谈谈C++类型安全"></a>谈谈C++类型安全</h1><p><a href="https://blog.csdn.net/ixsea/article/details/6693178" target="_blank" rel="noopener">参考🚎</a><br><a href="https://www.cnblogs.com/sunbing/p/3899122.html" target="_blank" rel="noopener">虚函数安全参考🚎</a></p>
+<ul>
+<li>类型之间可以进行强制转换，所以类型不安全， C++是类型不安全的  </li>
+<li>父类的虚函数如果是私有的话，子类可以重写,就是父类指针对象在使用的时候会无法访问到子类的虚函数表，就算子类的虚函数表是public的访问😜 </li>
+<li>访问权限的控制是编译器判断的，一旦程序运行起来，没有访问权限  </li>
+</ul>
+<hr>
+<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><h2 id="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><a href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，" class="headerlink" title="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"></a>写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</h2><p>#define OFFSET（type，member） ((size_t)&amp;(((type*)0)-&gt;member))   </p>
+<h2 id="gcc和g-的主要区别"><a href="#gcc和g-的主要区别" class="headerlink" title="gcc和g++的主要区别"></a>gcc和g++的主要区别</h2><p>1️⃣对于 <em>.c和</em>.cpp文件，gcc分别当做c和cpp文件编译（c和cpp的语法强度是不一样的）<br>2️⃣对于 <em>.c和</em>.cpp文件，g++则统一当做cpp文件编译  </p>
+<h2 id="二分和斐波那契查找"><a href="#二分和斐波那契查找" class="headerlink" title="二分和斐波那契查找"></a>二分和斐波那契查找</h2><p>实际数据分布均匀，当然是二分好。如果是指数分布，菲波好。<br><a href="https://www.jianshu.com/p/f2cec99ce87b" target="_blank" rel="noopener">斐波那参考🚎</a>  </p>
+<h2 id="如何定义一个只能在堆上（栈上）生成对象的类？"><a href="#如何定义一个只能在堆上（栈上）生成对象的类？" class="headerlink" title="如何定义一个只能在堆上（栈上）生成对象的类？"></a>如何定义一个只能在堆上（栈上）生成对象的类？</h2><p>如何定义一个只能在堆上（栈上）生成对象的类?</p>
+<p>只能在堆上<br>方法：将析构函数设置为私有</p>
+<p>原因：C++ 是静态绑定语言，编译器管理栈上对象的生命周期，编译器在为类对象分配栈空间时，会先检查类的析构函数的访问性。若析构函数不可访问，则不能在栈上创建对象。</p>
+<p>只能在栈上<br>方法：将 new 和 delete 重载为私有</p>
+<p>原因：在堆上生成对象，使用 new 关键词操作，其过程分为两阶段：第一阶段，使用 new 在堆上寻找可用内存，分配给对象；第二阶段，调用构造函数生成对象。将 new 操作设置为私有，那么第一阶段就无法完成，就不能够在堆上生成对象。</p>
+<ul>
+<li>把new当作是成员的一个静态函数好理解    </li>
+</ul>
+<h2 id="类中static调用成员函数"><a href="#类中static调用成员函数" class="headerlink" title="类中static调用成员函数"></a>类中static调用成员函数</h2><ul>
+<li>正常来说不可以，非要的话参数要加个this指针 </li>
+</ul>
+<h2 id="写时拷贝"><a href="#写时拷贝" class="headerlink" title="写时拷贝"></a>写时拷贝</h2><p><a href="https://blog.csdn.net/zhuoya_/article/details/80636029" target="_blank" rel="noopener">参考🚎</a></p>
+<ul>
+<li>意思就是你读取到这个空间的时候，并不会开辟出一个一模一样的空间出来给你，当你真正需要拷贝的时候，那么他就会开辟出空间给你。也就是拖延版的深拷贝。 </li>
+</ul>
+<h2 id="函数覆盖"><a href="#函数覆盖" class="headerlink" title="函数覆盖"></a>函数覆盖</h2><ul>
+<li>子类覆盖父类函数时候，全部覆盖，无法实现子类和父类的重载  </li>
+<li>覆盖时候 public继承才可以显示调用，test.Base::fun(i)  </li>
+</ul>
+<h2 id="构造函数什么情况下必须在初始化列表中进行初始化"><a href="#构造函数什么情况下必须在初始化列表中进行初始化" class="headerlink" title="构造函数什么情况下必须在初始化列表中进行初始化"></a>构造函数什么情况下必须在初始化列表中进行初始化</h2><ul>
+<li>在父类对象只有有参构造函数的情况下  </li>
+<li>类初始化父类的私有成员，需要在(并且也只能在)参数初始化列表中显示调用父类的构造函数  </li>
+<li>对象引用或者cosnt修饰的数据成员   </li>
+</ul>
+<hr>
+<h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h2><ul>
+<li>高内聚指的是:一个好的内聚模块应当恰好做一件事  </li>
+<li>耦合是软件结构中各模块之间相互连接的一种度量，耦合强弱取决于模块间接口的复杂程度、进入或访问一个模块的点以及通过接口的数据。</li>
+<li>低耦合指的是接口复杂度低    </li>
+</ul>
+<h2 id="顶底const"><a href="#顶底const" class="headerlink" title="顶底const"></a>顶底const</h2><ul>
+<li>顶层 const 表示的是 指针本身是一个常量， 底层 const 表示的是 指针所指的对象是一个常量<br>成员函数后面是const说的是this指针 底层的const   </li>
+</ul>
+<h2 id="C-头文件"><a href="#C-头文件" class="headerlink" title="C++头文件"></a>C++头文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#ifdef __cplusplus </span><br><span class="line">extern &quot;C&quot; &#123; </span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;一段代码  头文件中，声名方式为C语言，这样才能在C库中找到对应的函数</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus </span><br><span class="line">&#125; </span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><ul>
+<li>int printf(const char* format, …);  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdarg.h&gt;  </span><br><span class="line">int VarArgFunc(int dwFixedArg, ...)&#123; &#x2F;&#x2F;以固定参数的地址为起点依次确定各变参的内存起始地址</span><br><span class="line"></span><br><span class="line">    va_list pArgs &#x3D; NULL;  &#x2F;&#x2F;定义va_list类型的指针pArgs，用于存储参数地址</span><br><span class="line"></span><br><span class="line">   1️⃣ va_start(pArgs, dwFixedArg); &#x2F;&#x2F;初始化pArgs指针，使其指向第一个可变参数。该宏第二个参数是变参列表的前一个参数，即最后一个固定参数</span><br><span class="line"></span><br><span class="line">   2️⃣ int dwVarArg &#x3D; va_arg(pArgs, int); &#x2F;&#x2F;该宏返回变参列表中的当前变参值并使pArgs指向列表中的下个变参。该宏第二个参数是要返回的当前变参类型</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;若函数有多个可变参数，则依次调用va_arg宏获取各个变参</span><br><span class="line"></span><br><span class="line">   3️⃣  va_end(pArgs);  &#x2F;&#x2F;将指针pArgs置为无效，结束变参的获取</span><br><span class="line"></span><br><span class="line">    &#x2F;* Code Block using variable arguments *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Empty</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">          Empty();                  &#x2F;&#x2F;   缺省构造函数</span><br><span class="line">          Empty(const   Empty&amp;);    &#x2F;&#x2F;   拷贝构造函数</span><br><span class="line">          ~Empty();                 &#x2F;&#x2F;   析构函数</span><br><span class="line">          Empty&amp; perator&#x3D;(const Empty&amp;); &#x2F;&#x2F;   赋值运算符</span><br><span class="line">           Empty* operator&amp;();              &#x2F;&#x2F;   取值运算符</span><br><span class="line">          const Empty* operator&amp;() const;   &#x2F;&#x2F;   取值运算符</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="C预处理命令"><a href="#C预处理命令" class="headerlink" title="C预处理命令"></a>C预处理命令</h2><p>按照ANSI标准的定义，预处理程序应该处理以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if #ifdef #ifndef #else #elif</span><br><span class="line">#endif</span><br><span class="line">#define</span><br><span class="line">#undef</span><br><span class="line">#line</span><br><span class="line">#error</span><br><span class="line">#pragma  </span><br><span class="line">#include</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串和整型转换"><a href="#字符串和整型转换" class="headerlink" title="字符串和整型转换"></a>字符串和整型转换</h2><ul>
+<li><p>_itoa_s 函数_itoa_s(bumber, buf, 2);  //2 是2进制</p>
+</li>
+<li><p>number=atoi(buf);  //转整型  </p>
+</li>
+</ul>
+<h2 id="结构体初始化"><a href="#结构体初始化" class="headerlink" title="结构体初始化"></a>结构体初始化</h2><ul>
+<li>不能比较两个联合体，也不能比较两个结构,类也不行，因为没有默认的==操作重载</li>
+<li>结构体初始化方式有3种</li>
+</ul>
+<p>结构体定义如下<br> struct obj_type{char a; int b; float c;double d;}</p>
+<p>第1种，位置对应赋值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">位置对应必须按序列出</span><br><span class="line"> struct obj_type obj &#x3D;</span><br><span class="line"> &#123;</span><br><span class="line">     10,</span><br><span class="line">     1000,</span><br><span class="line">     1.1,</span><br><span class="line">     1.1111</span><br><span class="line"> &#125;</span><br><span class="line">按序未列出的即无关参数，但缺省参数必须是排在最后</span><br><span class="line">struct obj_type obj &#x3D;</span><br><span class="line">&#123;</span><br><span class="line">    10,</span><br><span class="line">    1000</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第2种，点号访问赋值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">点号访问可以指哪打哪，对感兴趣的参数赋值，无关参数缺省，并且赋值项清晰明了</span><br><span class="line">1 struct obj_type obj &#x3D;</span><br><span class="line">2 &#123;</span><br><span class="line">3     .a &#x3D;10,</span><br><span class="line">4     .c &#x3D;1.1</span><br><span class="line">5 &#125;</span><br></pre></td></tr></table></figure>
+<p>第3种，冒号指示赋值  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">同点号赋值</span><br><span class="line"> struct obj_type obj &#x3D;</span><br><span class="line"> &#123;</span><br><span class="line">    a: 10,</span><br><span class="line">    c: 1.1</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体对齐"><a href="#结构体对齐" class="headerlink" title="结构体对齐"></a>结构体对齐</h2><p>内存对齐作用：<br>1️⃣平台原因(移植原因)：不是所有的硬件平台都能访问任意地址上的任意数据的；某些硬件平台只能在某些地址处取某些特定类型的数据，否则抛出硬件异常。<br>2️⃣性能原因：数据结构(尤其是栈)应该尽可能地在自然边界上对齐。原因在于，为了访问未对齐的内存，处理器需要作两次内存访问；而对齐的内存访问仅需要一次访问。  </p>
+<h2 id="C-聚合类"><a href="#C-聚合类" class="headerlink" title="C++聚合类"></a>C++聚合类</h2><ul>
+<li>聚合关系和组合 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">聚合关系是面向对象中的对象与对象之间的关系，这种关系就手机和电池的关系一样，一台手机需要一个电池，这样它才能工作。但是假设手机坏了，电池却没有损坏，这时电池就是可用的，它可以放在别的同型号手机上使用。</span><br><span class="line">聚合与组合是有区别的，组合则是整体要是完了，局部也会跟着完蛋。</span><br><span class="line">在C++中聚合和关联实际上是一样的实现，比如</span><br><span class="line">class A</span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;成员</span><br><span class="line">&#125;;</span><br><span class="line">class B</span><br><span class="line">&#123;</span><br><span class="line">A *point; &#x2F;&#x2F;指向A类的指针，如果是组合则是A obj;，即包含A类的一个对象，类B要是被销毁了，那还会有这个obj对象吗？</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>聚合类<br>合类定义：<br>1️⃣所有的成员都是public的。<br>2️⃣没有定义任何构造函数。<br>3️⃣没有类内初始值。<br>5️⃣没有基类，也没有virtual函数。<br>聚合类的初始化：我们可以提供一个花括号括起来的成员函数初始值列表，并用它初始化聚合类的数据成员： 例如：Data   val={0,”Anna”};   </li>
+</ul>
+<h2 id="Linux-gcc支持的语法-attribute-属性设"><a href="#Linux-gcc支持的语法-attribute-属性设" class="headerlink" title="Linux gcc支持的语法 attribute 属性设"></a>Linux gcc支持的语法 attribute 属性设</h2><p> <a href="http://www.bubuko.com/infodetail-1807545.html?__cf_chl_jschl_tk__=ac57d06d45ccb79eea89515784b28eb183d82dfc-1584689502-0-AdC8JOyXSl9idgS1ojv7Ol8LsKJ0PSRg6wjY8fjK4_N2DtnlgkJzODeWN-RI4Opx5WWFcyu-Mz-jee-le7i8HnP4iw9EncJVzBtf0aj3BF47Ci1KelVoEHAfcHVN-arKrtWeF7dcOYeLnyxmu4k4KwyaZkcjJx6a3-plgm3BeVUkOuubowiFaF_54uQyzYzn47Gl9OsjBACAY5zgD85Wqn0VRoZX_YidNmTGr0abESWrbg0m29TsrIYUcoj8mBDdChvGZn-pD9wpMfJG_vHg83nBMgl5v973td7wgWZf9J38XyJGQp5hKBV5zqvwU4Mg2A" target="_blank" rel="noopener">参考🚎</a></p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* weak属性：使得cpu_mmc_init是一个弱标号（我估计是内部链接），而不是一个全局标号 </span><br><span class="line">，另外即使cpu_mmc_init函数没有定义，调用cpu_mmc_init编译器也是不会报错的，不过 </span><br><span class="line">没有意义，所以一般会和alias属性连用。</span><br><span class="line"></span><br><span class="line">* alias属性：指定cpu_mmc_init是后面 &quot;__def_mmc_init&quot; 函数的一个别名，所以 </span><br><span class="line">cpu_mmc_init函数如果没有定义，那么调用cpu_mmc_init其实就是会调用__def_mmc_init </span><br><span class="line">函数，如果定义就不会调用这个了，注意__def_mmc_init函数是一定要有定义的。</span><br><span class="line"></span><br><span class="line">* unused属性：指定这个变量或者函数如果没有被使用也不要输出警告信息。</span><br><span class="line"></span><br><span class="line">* section属性：指定该函数或者是变量最后链接在我们的指定段中，用法：section </span><br><span class="line">(&quot;.u_boot_cmd&quot;)，注意了，我们链接脚本中使用的段名其实就是一个变量的形式，他是 </span><br><span class="line">不需要定义的，能够直接用，也就是说，我们可以在连接脚本中随意使用一个段名，如果 </span><br><span class="line">我们在我们的C中有该段的内容就会链接到该段中，如果没有就直接跳过。注意在我们的 </span><br><span class="line">内核驱动中一般是用 __section__ 来代替我们的section，具体差别不详。</span><br><span class="line">__attribute__ ((__section__(&quot;.u_kernel_cmd&quot;)))</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">struct fd&#123;  </span><br><span class="line">...  </span><br><span class="line">...  </span><br><span class="line">&#125;__sttribute__ ((align(4))) fd; &#x2F;&#x2F;指定struct fd类的字节对齐方式</span><br></pre></td></tr></table></figure>
+
+<hr>
+]]></content>
+      <tags>
+        <tag>C/C++👷‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 驱动👷‍♂️</title>
+    <url>/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/</url>
+    <content><![CDATA[<h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
+<li>芯片厂家编写<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动  <a id="more"></a>  </li>
+<li>linux内核编写<br>  input 核心层会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦  </li>
+</ul>
+<h2 id="驱动中相关函数"><a href="#驱动中相关函数" class="headerlink" title="驱动中相关函数"></a>驱动中相关函数</h2><ul>
+<li>异步通知的时候 需要实现file_op 中的fasync，在合适的时候通过kill_fasync发送信号，应用层通过fcntl操作来开启异步IO</li>
+<li>非阻塞访问的时候 需要实现poll</li>
+<li>阻塞访问的时候设备有一个共用的等待队列头，队列头里面是队列项(每个访问设备的进程都是一个队列项，当设备不可用的时候就要将这些进程对应的等待队列项添加到等待队列里面),在合适的时候唤醒  </li>
+<li>_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </li>
+<li>驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。  </li>
+<li>1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。<br>2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</li>
+</ul>
+<h2 id="FrameBuffer"><a href="#FrameBuffer" class="headerlink" title="FrameBuffer"></a>FrameBuffer</h2><p>1️⃣Linux抽象出FrameBuffer这个设备来供用户态进程实现直接写屏<br>2️⃣Framebuffer机制模仿显卡的功能，将显卡硬件结构抽象掉，可以通过Framebuffer的读写直接对显存进行操作<br>3️⃣用户可以将Framebuffer看成是显示内存的一个映像，通过mmap将其映射到进程地址空间之后，就可以直接进行读写操作，而写操作可以立即反应在屏幕上</p>
+<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interrupt-parent &#x3D; &lt;&amp;gpio1&gt;;</span><br><span class="line">interrupts &#x3D; &lt;5 IRQ_TYPE_EDGE_RISING&gt;;  &#x2F;&#x2F;&#x2F;设备树</span><br><span class="line">1️⃣它表示要使用gpio1里的第5号中断，hwirq就是5。</span><br><span class="line">2️⃣但是我们在驱动中会使用request_irq(irq, handler)这样的函数来注册中断，irq是什么？它是软件中断号，它应该从“gpio1的第5号中断”转换得来。</span><br><span class="line">3️⃣谁把hwirq转换为irq？由gpio1的相关数据结构，就是gpio1对应的irq_domain结构体。  </span><br><span class="line">irq_desc</span><br><span class="line">&#123;	irq_data</span><br><span class="line">    &#123; unsigned int		irq;</span><br><span class="line">	unsigned long		hwirq;</span><br><span class="line">    struct irq_chip		*chip;</span><br><span class="line">	struct irq_domain	*domain;</span><br><span class="line">    &#125;</span><br><span class="line">    irq_flow_handler_t	handle_irq;</span><br><span class="line">    struct irqaction	*action;(多个GPIO多一个中断入口，通过这个串起来)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>printk函数在中断处理函数中可以使用，但是会占用较多时间，降低效率</li>
+</ul>
+<h1 id="Linux启动init"><a href="#Linux启动init" class="headerlink" title="Linux启动init"></a>Linux启动init</h1><ul>
+<li>linux在进入init时要经过几个步骤，服务器启动时流程，服务器加电自检→加载内核→驱动硬件→启动进程→读取配置<br>firmware→bootloader→kernel→init→/etc/inittab→initdefault→/etc/rc.d/rc.sysinit→/etc/rc.d/rc→/etc/rc.d/rcN.d (N=0-6)→username,password</li>
+<li>/etc/rc.d/init.d 是/etc/init.d的软连接😒我找不到 </li>
+</ul>
+<h1 id="内核中的宏"><a href="#内核中的宏" class="headerlink" title="内核中的宏"></a>内核中的宏</h1><ul>
+<li>offsetof: 用于计算 TYPE 结构体中 MEMBER 成员的偏移位置<br>#define offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;MEMBER)  </li>
+<li>typeof: 用于得到结构体的首地址<br>#define XXX(ptr,type,member)({ const typeof(((type<em>)0)-&gt;member) *__mptr=(ptr);\<br>  (type</em>)((char*)__mptr – offsetof(type,member));})  </li>
+</ul>
+<h1 id="主设备号和次设备号的用途"><a href="#主设备号和次设备号的用途" class="headerlink" title="主设备号和次设备号的用途"></a>主设备号和次设备号的用途</h1><p>1️⃣主设备号<br>主设备号标识设备对应的驱动程序。<br>虽然现代的linux内核允许多个驱动程序共享主设备号，但我们看待的大多数设备仍然按照“一个主设备对应一个驱动程序”的原则组织。  </p>
+<p>2️⃣次设备号<br>次设备号由内核使用，用于正确确定设备文件所指的设备。<br>依赖于驱动程序的编写方式，我们可以通过次设备号获得一个指向内核设备的直接指针，也可将此设备号当作设备本地数组的索引。  </p>
+<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><ul>
+<li>.PHONY表示伪目标。当执行  make 为目标 的时候，会去找为目标对应的依赖和命令。不管当前目录下是否已经存在跟伪目标同名的文件 </li>
+</ul>
+<h1 id="core文件"><a href="#core文件" class="headerlink" title="core文件"></a>core文件</h1><p><a href="https://www.cnblogs.com/beanmoon/archive/2012/10/19/2731481.html" target="_blank" rel="noopener">连接🚎</a></p>
+<ul>
+<li>在一个程序崩溃时，它一般会在指定目录下生成一个core文件。core文件仅仅是一个内存映象(同时加上调试信息)，主要是用来调试的。  </li>
+<li>开启或关闭core文件的生成<br>用以下命令来阻止系统生成core文件:   ulimit -c 0<br>下面的命令可以检查生成core文件的选项是否打开:ulimit -a  </li>
+<li>gdb -c core  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ gdb a.out</span><br><span class="line">...</span><br><span class="line">(gdb) core-file core</span><br><span class="line">...</span><br><span class="line">(gdb) bt </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h1 id="模块化-标准接口耦合"><a href="#模块化-标准接口耦合" class="headerlink" title="模块化+标准接口耦合"></a>模块化+标准接口耦合</h1><ul>
+<li>ARM CMSIS<br>ARM 与芯片厂商建立<br><img src="/xzxaaa/images/CMSIS.png" alt="upload successful">  </li>
+</ul>
+<h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><ul>
+<li><p>在高性能的I/O设计中，有两个比较著名的模式Reactor和Proactor模式<a href="https://segmentfault.com/a/1190000018331509" target="_blank" rel="noopener">参考🚎</a>，其中Reactor模式用于同步I/O，而Proactor运用于异步I/O操作，Linux网络编程 </p>
+</li>
+<li><p>使用 ioremap 函数将寄存器的物<br>理地址映射到虚拟地址以后</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>Linux驱动👷‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>协议与一些硬件知识👩🏼‍🤝‍🧑🏻</title>
+    <url>/xzxaaa/2020/03/29/%E5%8D%8F%E8%AE%AE%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/</url>
+    <content><![CDATA[<h1 id="IIC"><a href="#IIC" class="headerlink" title="IIC"></a>IIC</h1><ul>
+<li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
+<li>IIC 速度能到达400K  SPI:50M  </li>
+<li>IC为什么用开漏输出和上拉电阻  </li>
+</ul>
+<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
+<ul>
+<li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)<a id="more"></a>
+
+</li>
+</ul>
+<h2 id="I2C总线仲裁"><a href="#I2C总线仲裁" class="headerlink" title="I2C总线仲裁"></a>I2C总线仲裁</h2><ul>
+<li>假设主控器1要发送的数据DATA1为“101 ……”；主控器2要发送的数据DATA2为“1001 ……”<br>当主控器1发送第3位数据“1”时（主控器2发送“0” ），由于“线与”的结果SDA上的电平为“0”，这样当主控器1检测自己的输出电平时，就会测到一个与自身不相符的“0”电平。这时主控器1只好放弃对总线的控制权。<br>1️⃣ 对于整个仲裁过程主控器1和主控器2都不会丢失数据；<br>2️⃣ 各个主控器没有对总线实施控制的优先级别，他们遵循“低电平优先✨”的原则，即谁先发送低电平谁就会掌握对总线的控制权。<br>3️⃣体现为线与操作，因为是开漏的原因。</li>
+</ul>
+<h1 id="协议时序"><a href="#协议时序" class="headerlink" title="协议时序"></a>协议时序</h1><p><img src="/xzxaaa/images/uart.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/i2c.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/SPI.png" alt="upload successful"></p>
+<h1 id="协议总结"><a href="#协议总结" class="headerlink" title="协议总结"></a>协议总结</h1><ul>
+<li>UART是地位先发送，I2C和SPI是高位✨<br><img src="/xzxaaa/images/P1.png" alt="upload successful"> </li>
+</ul>
+<h1 id="USB"><a href="#USB" class="headerlink" title="USB"></a>USB</h1><ul>
+<li>USB3.0支持差分全双工, 2.0是半双工   </li>
+</ul>
+<h1 id="UART"><a href="#UART" class="headerlink" title="UART"></a>UART</h1><ul>
+<li>波特率选择，考虑距离，通讯时钟误差</li>
+</ul>
+<h1 id="存储物质"><a href="#存储物质" class="headerlink" title="存储物质"></a>存储物质</h1><p>1️⃣E2PROM 字节位单位，与MCU一般是IIC通讯，容量小，用于保存一些参数，如占空比等等  </p>
+<p>2️⃣Flash ——一种特殊的E2PROM(以块为单位)<a href="https://blog.csdn.net/xjw1874/article/details/81505967?utm_source=copy" target="_blank" rel="noopener">链接🚎</a>  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣ eMMC则在其内部集成了 Flash Controller，包括了协议、擦写均衡、坏块管理、ECC校验、电源管理、时钟管理、数据存取等功能。相比于直接将NAND Flash接入到Host 端，eMMC屏蔽了 NAND Flash 的物理特性，可以减少 Host 端软件的复杂度，让 Host 端专注于上层业务，省去对 NAND Flash </span><br><span class="line"></span><br><span class="line">2️⃣ NOR Flash 的读取和我们常见的 SDRAM 的读取是一样，用户可以直接运行装载在 NOR FLASH 里面的代码，这样可以减少 SRAM 的容量从而节约了成本。 NAND Flash 没有采取内存的随机读取技术，它的读取是以一次读取一块的形式来进行的， 通常是一次读取 512 个字节</span><br><span class="line"></span><br><span class="line">3️⃣NAND器件中的坏块是随机分布的。以前也曾有过消除坏块的努力✨，但发现成品率太低，代价太高，根本不划算</span><br></pre></td></tr></table></figure>
+
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣Nor的成本相对高，容量相对小，比如常见的只有128KB，256KB，1MB，2MB等等，优</span><br><span class="line">点是读写数据时候，不容易出错。所以在应用领域方面，Nor Flash比较适合应用于存储少</span><br><span class="line">量的代码。  </span><br><span class="line">2️⃣Nand flash成本相对低，说白了就是便宜，缺点是使用中数据读写容易出错，所以一般都</span><br><span class="line">需要有对应的软件或者硬件的数据校验算法，统称为ECC。但优点是，相对来说容量比较</span><br><span class="line">大，现在常见的Nand Flash都是1GB，2GB，更大的8GB的都有了，相对来说，价格便宜，</span><br><span class="line">因此适合用来存储大量的数据。其在嵌入式系统中的作用，相当于PC上的硬盘，用于存储</span><br><span class="line">大量数据。  </span><br><span class="line">3️⃣Nor flash，有类似于dram之类的地址总线，因此可以直接和CPU相连，CPU可以直接通过地址总线对nor flash进行访问，而Nand Flash没有这类的总线，只有IO 接口，只能通过IO</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>SD卡有SD通讯模式和SPI </li>
+<li>SD/emmc  的SD模式通常都是一条CLK线+一条CMD线+DATA[0:n]<br><img src="/xzxaaa/images/flash.png" alt="upload successful"></li>
+</ul>
+<p><img src="/xzxaaa/images/emmc.png" alt="upload successful">  </p>
+<h1 id="Cortex-M3"><a href="#Cortex-M3" class="headerlink" title="Cortex-M3"></a>Cortex-M3</h1><p>程序存储器、IO接口和数据存储器都是在32位的4GB线性空间上，下图就是这个线性空间的分配图，<br>可以看出程序存储器和数据存储器处于不同的地址区域，不像8051那样程序存储器和数据存储器分别有两套不同的地址区域。</p>
+<ul>
+<li>统一编址并不代表就是单总线结构 ✨ </li>
+<li>ARM微处理器共有37个32位寄存器，其中31个为通用寄存器，6个为状态寄存器。R0-R7非分组寄存器，R8-R14分组寄存器，R15(PC)。（分组寄存器即不同的模式下使用不同的物理寄存器）</li>
+</ul>
+<p><img src="/xzxaaa/images/mem.png" alt="upload successful"><br><img src="/xzxaaa/images/bus.png" alt="upload successful">  </p>
+<h1 id="开漏和推挽模式的区别"><a href="#开漏和推挽模式的区别" class="headerlink" title="开漏和推挽模式的区别"></a>开漏和推挽模式的区别</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣开漏输出的另一个好处在于可以实现&quot;线与&quot;功能，所谓的&quot;线与&quot;指的是多个信号线直接连接并联在一起，只有当并联的所有信号都为高电平时，并在一起的总线输出端才为高电平；只要有任意一个或者多个信号为低电平，则总线为低电平。而推挽输出就不行，如果高电平和低电平连在一起，会出现电流倒灌，损坏器件这点要注意。</span><br><span class="line"></span><br><span class="line">2️⃣推挽电路是两个参数相同的三极管或MOSFET，以推挽方式存在于电路中负责正负半周的波形放大任务，电路工作时两只对称的功率开关管每次只有一个导通，效率高。输出既可以向负载灌电流，也可以从负载抽取电流。推拉式输出级既提高电路的负载能力，又提高开关速度。</span><br><span class="line"></span><br><span class="line">3️⃣开漏输出提供了灵活的输出电平方式，但是也有其弱点，就是带来了上升沿的延时。由于上升沿是通过外接上拉无源电阻对负载充电，所以当电阻选择小时延时就小，但功耗增大；反之延时大功耗减小。所以如果对延时有要求，最好用用下降沿输出吧。</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>协议与一些硬件知识👩🏼‍🤝‍🧑🏻</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用工具🚴‍♂️</title>
+    <url>/xzxaaa/2020/03/29/%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h1 id="C-内存泄漏检测"><a href="#C-内存泄漏检测" class="headerlink" title="C++内存泄漏检测"></a>C++内存泄漏检测</h1><ul>
+<li>windows下有 微软的Visual Leak Detector 配合VS可视化 ，配置好#include vld.h </li>
+<li>linux下有 valgrind   <a id="more"></a>
+<a href="https://blog.csdn.net/gatieme/article/details/51959654" target="_blank" rel="noopener">使用方法🚎</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">开源的valgrind工具还是相当不错的</span><br><span class="line">Memcheck。这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。这也是本文将重点介绍的部分。</span><br><span class="line">Callgrind。它主要用来检查程序中函数调用过程中出现的问题。</span><br><span class="line">Cachegrind。它主要用来检查程序中缓存使用出现的问题。</span><br><span class="line">Helgrind。它主要用来检查多线程程序中出现的竞争问题。</span><br><span class="line">Massif。它主要用来检查程序中堆栈使用中出现的问题。</span><br><span class="line">Extension。可以利用core提供的功能，自己编写特定的内存调试工具</span><br><span class="line"> &#96;&#96;&#96;  </span><br><span class="line">&#96;&#96;&#96;bash</span><br><span class="line">编译:  gcc  -Wall -g valgrind_demo.c -o valgrind_demo</span><br><span class="line">执行条件 : valgrind --tool&#x3D;memcheck --leak-check&#x3D;full .&#x2F;valgrind_demo</span><br><span class="line">将错误写进日志: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log .&#x2F;valgrind_demo</span><br><span class="line">和gdb一起调试: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log gdb valgrind_demo</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>使用工具🚴‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一些函数底层实现🤦‍♂️</title>
+    <url>/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="内存的分配和管理"><a href="#内存的分配和管理" class="headerlink" title="内存的分配和管理"></a>内存的分配和管理</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">malloc、calloc、realloc、alloca</span><br><span class="line">malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</span><br><span class="line">calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。</span><br><span class="line">realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。</span><br><span class="line">alloca：在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca 不具可移植性, 而且在没有传统堆栈的机器上很难实现。alloca 不宜使用在必须广泛移植的程序中。C99 中支持变长数组 (VLA)，可以用来替代 alloca。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>linux平台下堆的malloc堆申请 更底层用的是brk或者sbrk ，栈是alloca ✨</p>
+<a id="more"></a>
+
+</li>
+</ul>
+<h1 id="linux-malloc底层实现原"><a href="#linux-malloc底层实现原" class="headerlink" title="linux-malloc底层实现原"></a>linux-malloc底层实现原</h1><p><a href="https://blog.csdn.net/mmshixing/article/details/51679571" target="_blank" rel="noopener">详细连接🚎</a></p>
+<ul>
+<li>进程会管理一个break指针，指针指向堆尾  </li>
+<li>每次申请的时候先在堆尾创建一个结构体，描述申请的内存(大小，可用等)</li>
+<li>去可用的内存空闲链表中寻找满足大小的内存，并映射到break(此时break已经移动一个结构体的距离)并返回映射的首地址  </li>
+<li>free产生的错误<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">malloc(p);</span><br><span class="line">free(p);  &#x2F;&#x2F;P&#x3D;NULL;</span><br><span class="line">free(p);	&#x2F;&#x2F;第二次释放的时候，找不到指针，到这里会报错</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+<h1 id="Kmalloc-Vmalloc"><a href="#Kmalloc-Vmalloc" class="headerlink" title="Kmalloc Vmalloc"></a>Kmalloc Vmalloc</h1><p><a href="https://www.jianshu.com/p/9780673ee4c2" target="_blank" rel="noopener">简书连接🚎</a><br><a href="https://zhidao.baidu.com/question/1541354265673904547.html" target="_blank" rel="noopener">百度知道🚎</a></p>
+<ul>
+<li>在设备驱动程序或者内核模块中动态开辟内存，不是用malloc，而是kmalloc ,vmalloc释放内存用的是kfree,vfree  </li>
+<li>kmalloc特殊之处在于它分配的内存是物理上连续的,这对于要进行DMA的设备十分重要. 而用vmalloc分配的内存只是线性地址连续,物理地址不一定连续,不能直接用于DMA</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣ vmalloc分配的一般为高端内存(在3G+内存以上)，只有当内存不够的时候才分配低端内存；kmallco从低端内存分配（在3G+内存）下面。这里说的高低是在虚拟内存那边，物理内存好像也是</span><br><span class="line">2️⃣vmalloc分配的物理地址一般不连续，而kmalloc分配的地址连续，两者分配的虚拟地址都是连续的；</span><br><span class="line">3️⃣vmalloc分配的一般为大块内存，而kmaooc一般分配的为小块内存，（一般不超过128k);</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="strcpy和memcpy"><a href="#strcpy和memcpy" class="headerlink" title="strcpy和memcpy"></a>strcpy和memcpy</h1><p><a href="https://www.jianshu.com/p/9c3784d8d8ad" target="_blank" rel="noopener">简书链接🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">char * __cdecl strcpy(char * dst, const char * src)</span><br><span class="line">&#123;</span><br><span class="line">        char * cp &#x3D; dst;</span><br><span class="line"> </span><br><span class="line">        while( *cp++ &#x3D; *src++ )</span><br><span class="line">                ;               &#x2F;* Copy src over dst *&#x2F;</span><br><span class="line"> </span><br><span class="line">        return( dst );</span><br><span class="line">&#125;</span><br><span class="line">void * __cdecl memcpy (void * dst, const void * src,size_t count)</span><br><span class="line">&#123;</span><br><span class="line">        void * ret &#x3D; dst;&#x2F;&#x2F;可支持链式编程，一个函数完成两个功能。</span><br><span class="line">        while (count--) </span><br><span class="line">        &#123;</span><br><span class="line">                *(char *)dst &#x3D; *(char *)src;</span><br><span class="line">                dst &#x3D; (char *)dst + 1;</span><br><span class="line">                src &#x3D; (char *)src + 1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return(ret);</span><br><span class="line">&#125;</span><br><span class="line">memcpy和memmove区别是memcpy使用的时候必须保证内存不能重叠  </span><br><span class="line">memmove会对拷贝的数据作检查，确保内存没有覆盖，如果发现会覆盖数据，简单的实现是调转开始拷贝的位置，从尾部开始拷贝✨</span><br><span class="line">memmvoe会检测dest与src的位置，如果dest和src指向同样的对象，且src比dest地址小，拷贝的时候就会出错，应该从尾部开始拷贝</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>函数底层实现🤦‍♂️</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux移植</title>
+    <url>/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/</url>
+    <content><![CDATA[<h1 id="参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><a href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌" class="headerlink" title="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌"></a>参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</h1><h1 id="Uboot启动分析"><a href="#Uboot启动分析" class="headerlink" title="Uboot启动分析"></a>Uboot启动分析</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
+<a id="more"></a>
+<ul>
+<li>2个宏<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ENTRY(save_boot_params )展开后</span><br><span class="line">.globl  save_boot_params  </span><br><span class="line">.align  4  </span><br><span class="line">save_boot_params: </span><br><span class="line">ENDPROC(save_boot_params)展开后</span><br><span class="line">.typename save_boot_params STTFUNC;</span><br><span class="line">.size save_boot_params,-save_boot_params</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<p><img src="/xzxaaa/images/reset.png" alt="upload successful"></p>
+<ul>
+<li>设置工作模式，重定位向量表，配置CP15<br>main 函数的运行流程，在_main 函数里面调用了 </li>
+<li>board_init_f、 relocate_code、relocate_vectors 和 board_init_r 这 4 个函数</li>
+<li>board_init_f 初始化一系列外设，比如串口、定时器，或者打印一些消息等。<br>，初始化 gd 的各个成员变量， uboot 会将自己重定位到 DRAM 最后面的地址区域，也就<br>是将自己拷贝到 DRAM 最后面的内存区域中。拷贝的位置都记录在gd中</li>
+<li>relocate_code 拷贝</li>
+<li>重定位向量表 board_init_f 并没有初始化所有的外设，还需要做一些后续工作，这<br>些后续工作就是由函数 board_init_r 来完成的，最后调用run_main_loop进入指令读取死循环</li>
+</ul>
+<h2 id="bootz命令解析"><a href="#bootz命令解析" class="headerlink" title="bootz命令解析"></a>bootz命令解析</h2><p><img src="/xzxaaa/images/bootz.png" alt="upload successful"></p>
+<ul>
+<li>设备树下chosen节点</li>
+</ul>
+<p><img src="/xzxaaa/images/chosen.png" alt="upload successful">  </p>
+<p><img src="/xzxaaa/images/uboot.png" alt="upload successful"></p>
+<h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
+<p><img src="/xzxaaa/images/parse_dtb.png" alt="upload successful"></p>
+<ul>
+<li>执行start_kernel ，通过调用众多的子函数来完成 Linux 启动之前的一些初始化工作</li>
+<li>start_kernel里面有一个rest_init 函数（也是最后一个）创建3个进程<br>init 进程的 PID 为 1 (init 进程一开始是内核进程)<br>PID 为 2的kthreadd进程负责所有内核进程的调度和管理。<br>PID 为0的是idle 进程，因为是内核进程，所以ps看不到<ul>
+<li>init进程 查看uboot传递过来的bootarg参数 ，  </li>
+</ul>
+1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它  </li>
+<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID</li>
+</ul>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
+<li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>
+</li>
+<li><p>指令集架构如：ARMv5、ARMv6、ARMv7-A/R、ARMv8-A<br>ARM内核如：ARM7、ARM9、ARM11（v6)、到cortex-A7、A8、A9、A12、A15（v7-A/R)、到cortex-A53、A57（V8）、A72、A73。缓存(cache)就是在内核中的。这些内核又名公版架构，即ARM推出的通用的架构。</p>
+</li>
+<li><p>其实架构就分“大架”和“小架”，”大架”是指令集，“小架”是对应于”大架”的内核结构</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>网络</title>
+    <url>/xzxaaa/2020/03/22/%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="ICMP-DHCP"><a href="#ICMP-DHCP" class="headerlink" title="ICMP DHCP"></a>ICMP DHCP</h1><p><a href="https://blog.csdn.net/hello_program_world/article/details/80632014" target="_blank" rel="noopener">链接</a></p>
+<ul>
+<li>ICMP Internet控制报文协议，处于网络层（IP层）(Internet Control Message Protocol)  </li>
+<li>ICMP协议主要用来检测网络通信故障和实现链路追踪，最典型的应用就是PING和tracerooute。</li>
+<li>DHCP（Dynamic Host Configuration Protocol ） 应用层 ：用来获取IP地址，</li>
+<li>discover包不等同于request包，第一个discover包不是请求IP！是链路层发现，目的是查找是否存在dhcp server。目的是全网广播，以寻找有无server.<br>源地址全0，是因为自己没有IP地址。如果你抓包分析时，不是0.0.0.0的源地址，那就不是discover包了，可能就是请求包了。<a id="more"></a></li>
+<li>客户机请求IP<br>使用UDP68端口作为源端口，使用UDP67端口作为目的端口，广播请求IP地址信息<br>DHCP服务器服务器响应<br>DHCP服务器使用UDP67端口作为源端口，使用UDP68端口作为目的端口来广播信息<br>DNS是53 应用层 UDP<br><img src="/xzxaaa/images/icmp.png" alt="upload successful">   </li>
+</ul>
+<p><img src="/xzxaaa/images/dhcp.png" alt="upload successful"></p>
+<h1 id="ARP"><a href="#ARP" class="headerlink" title="ARP"></a>ARP</h1><p><a href="https://blog.csdn.net/ever_peng/article/details/80008638" target="_blank" rel="noopener">ARP_CSDN</a></p>
+<ul>
+<li>将IP地址转换为实际物理地址，是由ARP协议来完成的。（AddressResolutionProtocol）网络层</li>
+<li>为什么要将IP转成MAC地址<br>应用在OSI第二层，即数据链路层。 数据链路层协议可以使数据从一个节点传递到相同链路的另一个节点上（通过MAC地址），而网络层协议使数据可以从一个网络传递到另一个网络上（ARP根据 目的IP地址，找到中间节点的MAC地址，通过中间节点传送，从而最终到达目的网络）。</li>
+<li>ARP过程  </li>
+</ul>
+<p>1.主机需要找出这个网络中的另一个主机的物理地址时，它就可以发送一个ARP请求报文，这个报文包好了发送方的MAC地址和IP地址以及接收方的IP地址  ,广播方式<br>2.局域网中的每一台主机都会接受并处理这个ARP请求报文，然后进行验证，查看接收方的IP地址是不是自己的地址，只有验证成功的主机才会返回一个ARP响应报文，这个响应报文包含接收方的IP地址和物理地址</p>
+<h1 id="TFTP-FTP"><a href="#TFTP-FTP" class="headerlink" title="TFTP FTP"></a>TFTP FTP</h1><p>FTP是完整、面向会话、常规用途文件传输协议。而TFTP用作bones bare-特殊目的文件传输协议。<br>交互使用FTP，TFTP允许仅单向传输的文件。<br>FТР H供身ti。而TFTP不。<br>FTP使用已知TCP端口号：20的数据和21用于连接对话框。TFTP用于UDP端口号69其文件传输活动。<br>因为TFTP不支持验证WindowsNT，所以FTP服务器服务不支持TFTP FTP依赖于TCP，是面向连接并提供可靠的控  件。TFTP依赖UDP，需要减少开销，几乎不提供控件。<br>TFTP不支持文件浏览  FTP支持</p>
+<h1 id="端口范围"><a href="#端口范围" class="headerlink" title="端口范围"></a>端口范围</h1><ul>
+<li>1-65535端口，其中0-1023为固定端口，也就是知名端口</li>
+<li>态端口（Dynamic Ports）动态端口的范围从1024到65535，这些端口号一般不固定分配给某个服务</li>
+<li></li>
+</ul>
+<h1 id="函数相关"><a href="#函数相关" class="headerlink" title="函数相关"></a>函数相关</h1><h2 id="send和sendto"><a href="#send和sendto" class="headerlink" title="send和sendto"></a>send和sendto</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssize_t send(int sockfd, const void *buf, size_t len, int flags);</span><br><span class="line"></span><br><span class="line">ssize_t sendto(int sockfd, const void *buf, size_t len, int flags, const struct sockaddr *dest_addr, socklen_t addrlen);</span><br><span class="line"></span><br><span class="line">write和read是一对</span><br><span class="line">send 和recv是一对 flags为0，则和read,write一样</span><br><span class="line">当send 中的flags 参数来控制读写操作.</span><br><span class="line"></span><br><span class="line">send函数专用于TCP链接，sendto函数专用与UDP连接。</span><br></pre></td></tr></table></figure>
+<h2 id="close和shutdown"><a href="#close和shutdown" class="headerlink" title="close和shutdown"></a>close和shutdown</h2><p><a href="https://blog.csdn.net/jnu_simba/article/details/9068059" target="_blank" rel="noopener">参考🚎</a></p>
+<h1 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h1><p><img src="/xzxaaa/images/TCP_UDP_difference.png" alt="upload successful"></p>
+<h2 id="应用层使用"><a href="#应用层使用" class="headerlink" title="应用层使用"></a>应用层使用</h2><p>TCP 🔊http，https，MQTT，FTP（21端口） ,SSH(22端口)<br>UDP🔊DHCP,DNS,TFTP</p>
+<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.cnblogs.com/never--more/p/7193628.html" target="_blank" rel="noopener">参考，快速重传？快速恢复？🚎</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>嵌入式三级考试</title>
+    <url>/xzxaaa/2020/03/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%B8%89%E7%BA%A7%E8%80%83%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="实时系统具备的7个特征"><a href="#实时系统具备的7个特征" class="headerlink" title="实时系统具备的7个特征"></a>实时系统具备的7个特征</h1><ul>
+<li>异步IO和中断处理能力 </li>
+<li>任务切换时间和中断延迟时间确定</li>
+<li>优先级中断调度</li>
+<li>抢占式调度</li>
+<li>内存锁定</li>
+<li>连续文件</li>
+<li>同步<a id="more"></a>
+
+</li>
+</ul>
+<h1 id="RTOS的指标"><a href="#RTOS的指标" class="headerlink" title="RTOS的指标"></a>RTOS的指标</h1><ul>
+<li>响应时间（包括中断延迟时间，任务切换时间）</li>
+<li>吞吐量</li>
+<li>生存时间</li>
+</ul>
+<h1 id="Linux-五大内核模块"><a href="#Linux-五大内核模块" class="headerlink" title="Linux 五大内核模块"></a>Linux 五大内核模块</h1><p> 1.进程调度模块 2.内存管理模块 3.文件系统模块 4.进程间通信模块 5.网络接口模块</p>
+<ul>
+<li><p>进程调度模块<br>用来负责控制进程对CPU 资源的使用。所采取的调度策略是各进程能够公平合理地访问CPU, 同时保证内核能及时地执行硬件操作。</p>
+</li>
+<li><p>内存管理模块<br>用于确保所有进程能够安全地共享机器主内存区, 同时, 内存管理模块还支持虚拟内存管理方式, 使得Linux 支持进程使用比实际内存空间更多的内存容量。并可以利用文件系统, 对暂时不用的内存数据块交换到外部存储设备上去, 当需要时再交换回来。</p>
+</li>
+<li><p>文件系统模块<br>用于支持对外部设备的驱动和存储。虚拟文件系统模块通过向所有的外部存储设备提供一个通用的文件接口,隐藏了各种硬件设备的不同细节。从而提供并支持与其它操作系统兼容的多种文件系统格式。</p>
+</li>
+<li><p>进程间通信模块<br>用于支持多种进程间的信息交换方式</p>
+</li>
+<li><p>网络接口模块<br>提供对多种网络通信标准的访问并支持许多网络硬件  </p>
+</li>
+</ul>
+<h2 id="依赖关系"><a href="#依赖关系" class="headerlink" title="依赖关系"></a>依赖关系</h2><p><img src="/xzxaaa/images/module_dep.png" alt="upload successful"></p>
+]]></content>
+      <categories>
+        <category>考试</category>
+      </categories>
+      <tags>
+        <tag>嵌入式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法</title>
+    <url>/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><ul>
+<li>参考资料<br>B站资料—&gt;<a href="https://www.bilibili.com/video/av39093184?t=256,主要是看过程图" target="_blank" rel="noopener">链接</a></li>
+</ul>
+<hr>
+<ul>
+<li>主要思路：    </li>
+</ul>
+<a id="more"></a>
+<p>&nbsp;假设一个数组 int arr {3,2,6,5,1,4}  </p>
+<ol>
+<li><p>这边我们先取出一个数 我这边取出数组的第一个 arr[0] 也就是3(有些人是取最后一个数，一样的）  </p>
+</li>
+<li><p>我们需要找到一个index ,在index左边，数组都小于arry[index],右边都大于arry[index].（在找的过程中可以改变数组元素）也就是{1,2,3,5,6,4}</p>
+<pre><code>方法：2个数纪录位置 start 和end  start =0+1，end =5；  
+       从后面开始比较，如果arr[end]&gt;3 end就减1继续比较;因为比3大在右边是正确的
+       遇到arr[end]&lt;3 ;这个时候停下来。从前面来
+       与后面比较相反。如果arr[end]&lt;3 star就+1继续比较;因为比3小在左边是正确的
+       遇到arr[start]&gt;3; 这个时候停下来
+
+       注意前面end位置那个数是比3小，此时start位置比3大，把2个数交换下位置吧
+       这样2个这个时候数组会变成{3，2，1，5，6，4} 
+       把end减1 从后面比较，形成循环。
+       注意: 循环的条件是start&lt;end  ,比较时候用的循环也有这个条件
+
+       循环结束后 一定是start==end
+       这个时候数组是{3，2，1，5，6，4} start==end =2
+
+       再把arr[0]和arr[2]比较  如果arr[0]小就不用交换位置❗（错误，需要往前以位再交换arr[0]和arr[1]），反之直接交换
+       这个时候start =2 就是第2步要的index
+       交换后就是数组{1,2,3,5,6,4}，同时也得到index3.
+       可以这么想，3此时的位置就是排序最后的位置  </code></pre><ol start="3">
+<li>接下来就是3的左边和右边继续找index的位置，每次都能找到一个index的位置<br>就是{1，2}和{5，6，4}，再做一个递归就可以完成整个数组的排序  </li>
+</ol>
+<hr>
+<h2 id="思考过的问题"><a href="#思考过的问题" class="headerlink" title="思考过的问题"></a>思考过的问题</h2><ol>
+<li>在步骤2中，移动end的时候如果遇到等于怎么办，start同理 </li>
+<li>在看视频的过程中，发现找到index位置后是不用判断数组第一个元素和index元素大小，直接交换的。是这样的吗？</li>
+</ol>
+<hr>
+<ul>
+<li><p>关于第一个问题，可以这么想。我们关注的是!<br>找到一个index ,在index左边，数组都小于arry[index],右边都大于arry[index].<br>至于等于。我们可以看成是小于或是大于。都没关系。因为在左边和右边都没关系。我们关注的是！<br>找到一个index。。。。。</p>
+</li>
+<li><p>关于第二个问题 ，假如数组是 {2，6}  按步骤来，2和6就会交换位置 最后导致不符合要求，<br>index =1，但不是我们前面提到关注的东西</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="代码-附带测试程序"><a href="#代码-附带测试程序" class="headerlink" title="代码,附带测试程序"></a>代码,附带测试程序</h2> <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> #include &lt;iostream&gt;  &#x2F;&#x2F;&#x2F;&#x2F;环境是VS2013  C++</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int fastorder(T* arr,int start,int end)</span><br><span class="line">&#123;</span><br><span class="line">	int index &#x3D; 0;</span><br><span class="line">	T temp;</span><br><span class="line">	if (start &gt;&#x3D; end)</span><br><span class="line">		return 0;</span><br><span class="line">	index &#x3D; getindex(arr, start, end);</span><br><span class="line">	if (arr[start]&gt;arr[index])</span><br><span class="line">	&#123;</span><br><span class="line">		temp &#x3D; arr[index];</span><br><span class="line">		arr[index] &#x3D; arr[start];</span><br><span class="line">		arr[start] &#x3D; temp;</span><br><span class="line">	&#125;</span><br><span class="line">	fastorder(arr, start ,index-1);</span><br><span class="line">	fastorder(arr, index+1,end);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br><span class="line">template&lt;typename T&gt;</span><br><span class="line">int getindex(T* arr, int start, int end)</span><br><span class="line">&#123;</span><br><span class="line">	T target &#x3D; arr[start];</span><br><span class="line">	int ss &#x3D; start;</span><br><span class="line">	T temp;</span><br><span class="line">	start++;</span><br><span class="line">	while (start &lt; end)</span><br><span class="line">	&#123;</span><br><span class="line">		while (start&lt;end &amp;&amp; arr[end]&gt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		while (start&lt;end &amp;&amp; arr[start]&lt;target)</span><br><span class="line">		&#123;</span><br><span class="line">			start++;</span><br><span class="line">		&#125;</span><br><span class="line">		if (start !&#x3D; end)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">			temp &#x3D; arr[end];</span><br><span class="line">			arr[end] &#x3D; arr[start];</span><br><span class="line">			arr[start] &#x3D; temp;</span><br><span class="line">				end--;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return start;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 6, 5, 1, 4 &#125;;</span><br><span class="line">	&#x2F;&#x2F;int arr[] &#x3D; &#123; 3, 2, 2, 2, 2, 1 &#125;;</span><br><span class="line"></span><br><span class="line">	int arr[] &#x3D; &#123; 2, 6 &#125;;</span><br><span class="line"></span><br><span class="line">	fastorder(arr, 0, 1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	for (int i &#x3D; 0; i &lt; 2; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; arr[i] &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	getchar();</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+  </entry>
+</search>

@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/U4.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/choice.png">
 <meta property="article:published_time" content="2020-03-29T14:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-05T11:39:45.701Z">
+<meta property="article:modified_time" content="2020-04-07T06:55:30.890Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux应用层👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -281,9 +281,43 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -357,8 +391,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-05T19:39:45+08:00">
-                2020-04-05
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T14:55:30+08:00">
+                2020-04-07
               </time>
             
           </span>
@@ -488,9 +522,9 @@
 <li><p>共享地址空间, 不用切换页表(调度的时候)</p>
 </li>
 <li><p>Linux内核其实不区分进程和线程，内核把执行单元叫做任务(task)</p>
-<h2 id="进程和线程优劣"><a href="#进程和线程优劣" class="headerlink" title="进程和线程优劣"></a>进程和线程优劣</h2></li>
+</li>
 </ul>
-<p><img src="/xzxaaa/images/U4.png" alt="upload successful">     </p>
+<h2 id="进程和线程优劣"><a href="#进程和线程优劣" class="headerlink" title="进程和线程优劣"></a>进程和线程优劣</h2><p><img src="/xzxaaa/images/U4.png" alt="upload successful">     </p>
 <ul>
 <li>多进程更健壮，一个进程死了不影响其他进程  </li>
 <li>进程性能大于线程，每个进程独立地址空间和资源，而多个线程是一起共享了同个进程里的空间和资源</li>
@@ -521,12 +555,16 @@
 <li>查indoe命令 stat   </li>
 <li>/etc/network/interfaces  配置网卡信息  </li>
 <li>ulimit -a指令 ，查看一些限制大小的信息</li>
+<li>cat /proc/version 查看内核版本 </li>
+<li>ps -T  显示进程的SPID，SPID一一system process id,，表示 操作系统进程ID </li>
+<li>example: ps -eo pid,user,args –sort user✨    -o表示要显示的内容，有什么内容可以在#man ps 最下面查看  </li>
+<li>#arch命令查看操作系统是几位的  </li>
+<li>查看CPU是否64位的方法：如果/proc/cpuinfo内的flags字段中含有”lm”就是64位</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	proc文件系统常常被放置于Linux系统的&#x2F;proc目录下，常常用于查看有关硬件、进程的状态。 proc是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，储存系统运行信息文件。</span><br><span class="line">	系统启动后以&#x2F;sys目录作为 sysfs 文件系统的挂载点 ,sysfs 是一个类似于 proc 的殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</span><br><span class="line">* linux下的cmdline是uboot的bootargs参数传过去的</span><br></pre></td></tr></table></figure>
 
-<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><pre><code class="text"> 此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   
- 由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。 
-在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</code></pre>
+<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   </span><br><span class="line">由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。 </span><br><span class="line">  在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</span><br></pre></td></tr></table></figure>
+
 <h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">参考链接🚎</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名✨</p>
 <ul>
 <li>动态库 ：gcc -shared -o libMyTest.so *.o  </li>
@@ -550,7 +588,25 @@
 <li>一个session只能有一个终端  </li>
 <li>会话期：是一个或者多个进程组的集合，通常一个会话期开始与用户登录，终止于用户退出。在此期间，该用户运行的所有进程都属于这个会话期。  </li>
 <li>创建新会话的进程不能是进程组组长  </li>
-<li>守护进程不受终端控制</li>
+<li>守护进程不受终端控制   </li>
+</ul>
+<h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><a href="https://blog.csdn.net/li528405176/article/details/82810342" target="_blank" rel="noopener">参考🚎</a>  </p>
+<pre><code class="text">SSH本身提供两种级别的验证方法：
+
+第一种级别（基于口令的安全验证）：只要你知道自己帐号和口令，就可以登录到远程主机。所有传输的数据都会被加密，但是不能保证你正在连接的服务器就是你想连接的服务器。可能会有别的服务器在冒充真正的服务器，也就是受到“中间人攻击”这种方式的攻击。
+
+第二种级别（基于密钥的安全验证）：你必须为自己创建一对密钥，并把公钥放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，请求用你的密钥进行安全验证。服务器收到请求之后，先在该服务器上你的主目录下寻找你的公钥，然后把它和你发送过来的公钥进行比较。如果两个密钥一致，服务器就用公钥加密“质询”(challenge)并把它发送给客户端软件。客户端软件收到“质询”之后就可以用你的私钥在本地解密再把它发送给服务器完成登录。与第一种级别相比，第二种级别不仅加密所有传输的数据，也不需要在网络上传送口令，因此安全性更高，可以有效防止中间人攻击。  </code></pre>
+<h2 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h2><p><a href="https://blog.csdn.net/iter_zc/article/details/39291647" target="_blank" rel="noopener">参考🚎</a><br><a href="https://www.cnblogs.com/fatmanhappycode/p/12399074.html" target="_blank" rel="noopener">参考2🚎</a>  </p>
+<ul>
+<li><p>阻塞 / 非阻塞描述的是函数，指访问某个函数时是否会阻塞线程(block，线程进入阻塞状态)。 </p>
+</li>
+<li><p>同步 / 异步描述的是执行IO操作的主体是谁，同步是由用户进程自己去执行最终的IO操作。异步是用户进程自己不关系实际IO操作的过程，只需要由内核在IO完成后通知它既可，由内核进程来执行最终的IO操作。（用户需要注册回调函数到内核）</p>
+</li>
+</ul>
+<h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p><a href="https://www.jianshu.com/p/275602182f39" target="_blank" rel="noopener">参考🚎</a>  </p>
+<ul>
+<li>mmap 优化 将内核的file文件缓冲区映射到用户空间 ——少去了内核拷贝到用户空间的过程 </li>
+<li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中</li>
 </ul>
 
       
@@ -771,7 +827,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下进程通信的方法"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下进程通信的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关题目"><span class="nav-number">1.1.1.</span> <span class="nav-text">相关题目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux系统中的线程间同步方式"><span class="nav-number">1.2.</span> <span class="nav-text">Linux系统中的线程间同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">1.2.1.</span> <span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-内核的同步方式"><span class="nav-number">1.3.</span> <span class="nav-text">Linux 内核的同步方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁条件和预防"><span class="nav-number">1.4.</span> <span class="nav-text">死锁条件和预防</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁原因"><span class="nav-number">1.4.1.</span> <span class="nav-text">死锁原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四个条件"><span class="nav-number">1.4.2.</span> <span class="nav-text">四个条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预防"><span class="nav-number">1.4.3.</span> <span class="nav-text">预防</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用了锁怎么保证中途退出的释放"><span class="nav-number">1.4.4.</span> <span class="nav-text">用了锁怎么保证中途退出的释放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">1.5.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">1.6.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程共享资源"><span class="nav-number">1.7.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程优劣"><span class="nav-number">1.8.</span> <span class="nav-text">进程和线程优劣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程的选择"><span class="nav-number">1.9.</span> <span class="nav-text">进程和线程的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.10.</span> <span class="nav-text">题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录-amp-amp-命令"><span class="nav-number">2.</span> <span class="nav-text">目录&amp;&amp;命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#七种文件类型"><span class="nav-number">2.1.</span> <span class="nav-text">七种文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键目录"><span class="nav-number">2.2.</span> <span class="nav-text">关键目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">2.3.</span> <span class="nav-text">内核打印的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-模块加载相关命令"><span class="nav-number">2.4.</span> <span class="nav-text">Linux 模块加载相关命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#export和source区别"><span class="nav-number">2.5.</span> <span class="nav-text">export和source区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂项"><span class="nav-number">2.6.</span> <span class="nav-text">杂项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统"><span class="nav-number">3.</span> <span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库"><span class="nav-number">4.</span> <span class="nav-text">gcc编译、静态库与动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络方面"><span class="nav-number">5.</span> <span class="nav-text">网络方面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll"><span class="nav-number">5.1.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">5.2.</span> <span class="nav-text">TCP可靠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项-1"><span class="nav-number">6.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换行符："><span class="nav-number">6.1.</span> <span class="nav-text">换行符：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">6.2.</span> <span class="nav-text">会话</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下进程通信的方法"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下进程通信的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关题目"><span class="nav-number">1.1.1.</span> <span class="nav-text">相关题目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux系统中的线程间同步方式"><span class="nav-number">1.2.</span> <span class="nav-text">Linux系统中的线程间同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">1.2.1.</span> <span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-内核的同步方式"><span class="nav-number">1.3.</span> <span class="nav-text">Linux 内核的同步方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁条件和预防"><span class="nav-number">1.4.</span> <span class="nav-text">死锁条件和预防</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁原因"><span class="nav-number">1.4.1.</span> <span class="nav-text">死锁原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四个条件"><span class="nav-number">1.4.2.</span> <span class="nav-text">四个条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预防"><span class="nav-number">1.4.3.</span> <span class="nav-text">预防</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用了锁怎么保证中途退出的释放"><span class="nav-number">1.4.4.</span> <span class="nav-text">用了锁怎么保证中途退出的释放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">1.5.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">1.6.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程共享资源"><span class="nav-number">1.7.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程优劣"><span class="nav-number">1.8.</span> <span class="nav-text">进程和线程优劣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程的选择"><span class="nav-number">1.9.</span> <span class="nav-text">进程和线程的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.10.</span> <span class="nav-text">题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录-amp-amp-命令"><span class="nav-number">2.</span> <span class="nav-text">目录&amp;&amp;命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#七种文件类型"><span class="nav-number">2.1.</span> <span class="nav-text">七种文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键目录"><span class="nav-number">2.2.</span> <span class="nav-text">关键目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">2.3.</span> <span class="nav-text">内核打印的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-模块加载相关命令"><span class="nav-number">2.4.</span> <span class="nav-text">Linux 模块加载相关命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#export和source区别"><span class="nav-number">2.5.</span> <span class="nav-text">export和source区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂项"><span class="nav-number">2.6.</span> <span class="nav-text">杂项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统"><span class="nav-number">3.</span> <span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库"><span class="nav-number">4.</span> <span class="nav-text">gcc编译、静态库与动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络方面"><span class="nav-number">5.</span> <span class="nav-text">网络方面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll"><span class="nav-number">5.1.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">5.2.</span> <span class="nav-text">TCP可靠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项-1"><span class="nav-number">6.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换行符："><span class="nav-number">6.1.</span> <span class="nav-text">换行符：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">6.2.</span> <span class="nav-text">会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.3.</span> <span class="nav-text">SSH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO模型"><span class="nav-number">6.4.</span> <span class="nav-text">IO模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零拷贝"><span class="nav-number">6.5.</span> <span class="nav-text">零拷贝</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1014,6 +1070,323 @@
 
   
 
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/xzxaaa/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
 
 
 
@@ -1148,4 +1521,5 @@
 
  <!-- 页面点击小红心 -->
 <script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
+
 

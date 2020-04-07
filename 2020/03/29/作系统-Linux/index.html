@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/image1.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-29T14:22:00.000Z">
-<meta property="article:modified_time" content="2020-04-05T12:58:19.244Z">
+<meta property="article:modified_time" content="2020-04-07T06:25:08.155Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="操作系统Linux👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -281,9 +281,43 @@
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -357,8 +391,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-05T20:58:19+08:00">
-                2020-04-05
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T14:25:08+08:00">
+                2020-04-07
               </time>
             
           </span>
@@ -491,10 +525,11 @@
 <ul>
 <li>在Linux的0号中断是一个定时器中断。在固定的时间间隔都发生一次中断，也是说每秒发生该中断的频率都是固定的。该频率是常量HZ，该值一般是在100 ~ 1000之间。该中断的作用是为了定时更新系统日期和时间，使系统时间不断地得到跳转。另外该中断的中断处理函数除了更新系统时间外，还需要更新本地CPU统计数。指的是调用scheduler_tick递减进程的时间片，若进程的时间片递减到0，进程则被调度出去而放弃CPU使用权。</li>
 </ul>
-<h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
+<h1 id="Linux进程调度"><a href="#Linux进程调度" class="headerlink" title="Linux进程调度"></a>Linux进程调度</h1><h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
 <ul>
-<li><p>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。   </p>
-</li>
+<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。</li>
+</ul>
+<h2 id="进程分类"><a href="#进程分类" class="headerlink" title="进程分类"></a>进程分类</h2><ul>
 <li><p>Linux系统中，为了高效地调度进程，将进程分为两类：🟥实时进程和🟩普通进程(又称非实时进程或一般进程) 实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行</p>
 </li>
 <li><p>对于普通进程🔊调度程序关注进程近一段时间内的表现（主要是检查其睡眠时间和运行时间），根据一些经验性的公式，判断它现在是交互式的还是批处理的（统称为普通进程）？程度如何？最后决定给它的优先级做一定的调整。</p>
@@ -502,19 +537,46 @@
 <li><p>对于实时进程🔊高优先级抢占低优先级。对于优先级相同的，有两种策略：1️⃣时间片轮转和2️⃣先进先出，在时间片轮转策略中。每个可执行实时进程轮流执行一个时间片，而先进先出策略每个进程按各自在运行队列中的顺序执行且顺序不能变化。  </p>
 </li>
 </ul>
-<h3 id="在Linux中，进程调度策略共定义了3类5种（表现方式）"><a href="#在Linux中，进程调度策略共定义了3类5种（表现方式）" class="headerlink" title="在Linux中，进程调度策略共定义了3类5种（表现方式）"></a>在Linux中，进程调度策略共定义了3类5种（表现方式）</h3><p><a href="https://blog.csdn.net/gatieme/article/details/51699889" target="_blank" rel="noopener">linux调度详细内容🚎</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define SCHED_OTHER 0 &#x2F;&#x2F;交互式进程，主要处理I&#x2F;O任务，例如鼠标键盘操作</span><br><span class="line">#define SCHED_FIFO 1  &#x2F;&#x2F;主要处理对实时性要求很高的的任务，例如程序语言的编译程序, 数据库搜索引擎</span><br><span class="line">#define SCHED_RR 2  	以及科学计算实时进程(2个) RR是轮转，FIFO是先进先出</span><br><span class="line">#define SCHED_BATCH 3 &#x2F;&#x2F;批处理进程，主要处理优先级不高的任务，例如文本编辑程序和图形应用批处理程序（2个）</span><br><span class="line">#define SCHED_IDLE 5  &#x2F;&#x2F;</span><br><span class="line">0 3 5是普通进程算1类，分时调度     1 2是实时进程算2类，先到先服务，时间片轮转</span><br></pre></td></tr></table></figure>
+<h2 id="进程调度策略共定义了3类5种（表现方式）"><a href="#进程调度策略共定义了3类5种（表现方式）" class="headerlink" title="进程调度策略共定义了3类5种（表现方式）"></a>进程调度策略共定义了3类5种（表现方式）</h2><p><a href="https://blog.csdn.net/gatieme/article/details/51699889" target="_blank" rel="noopener">linux调度详细内容🚎</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#define SCHED_OTHER 0 &#x2F;&#x2F;交互式进程，主要处理I&#x2F;O任务，例如鼠标键盘操作</span><br><span class="line">#define SCHED_FIFO 1  &#x2F;&#x2F;主要处理对实时性要求很高的的任务，例如程序语言的编译程序, 数据库搜索引擎</span><br><span class="line">#define SCHED_RR 2  	以及科学计算实时进程(2个) RR是轮转，FIFO是先进先出</span><br><span class="line">#define SCHED_BATCH 3 &#x2F;&#x2F;批处理进程，主要处理优先级不高的任务，例如文本编辑程序和图形应用批处理程序（2个）</span><br><span class="line">#define SCHED_IDLE 5  &#x2F;&#x2F;</span><br><span class="line">0 3 5是普通进程算1类，分时调度     1 2是实时进程算2类，实时调度策略，先到先服务，实时调度策略，时间片轮转  </span><br><span class="line"></span><br><span class="line">SCHED_DEADLINE 新支持的实时进程调度策略，针对突发型计算</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>进程创建时，默认是SCHED_OTHER，SCHED_OTHER表示普通进程，也按照轮转调度策略处理。</p>
+<li><p>进程创建时，默认是SCHED_OTHER，SCHED_OTHER表示普通进程，也按照分时调度策略处理。</p>
 </li>
 <li><p>Linux系统中的每个进程用task_struct结构来描述，进程调度的依据是task—struct结构中的policy、priority、counter和rt_priority，<br>PCB中设置Policy数据项，其值用于反映针对不同类型的进程而采用的调度策略。1️⃣SCHED—RR和2️⃣SCHED—FIFO用于实时进程。分别表示轮转调度策略和先进先出调度策略,还有3️⃣SCHED—OTHER  </p>
 </li>
-<li><p>这三类调度策略均基于优先级，PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数。进程启动后该值随时钟周期递减。</p>
+<li><p>这三类调度策略均基于优先级，PCB中设置Priority数据项，其值为普通进程的调度优先级．普通进程的可用时间片的初始值即为该值，该值通过系统调用是可以改变的。PCB中设置rt-priority数据项，其值是实时进程专用的调度优先级，实时进程的可用时间片的初始值即为该值．该优先级也可以用系统调用来修改，PCB中设置counter数据项。用于进程可用时间片时值的计数。进程启动后该值随时钟周期递减。 </p>
+</li>
+<li><p>当相同优先级的FIFO和RR进程执行时，RR相对吃亏，因为FIFO一旦抢占会执行到主动放弃。  </p>
+</li>
+<li><p>CPU根据算法进行进程调度。有的进程因此而需要等待，而不能及时得到资源，这就叫饥饿。进程得到资源时，再完成已经不再具有意义，这就叫做饿死。 </p>
 </li>
 </ul>
-<h4 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h4><ul>
-<li>Linux中优先级级别只有0-139这140个级别，这是固定的，数字越小优先级别越高，进程调度规则设定系统调用：sched_setscheduler (<strong>pid_t __pid, int __policy,</strong>const struct sched_param *__param)</li>
+<h2 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h2><ul>
+<li><p>一个调度器类可以用一种或者多种调度策略调度某一类进程, 也可以用于特殊情况或者调度特殊功能的进程.  </p>
+</li>
+<li><p>每个调度器对应一种或多种调度算法  </p>
+</li>
 </ul>
+<h2 id="调度实体"><a href="#调度实体" class="headerlink" title="调度实体"></a>调度实体</h2><ul>
+<li>一个调度对象，可以为一个进程，也可以为一个进程组.</li>
+<li>三个调度实体，sched_dl_entity，sched_rt_entity，CFS调度实体。每个调度实体对应一种调度器</li>
+</ul>
+<h2 id="linux调度器的演变"><a href="#linux调度器的演变" class="headerlink" title="linux调度器的演变"></a>linux调度器的演变</h2><ul>
+<li>一开始的调度器是复杂度为O(n)的始调度算法  </li>
+<li>从linux2.5开始引入赫赫有名的O(1)调度器  </li>
+<li>在O(1)调度器风光了没几天就又被另一个更优秀的调度器取代了，它就是CFS调度器Completely Fair Scheduler. 这个也是在2.6内核中引入的，具体为2.6.23，即从此版本开始</li>
+</ul>
+<h2 id="进程调度一般的算法"><a href="#进程调度一般的算法" class="headerlink" title="进程调度一般的算法"></a>进程调度一般的算法</h2><p>1️⃣先来先服务(FCFS) 2️⃣短进程优先(SPF)<br>3️⃣轮转法调度  4️⃣优先级调度<br>5️⃣多级反馈队列</p>
+<h2 id="相关API"><a href="#相关API" class="headerlink" title="相关API"></a>相关API</h2><p><a href="https://blog.csdn.net/u012459903/article/details/81110583" target="_blank" rel="noopener">详细参考🚎</a></p>
+<ul>
+<li>Linux中优先级级别只有0-139这140个级别，这是固定的，数字越小优先级别越高，进程调度规则设定系统调用：sched_setscheduler (<strong>pid_t __pid, int __policy,</strong>const struct sched_param *__param)<br>这个pid在应用层对应的应该是spid</li>
+<li>执行程序的时候需要加sudo权限</li>
+<li>getpid()只能获取到主线程的pid，同时也是内核中主线程spid。子线程的spid不中知怎么获取，不过测试了很多次都是主线程的spid+n ，经测试可以通过线程中spid+n来设置线程的调度策略 </li>
+<li>子线程创建的时候 调度策略默认跟主线程一样，测试过了</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">例：创建优先级为10的线程   </span><br><span class="line">pthread_attr_t   attr;  </span><br><span class="line">struct   sched_param   param;  </span><br><span class="line">pthread_attr_init(&amp;attr);  </span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr, SCHED_RR);  </span><br><span class="line">param.sched_priority   &#x3D;   10;  </span><br><span class="line">pthread_attr_setschedparam(&amp;attr,  &amp;param);  </span><br><span class="line">pthread_create(xxx , &amp;attr, xxx,xxx);  </span><br><span class="line">例：设置最高优先级</span><br><span class="line">pthread_attr_t attr;</span><br><span class="line">struct sched_param  param;</span><br><span class="line">pthread_t  thread &#x3D; pthread_self();&#x2F;&#x2F;当前程序线程号</span><br><span class="line">int rs &#x3D; pthread_attr_init( &amp;attr );</span><br><span class="line">                   assert( rs &#x3D;&#x3D; 0 );</span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr,SCHED_FIFO);&#x2F;&#x2F;设置线程调度策略</span><br><span class="line">param.sched_priority   &#x3D;  sched_get_priority_max(SCHED_FIFO); &#x2F;&#x2F;优先级设定</span><br><span class="line">rs &#x3D; pthread_attr_setschedparam( &amp;attr,  &amp;param );&#x2F;&#x2F;设置和获取schedparam属性pthread_attr_destroy(&amp;attr);</span><br></pre></td></tr></table></figure>
+
+
 <h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">什么是可重入函数?🚎</a> </p>
 <ul>
 <li><p>可重入强调对单个线程执行时，重新进入同一个子程序，仍然是安全的。 </p>
@@ -590,20 +652,22 @@
 <li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
 <li>Linux虚拟文件系统四大对象：<br>1️⃣超级块(super block)2️⃣索引节点(inode)<br>3️⃣目录项(dentry)4️⃣文件对象(file)<br><img src="/xzxaaa/images/VFS.png" alt="upload successful"></li>
 </ul>
-<h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">MMU是什么？🚎</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考🚎</a>  </p>
+<h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">MMU是什么？🚎</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考🚎</a><br><a href="https://www.jianshu.com/p/755338d11865" target="_blank" rel="noopener">mmap🚎</a></p>
 <ul>
 <li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
 </li>
 <li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
 </li>
-<li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制</p>
+<li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制  </p>
+</li>
+<li><p>虚拟内存系统通过将虚拟内存分割为称作虚拟页(Virtual Page，VP)大小固定的块，一般情况下，每个虚拟页的大小默认是4096字节。同样的，物理内存也被分割为物理页(Physical Page，PP)，也为4096字节。</p>
 </li>
 </ul>
 <h2 id="MMU作用"><a href="#MMU作用" class="headerlink" title="MMU作用"></a>MMU作用</h2><p>1️⃣完成虚拟空间到物理空间的映射;把虚拟地址空间分成一个个固定大小的块, 把物理内存的地址空间也分成同样大小的页;页的大小分为粗粒度和细粒度两种;<br>2️⃣存储器访问权限控制<br>3️⃣设置虚拟存储空间的缓冲特性;</p>
 <h2 id="为什么要有虚拟地址？"><a href="#为什么要有虚拟地址？" class="headerlink" title="为什么要有虚拟地址？"></a>为什么要有虚拟地址？</h2><p> 程序每次load的时候不用指定运行地址</p>
 <ul>
 <li>windows上的虚拟内存在linux叫交换空间 </li>
-<li>虚拟内存中，允许将一个作业分多次调入内存。  </li>
+<li>虚拟内存中，允许将一个作业分多次调入内存。    </li>
 </ul>
 <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。过这种方式来检测任务栈是否溢出了。    </p>
 <h2 id="DMA和一致性缓存"><a href="#DMA和一致性缓存" class="headerlink" title="DMA和一致性缓存"></a>DMA和一致性缓存</h2><p> <a href="https://blog.csdn.net/jasonchen_gbd/article/details/79462064" target="_blank" rel="noopener">为什么会有缓存不一致🚎</a>  </p>
@@ -622,7 +686,10 @@
 <h1 id="一些常见术语"><a href="#一些常见术语" class="headerlink" title="一些常见术语"></a>一些常见术语</h1><ul>
 <li>进程上下文 ，用户空间的代码将通过“系统调用（操作系统提供给用户空间的接口函数）进入内核空间</li>
 <li>中断上下文，当由硬件通过触发信号，导致内核调用中断处理程序，进入内核空间  </li>
-<li>Linux 中断分层，上半部和下半部</li>
+<li>Linux 中断分层，上半部和下半部 </li>
+<li>POSIX是一个操作系统标准。现在世面上几乎所有操作系统都实现了POSIX标准包括Windows  </li>
+<li>Linux是Unix的开源实现 </li>
+<li>Linux于1991年由芬兰大学生Linus开发出来，是一个类Unix系统，但是其代码不源自任何Unix版本，完全不是Unix的一个分支，而是一个开源版的模仿。</li>
 </ul>
 
       
@@ -847,7 +914,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">2.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">2.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">2.3.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Linux中，进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">2.3.1.</span> <span class="nav-text">在Linux中，进程调度策略共定义了3类5种（表现方式）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#相关API"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">相关API</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">3.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">3.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用"><span class="nav-number">3.2.</span> <span class="nav-text">总结下各种情况的互斥锁(信号量)和自旋锁的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">4.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">4.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">5.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MMU作用"><span class="nav-number">5.1.</span> <span class="nav-text">MMU作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">5.2.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">6.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">6.1.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DMA和一致性缓存"><span class="nav-number">6.2.</span> <span class="nav-text">DMA和一致性缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核中常见的数据结构"><span class="nav-number">7.</span> <span class="nav-text">Linux内核中常见的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常见术语"><span class="nav-number">8.</span> <span class="nav-text">一些常见术语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">2.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">2.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux进程调度"><span class="nav-number">3.</span> <span class="nav-text">Linux进程调度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">3.1.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程分类"><span class="nav-number">3.2.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">3.3.</span> <span class="nav-text">进程调度策略共定义了3类5种（表现方式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器"><span class="nav-number">3.4.</span> <span class="nav-text">调度器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度实体"><span class="nav-number">3.5.</span> <span class="nav-text">调度实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux调度器的演变"><span class="nav-number">3.6.</span> <span class="nav-text">linux调度器的演变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度一般的算法"><span class="nav-number">3.7.</span> <span class="nav-text">进程调度一般的算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关API"><span class="nav-number">3.8.</span> <span class="nav-text">相关API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">4.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">4.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用"><span class="nav-number">4.2.</span> <span class="nav-text">总结下各种情况的互斥锁(信号量)和自旋锁的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">5.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">5.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">6.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MMU作用"><span class="nav-number">6.1.</span> <span class="nav-text">MMU作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">6.2.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">7.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">7.1.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DMA和一致性缓存"><span class="nav-number">7.2.</span> <span class="nav-text">DMA和一致性缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核中常见的数据结构"><span class="nav-number">8.</span> <span class="nav-text">Linux内核中常见的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常见术语"><span class="nav-number">9.</span> <span class="nav-text">一些常见术语</span></a></li></ol></div>
             
 
           </div>
@@ -1090,6 +1157,323 @@
 
   
 
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/xzxaaa/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
 
 
 
@@ -1224,4 +1608,5 @@
 
  <!-- 页面点击小红心 -->
 <script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
+
 
