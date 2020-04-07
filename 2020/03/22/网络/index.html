@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/dhcp.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/TCP_UDP_difference.png">
 <meta property="article:published_time" content="2020-03-22T09:05:49.000Z">
-<meta property="article:modified_time" content="2020-04-01T07:31:26.909Z">
+<meta property="article:modified_time" content="2020-04-07T09:13:27.111Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/icmp.png">
@@ -390,8 +390,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-01T15:31:26+08:00">
-                2020-04-01
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T17:13:27+08:00">
+                2020-04-07
               </time>
             
           </span>
@@ -474,7 +474,17 @@
 <h2 id="close和shutdown"><a href="#close和shutdown" class="headerlink" title="close和shutdown"></a>close和shutdown</h2><p><a href="https://blog.csdn.net/jnu_simba/article/details/9068059" target="_blank" rel="noopener">参考🚎</a></p>
 <h1 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h1><p><img src="/xzxaaa/images/TCP_UDP_difference.png" alt="upload successful"></p>
 <h2 id="应用层使用"><a href="#应用层使用" class="headerlink" title="应用层使用"></a>应用层使用</h2><p>TCP 🔊http，https，MQTT，FTP（21端口） ,SSH(22端口)<br>UDP🔊DHCP,DNS,TFTP</p>
-<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.cnblogs.com/never--more/p/7193628.html" target="_blank" rel="noopener">参考，快速重传？快速恢复？🚎</a></p>
+<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.cnblogs.com/never--more/p/7193628.html" target="_blank" rel="noopener">参考，快速重传？快速恢复？🚎</a>  </p>
+<h2 id="长短连接"><a href="#长短连接" class="headerlink" title="长短连接"></a>长短连接</h2><ul>
+<li>短连接发送完成一次数据后客户端就调用close关闭</li>
+<li>长连接的话发送多次，连接一直存在</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在长连接的应用场景下，client端一般不会主动关闭它们之间的连接，Client与server之间的连接如果一直不关闭的话，会存在一个问题，随着客户端连接越来越多，server早晚有扛不住的时候，这时候server端需要采取一些策略，如关闭一些长时间没有读写事件发生的连接，这样可以避免一些恶意连接导致server端服务受损；如果条件再允许就可以以客户端机器为颗粒度，限制每个客户端的最大长连接数，这样可以完全避免某个蛋疼的客户端连累后端服务。</span><br><span class="line"></span><br><span class="line">长连接和短连接的产生在于client和server采取的关闭策略，具体的应用场景采用具体的策略，没有十全十美的选择，只有合适的选择。</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h1><h2 id="什么是IP分片？"><a href="#什么是IP分片？" class="headerlink" title="什么是IP分片？"></a>什么是IP分片？</h2><p>IP协议在传输数据包时会将数据报文分成若干片进行传输，并在目标系统中进行重组。这以过程就成为分片。</p>
+<h2 id="为什么要进行IP分片"><a href="#为什么要进行IP分片" class="headerlink" title="为什么要进行IP分片"></a>为什么要进行IP分片</h2><p>如果IP数据报加上数据帧头部后大于MTU，数据报文就会分成若干片进行传输。那么什么是MTU呢？每一种物理网络都会规定链路层数据帧的最大长度✨，称为链路层MTU。在以太网的环境中可传输的最大IP报文为1500字节。如果要传输的数据帧的大小超过1500字节，即IP数据报的长度大于1472(1500-20-8=1472，普通数据报)字节，需要分片之后进行传输。</p>
+<h2 id="IP分片是如何组装的？"><a href="#IP分片是如何组装的？" class="headerlink" title="IP分片是如何组装的？"></a>IP分片是如何组装的？</h2><p>在IP头里面有16bit的识别号唯一记录了一个IP包的ID,以确定这几个分片是否属于同一个包，具有同一个ID的IP分片将会从新组装。13bit的片偏移记录了一个IP分片相对于整个包的位置。3bit的标志位记录了该分片后面是否还有新的分片。这三个分片组成了IP分片的所有的信息。</p>
 
       
     </div>
@@ -692,7 +702,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-DHCP"><span class="nav-number">1.</span> <span class="nav-text">ICMP DHCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFTP-FTP"><span class="nav-number">3.</span> <span class="nav-text">TFTP FTP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#端口范围"><span class="nav-number">4.</span> <span class="nav-text">端口范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数相关"><span class="nav-number">5.</span> <span class="nav-text">函数相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#send和sendto"><span class="nav-number">5.1.</span> <span class="nav-text">send和sendto</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#close和shutdown"><span class="nav-number">5.2.</span> <span class="nav-text">close和shutdown</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP和UDP"><span class="nav-number">6.</span> <span class="nav-text">TCP和UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层使用"><span class="nav-number">6.1.</span> <span class="nav-text">应用层使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.2.</span> <span class="nav-text">TCP可靠</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ICMP-DHCP"><span class="nav-number">1.</span> <span class="nav-text">ICMP DHCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ARP"><span class="nav-number">2.</span> <span class="nav-text">ARP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TFTP-FTP"><span class="nav-number">3.</span> <span class="nav-text">TFTP FTP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#端口范围"><span class="nav-number">4.</span> <span class="nav-text">端口范围</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数相关"><span class="nav-number">5.</span> <span class="nav-text">函数相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#send和sendto"><span class="nav-number">5.1.</span> <span class="nav-text">send和sendto</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#close和shutdown"><span class="nav-number">5.2.</span> <span class="nav-text">close和shutdown</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP和UDP"><span class="nav-number">6.</span> <span class="nav-text">TCP和UDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用层使用"><span class="nav-number">6.1.</span> <span class="nav-text">应用层使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">6.2.</span> <span class="nav-text">TCP可靠</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#长短连接"><span class="nav-number">6.3.</span> <span class="nav-text">长短连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP分片"><span class="nav-number">7.</span> <span class="nav-text">IP分片</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是IP分片？"><span class="nav-number">7.1.</span> <span class="nav-text">什么是IP分片？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要进行IP分片"><span class="nav-number">7.2.</span> <span class="nav-text">为什么要进行IP分片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP分片是如何组装的？"><span class="nav-number">7.3.</span> <span class="nav-text">IP分片是如何组装的？</span></a></li></ol></li></ol></div>
             
 
           </div>

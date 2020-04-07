@@ -82,7 +82,7 @@
 <h2 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h2><ul>
 <li>/opt目录：这是给主机额外安装软件所摆放的目录    </li>
 <li>/tmp:暂时放置档案的地方; FHS甚至建议在开机时，应该要将/tmp下的资料都删除</li>
-<li>top 查看系统性能</li>
+<li>top 查看系统性能 进去后按f选择要显示的项</li>
 <li>free查看内存使用情况  </li>
 <li>查indoe命令 stat   </li>
 <li>/etc/network/interfaces  配置网卡信息  </li>
@@ -91,7 +91,12 @@
 <li>ps -T  显示进程的SPID，SPID一一system process id,，表示 操作系统进程ID </li>
 <li>example: ps -eo pid,user,args –sort user✨    -o表示要显示的内容，有什么内容可以在#man ps 最下面查看  </li>
 <li>#arch命令查看操作系统是几位的  </li>
-<li>查看CPU是否64位的方法：如果/proc/cpuinfo内的flags字段中含有”lm”就是64位</li>
+<li>查看CPU是否64位的方法：如果/proc/cpuinfo内的flags字段中含有”lm”就是64位 </li>
+<li>#nm a.out用来列出目标文件的符号清单(names的缩写) </li>
+<li>#ldd a.out(list, dynamic, dependencie)列出动态库依赖关系。</li>
+<li>目录不能硬链接 ✨</li>
+<li>iptables 防火墙<a href="http://www.zsythink.net/?s=iptables" target="_blank" rel="noopener">参考🚎</a>  </li>
+<li>tcpdump -i ens38  icmp（tcpdump是linux下的抓包工具）-i指定网卡  后面可以加协议</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">	proc文件系统常常被放置于Linux系统的&#x2F;proc目录下，常常用于查看有关硬件、进程的状态。 proc是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，储存系统运行信息文件。</span><br><span class="line">	系统启动后以&#x2F;sys目录作为 sysfs 文件系统的挂载点 ,sysfs 是一个类似于 proc 的殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</span><br><span class="line">* linux下的cmdline是uboot的bootargs参数传过去的</span><br></pre></td></tr></table></figure>
 
@@ -116,7 +121,9 @@
 </ul>
 <h1 id="杂项-1"><a href="#杂项-1" class="headerlink" title="杂项"></a>杂项</h1><h2 id="换行符："><a href="#换行符：" class="headerlink" title="换行符："></a>换行符：</h2><ul>
 <li>windows中的换行符是\r\n，</li>
-<li>linux/unix下的换行符是\n。<h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2></li>
+<li>linux/unix下的换行符是\n。 </li>
+</ul>
+<h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2><ul>
 <li>一个session只能有一个终端  </li>
 <li>会话期：是一个或者多个进程组的集合，通常一个会话期开始与用户登录，终止于用户退出。在此期间，该用户运行的所有进程都属于这个会话期。  </li>
 <li>创建新会话的进程不能是进程组组长  </li>
@@ -482,6 +489,13 @@
 </li>
 </ul>
 <h2 id="lower-bound-与-upper-bound-函数"><a href="#lower-bound-与-upper-bound-函数" class="headerlink" title="lower_bound 与 upper_bound 函数"></a>lower_bound 与 upper_bound 函数</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lower_bound(起始地址，结束地址，要查找的数值) 返回的是数值 第一个 出现的位置。</span><br><span class="line">upper_bound(起始地址，结束地址，要查找的数值) 返回的是数值 最后一个 出现的位置。</span><br><span class="line">binary_search(起始地址，结束地址，要查找的数值)  返回的是是否存在这么一个数，是一个bool值。</span><br></pre></td></tr></table></figure>
+
+<h2 id="原子操作"><a href="#原子操作" class="headerlink" title="原子操作"></a>原子操作</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">template&lt;class _Ty&gt;</span><br><span class="line">	struct atomic&lt;_Ty *&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Boost库"><a href="#Boost库" class="headerlink" title="Boost库"></a>Boost库</h2><ul>
+<li>Boost是为C++语言标准库提供扩展的一些C++程序库的总称。Boost库是一个可移植、提供源代码的C++库，作为标准库的后备，是C++标准化进程的开发引擎之一，是为C++语言标准库提供扩展的一些C++程序库的总称</li>
+<li>C++11后面等很多东西都是从boost库来的</li>
+</ul>
 <hr>
 <h1 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h1><ul>
 <li>fstrem =ifstrem+ofstrem  </li>
@@ -598,7 +612,9 @@
 <li>聚合类<br>合类定义：<br>1️⃣所有的成员都是public的。<br>2️⃣没有定义任何构造函数。<br>3️⃣没有类内初始值。<br>5️⃣没有基类，也没有virtual函数。<br>聚合类的初始化：我们可以提供一个花括号括起来的成员函数初始值列表，并用它初始化聚合类的数据成员： 例如：Data   val={0,”Anna”};   </li>
 </ul>
 <h2 id="Linux-gcc支持的语法-attribute-属性设"><a href="#Linux-gcc支持的语法-attribute-属性设" class="headerlink" title="Linux gcc支持的语法 attribute 属性设"></a>Linux gcc支持的语法 attribute 属性设</h2><p> <a href="http://www.bubuko.com/infodetail-1807545.html?__cf_chl_jschl_tk__=ac57d06d45ccb79eea89515784b28eb183d82dfc-1584689502-0-AdC8JOyXSl9idgS1ojv7Ol8LsKJ0PSRg6wjY8fjK4_N2DtnlgkJzODeWN-RI4Opx5WWFcyu-Mz-jee-le7i8HnP4iw9EncJVzBtf0aj3BF47Ci1KelVoEHAfcHVN-arKrtWeF7dcOYeLnyxmu4k4KwyaZkcjJx6a3-plgm3BeVUkOuubowiFaF_54uQyzYzn47Gl9OsjBACAY5zgD85Wqn0VRoZX_YidNmTGr0abESWrbg0m29TsrIYUcoj8mBDdChvGZn-pD9wpMfJG_vHg83nBMgl5v973td7wgWZf9J38XyJGQp5hKBV5zqvwU4Mg2A" target="_blank" rel="noopener">参考🚎</a></p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* weak属性：使得cpu_mmc_init是一个弱标号（我估计是内部链接），而不是一个全局标号 </span><br><span class="line">，另外即使cpu_mmc_init函数没有定义，调用cpu_mmc_init编译器也是不会报错的，不过 </span><br><span class="line">没有意义，所以一般会和alias属性连用。</span><br><span class="line"></span><br><span class="line">* alias属性：指定cpu_mmc_init是后面 &quot;__def_mmc_init&quot; 函数的一个别名，所以 </span><br><span class="line">cpu_mmc_init函数如果没有定义，那么调用cpu_mmc_init其实就是会调用__def_mmc_init </span><br><span class="line">函数，如果定义就不会调用这个了，注意__def_mmc_init函数是一定要有定义的。</span><br><span class="line"></span><br><span class="line">* unused属性：指定这个变量或者函数如果没有被使用也不要输出警告信息。</span><br><span class="line"></span><br><span class="line">* section属性：指定该函数或者是变量最后链接在我们的指定段中，用法：section </span><br><span class="line">(&quot;.u_boot_cmd&quot;)，注意了，我们链接脚本中使用的段名其实就是一个变量的形式，他是 </span><br><span class="line">不需要定义的，能够直接用，也就是说，我们可以在连接脚本中随意使用一个段名，如果 </span><br><span class="line">我们在我们的C中有该段的内容就会链接到该段中，如果没有就直接跳过。注意在我们的 </span><br><span class="line">内核驱动中一般是用 __section__ 来代替我们的section，具体差别不详。</span><br><span class="line">__attribute__ ((__section__(&quot;.u_kernel_cmd&quot;)))</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">struct fd&#123;  </span><br><span class="line">...  </span><br><span class="line">...  </span><br><span class="line">&#125;__sttribute__ ((align(4))) fd; &#x2F;&#x2F;指定struct fd类的字节对齐方式</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">* weak属性：使得cpu_mmc_init是一个弱标号（我估计是内部链接），而不是一个全局标号 </span><br><span class="line">，另外即使cpu_mmc_init函数没有定义，调用cpu_mmc_init编译器也是不会报错的，不过 </span><br><span class="line">没有意义，所以一般会和alias属性连用。</span><br><span class="line"></span><br><span class="line">* alias属性：指定cpu_mmc_init是后面 &quot;__def_mmc_init&quot; 函数的一个别名，所以 </span><br><span class="line">cpu_mmc_init函数如果没有定义，那么调用cpu_mmc_init其实就是会调用__def_mmc_init </span><br><span class="line">函数，如果定义就不会调用这个了，注意__def_mmc_init函数是一定要有定义的。</span><br><span class="line"></span><br><span class="line">* unused属性：指定这个变量或者函数如果没有被使用也不要输出警告信息。</span><br><span class="line"></span><br><span class="line">* section属性：指定该函数或者是变量最后链接在我们的指定段中，用法：section </span><br><span class="line">(&quot;.u_boot_cmd&quot;)，注意了，我们链接脚本中使用的段名其实就是一个变量的形式，他是 </span><br><span class="line">不需要定义的，能够直接用，也就是说，我们可以在连接脚本中随意使用一个段名，如果 </span><br><span class="line">我们在我们的C中有该段的内容就会链接到该段中，如果没有就直接跳过。注意在我们的 </span><br><span class="line">内核驱动中一般是用 __section__ 来代替我们的section，具体差别不详。</span><br><span class="line">__attribute__ ((__section__(&quot;.u_kernel_cmd&quot;)))</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">struct fd&#123;  </span><br><span class="line">...  </span><br><span class="line">...  </span><br><span class="line">&#125;__sttribute__ ((align(4))) fd; &#x2F;&#x2F;指定struct fd类的字节对齐方式</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数参数压栈顺序，stdcall和cdecl调用方式的理解"><a href="#函数参数压栈顺序，stdcall和cdecl调用方式的理解" class="headerlink" title="函数参数压栈顺序，stdcall和cdecl调用方式的理解"></a>函数参数压栈顺序，<strong>stdcall和</strong>cdecl调用方式的理解</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">__stdcall和__cdecl都是函数调用约定关键字，先来看看__stdcall和__cdecl调用方式的概念：</span><br><span class="line"></span><br><span class="line">1️⃣_stdcall：是StandardCall的缩写，是C++的标准调用方式，参数由右向左压入堆栈，由调用者负责把参数压入栈，最后由被调用❗者负责清除栈的内容。</span><br><span class="line"></span><br><span class="line">2️⃣__cdecl：是C Declaration的缩写（declaration，声明），表示C语言默认的函数调用方法：参数也是由右向左压入堆栈；由调用者负责把参数压入栈，最后也由调用者负责清除栈的内容。</span><br><span class="line"></span><br><span class="line">总结：因为以上2点，_cdecl这种调用约定的特点是支持可变数量的参数，比如printf方法，__stdcall不支持可变数量的参数。</span><br><span class="line"></span><br><span class="line">假设函数fun（）作为调用者调用printf打印东西时，可以输入不同数量的参数，printf作为被调用者，并不知道调用者fun（）到底将多少参数压入堆栈，因此printf就没有办法自己清理堆栈，所以只有函数退出之后，由fun清理堆栈，因为fun总是知道自己传入了多少参数。</span><br></pre></td></tr></table></figure>
 
 <hr>
 ]]></content>
@@ -850,7 +866,17 @@
 <h2 id="close和shutdown"><a href="#close和shutdown" class="headerlink" title="close和shutdown"></a>close和shutdown</h2><p><a href="https://blog.csdn.net/jnu_simba/article/details/9068059" target="_blank" rel="noopener">参考🚎</a></p>
 <h1 id="TCP和UDP"><a href="#TCP和UDP" class="headerlink" title="TCP和UDP"></a>TCP和UDP</h1><p><img src="/xzxaaa/images/TCP_UDP_difference.png" alt="upload successful"></p>
 <h2 id="应用层使用"><a href="#应用层使用" class="headerlink" title="应用层使用"></a>应用层使用</h2><p>TCP 🔊http，https，MQTT，FTP（21端口） ,SSH(22端口)<br>UDP🔊DHCP,DNS,TFTP</p>
-<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.cnblogs.com/never--more/p/7193628.html" target="_blank" rel="noopener">参考，快速重传？快速恢复？🚎</a></p>
+<h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.cnblogs.com/never--more/p/7193628.html" target="_blank" rel="noopener">参考，快速重传？快速恢复？🚎</a>  </p>
+<h2 id="长短连接"><a href="#长短连接" class="headerlink" title="长短连接"></a>长短连接</h2><ul>
+<li>短连接发送完成一次数据后客户端就调用close关闭</li>
+<li>长连接的话发送多次，连接一直存在</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">在长连接的应用场景下，client端一般不会主动关闭它们之间的连接，Client与server之间的连接如果一直不关闭的话，会存在一个问题，随着客户端连接越来越多，server早晚有扛不住的时候，这时候server端需要采取一些策略，如关闭一些长时间没有读写事件发生的连接，这样可以避免一些恶意连接导致server端服务受损；如果条件再允许就可以以客户端机器为颗粒度，限制每个客户端的最大长连接数，这样可以完全避免某个蛋疼的客户端连累后端服务。</span><br><span class="line"></span><br><span class="line">长连接和短连接的产生在于client和server采取的关闭策略，具体的应用场景采用具体的策略，没有十全十美的选择，只有合适的选择。</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="IP分片"><a href="#IP分片" class="headerlink" title="IP分片"></a>IP分片</h1><h2 id="什么是IP分片？"><a href="#什么是IP分片？" class="headerlink" title="什么是IP分片？"></a>什么是IP分片？</h2><p>IP协议在传输数据包时会将数据报文分成若干片进行传输，并在目标系统中进行重组。这以过程就成为分片。</p>
+<h2 id="为什么要进行IP分片"><a href="#为什么要进行IP分片" class="headerlink" title="为什么要进行IP分片"></a>为什么要进行IP分片</h2><p>如果IP数据报加上数据帧头部后大于MTU，数据报文就会分成若干片进行传输。那么什么是MTU呢？每一种物理网络都会规定链路层数据帧的最大长度✨，称为链路层MTU。在以太网的环境中可传输的最大IP报文为1500字节。如果要传输的数据帧的大小超过1500字节，即IP数据报的长度大于1472(1500-20-8=1472，普通数据报)字节，需要分片之后进行传输。</p>
+<h2 id="IP分片是如何组装的？"><a href="#IP分片是如何组装的？" class="headerlink" title="IP分片是如何组装的？"></a>IP分片是如何组装的？</h2><p>在IP头里面有16bit的识别号唯一记录了一个IP包的ID,以确定这几个分片是否属于同一个包，具有同一个ID的IP分片将会从新组装。13bit的片偏移记录了一个IP分片相对于整个包的位置。3bit的标志位记录了该分片后面是否还有新的分片。这三个分片组成了IP分片的所有的信息。</p>
 ]]></content>
   </entry>
   <entry>
