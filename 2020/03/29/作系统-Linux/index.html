@@ -105,17 +105,18 @@
 
 
 
-<meta name="description" content="用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨    内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段  当前进程运行的代码">
+<meta name="description" content="一个大佬的博客🚎🚎🚎 用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨ 可以说每个线程有自己的内核栈，在linux内核角度看，线程和进程统称为线程（有自己的thread_info）   内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统(Linux)👷‍♂️">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨    内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段  当前进程运行的代码">
+<meta property="og:description" content="一个大佬的博客🚎🚎🚎 用户态与内核态 Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。  内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨ 可以说每个线程有自己的内核栈，在linux内核角度看，线程和进程统称为线程（有自己的thread_info）   内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/user_to_kernel.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/image1.png">
+<meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/task_struct.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-29T14:22:00.000Z">
-<meta property="article:modified_time" content="2020-04-07T06:25:08.155Z">
+<meta property="article:modified_time" content="2020-04-09T08:05:26.673Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="操作系统Linux👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -391,8 +392,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T14:25:08+08:00">
-                2020-04-07
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T16:05:26+08:00">
+                2020-04-09
               </time>
             
           </span>
@@ -471,10 +472,11 @@
       
 
       
-        <h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
+        <h1 id="一个大佬的博客🚎🚎🚎"><a href="#一个大佬的博客🚎🚎🚎" class="headerlink" title="一个大佬的博客🚎🚎🚎"></a>一个大佬的博客<a href="https://me.csdn.net/column/gatieme" target="_blank" rel="noopener">🚎🚎🚎</a></h1><hr>
+<h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
 <li><p>Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。</p>
 </li>
-<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨  </p>
+<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨ 可以说每个线程有自己的内核栈，在linux内核角度看，线程和进程统称为线程（有自己的thread_info） </p>
 </li>
 <li><p>内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段</p>
 </li>
@@ -482,7 +484,7 @@
 </li>
 <li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
 <a id="more"></a></li>
-<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序,有点向内核注册回调函数类似    </p>
+<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序    </p>
 </li>
 <li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
 </li>
@@ -506,6 +508,11 @@
 </ul>
 <p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">   </p>
 <p><img src="/xzxaaa/images/image1.png" alt="upload successful"></p>
+<h2 id="系统调用表"><a href="#系统调用表" class="headerlink" title="系统调用表"></a>系统调用表</h2><p><a href="https://www.cnblogs.com/oddcat/articles/9820726.html" target="_blank" rel="noopener">链接🚎</a><br><a href="http://gityuan.com/2016/05/21/syscall/" target="_blank" rel="noopener">通过API查找内核对应的函数🚎</a>   </p>
+<ul>
+<li>用户空间对应的函数在glibc中(具体得看glibc的源码，有些函数得编译后才能看到，因为.s是汇编文件，需要根据编译目标平台来生成) 😂一直编不出来</li>
+</ul>
+<p>1️⃣arch\arm\include\uapi\unistd.h   用户态API名字  得到号（用户态传下来的系统调用号）<br>2️⃣arch\arm\kernel\entry-common.S   SWI中断会拿到调用号,执行CALL调用<br>3️⃣arch\arm\kernel\calls.S       通过号查找对应的系统调用<br>4️⃣通过全局查找得到函数在 include\linux\xxxx.h   //找到函数声明<br>5️⃣kernel\xxx.c 找到函数的实现 ，定义都是通过宏的<br>SYSCALL_DEFINE2(kill, pid_t, pid, int, sig) 基本等价于 asmlinkage long sys_kill(int pid, int sig) </p>
 <h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
 <ul>
 <li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，API调用进入内核态的陷入属于软件中断(SWI)</p>
@@ -527,8 +534,17 @@
 </ul>
 <h1 id="Linux进程调度"><a href="#Linux进程调度" class="headerlink" title="Linux进程调度"></a>Linux进程调度</h1><h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
 <ul>
-<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。</li>
+<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。  </li>
 </ul>
+<h2 id="task-struct"><a href="#task-struct" class="headerlink" title="task_struct"></a>task_struct</h2><p><img src="/xzxaaa/images/task_struct.png" alt="upload successful">  </p>
+<ul>
+<li>整个thread_union在内核空间,图片中的进程描述符就是task_struct</li>
+<li>task_struct里面有 struct thread_struct thread;(现成信息保存在这里)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">union thread_union</span><br><span class="line">&#123;</span><br><span class="line">    struct thread_info thread_info;</span><br><span class="line">    unsigned long stack[THREAD_SIZE&#x2F;sizeof(long)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pid_t pid;  &#x2F;&#x2F;在用户态看是spid</span><br><span class="line">pid_t tgid; </span><br><span class="line">一个线程组所有线程与领头线程具有相同的pid，存入tgid字段，getpid()返回当前进程的tgid值而不是pid的值。</span><br></pre></td></tr></table></figure>
+
 <h2 id="进程分类"><a href="#进程分类" class="headerlink" title="进程分类"></a>进程分类</h2><ul>
 <li><p>Linux系统中，为了高效地调度进程，将进程分为两类：🟥实时进程和🟩普通进程(又称非实时进程或一般进程) 实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行</p>
 </li>
@@ -677,11 +693,15 @@
 <ul>
 <li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射</li>
 </ul>
-<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><p> <a href>连接🚎</a></p>
-<ul>
-<li>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入</li>
-<li>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </li>
-<li>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过链表，将同种类型的数据串联起来  </li>
+<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><ul>
+<li><p>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入，生产消费模型，循环队列(内核通过自旋锁同步)</p>
+</li>
+<li><p>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </p>
+</li>
+<li><p>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过双向循环链表✨，将同种类型的数据串联起来  </p>
+</li>
+<li><p>循环链表优点<br>循环链表的特点是无须增加来存储量，仅对表的链接方式稍作改变，即可使得表处理更加自方便灵活。1️⃣循环链表中没有NULL指针✨。涉及遍历操作时，其终止条件就不再是像非循环链表那样判别p或p-＞next是否为空，而是判别它们是否等百于某一指定指针，如头指针或尾指针等。2️⃣在单链表中，从一已知结点出发，只能访问到该问结点及其后续结点，无法找到该结点之前的其它结点❗。而在单循环链表中，从任一结点出发都可访问到表中所有结点，这一优点使某些答运算在单循环链表上易于实现。</p>
+</li>
 </ul>
 <h1 id="一些常见术语"><a href="#一些常见术语" class="headerlink" title="一些常见术语"></a>一些常见术语</h1><ul>
 <li>进程上下文 ，用户空间的代码将通过“系统调用（操作系统提供给用户空间的接口函数）进入内核空间</li>
@@ -914,7 +934,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">1.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">2.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">2.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">2.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux进程调度"><span class="nav-number">3.</span> <span class="nav-text">Linux进程调度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">3.1.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程分类"><span class="nav-number">3.2.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">3.3.</span> <span class="nav-text">进程调度策略共定义了3类5种（表现方式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器"><span class="nav-number">3.4.</span> <span class="nav-text">调度器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度实体"><span class="nav-number">3.5.</span> <span class="nav-text">调度实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux调度器的演变"><span class="nav-number">3.6.</span> <span class="nav-text">linux调度器的演变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度一般的算法"><span class="nav-number">3.7.</span> <span class="nav-text">进程调度一般的算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关API"><span class="nav-number">3.8.</span> <span class="nav-text">相关API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">4.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">4.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用"><span class="nav-number">4.2.</span> <span class="nav-text">总结下各种情况的互斥锁(信号量)和自旋锁的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">5.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">5.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">6.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MMU作用"><span class="nav-number">6.1.</span> <span class="nav-text">MMU作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">6.2.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">7.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">7.1.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DMA和一致性缓存"><span class="nav-number">7.2.</span> <span class="nav-text">DMA和一致性缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核中常见的数据结构"><span class="nav-number">8.</span> <span class="nav-text">Linux内核中常见的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常见术语"><span class="nav-number">9.</span> <span class="nav-text">一些常见术语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一个大佬的博客🚎🚎🚎"><span class="nav-number">1.</span> <span class="nav-text">一个大佬的博客🚎🚎🚎</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户态与内核态"><span class="nav-number">2.</span> <span class="nav-text">用户态与内核态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下如何从用户态切换到内核态？"><span class="nav-number">2.1.</span> <span class="nav-text">Linux下如何从用户态切换到内核态？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统调用表"><span class="nav-number">2.2.</span> <span class="nav-text">系统调用表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中的中断"><span class="nav-number">3.</span> <span class="nav-text">Linux中的中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#中断编程注意"><span class="nav-number">3.1.</span> <span class="nav-text">中断编程注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux之时钟中断"><span class="nav-number">3.2.</span> <span class="nav-text">Linux之时钟中断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux进程调度"><span class="nav-number">4.</span> <span class="nav-text">Linux进程调度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机"><span class="nav-number">4.1.</span> <span class="nav-text">Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task-struct"><span class="nav-number">4.2.</span> <span class="nav-text">task_struct</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PID"><span class="nav-number">4.2.1.</span> <span class="nav-text">PID</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程分类"><span class="nav-number">4.3.</span> <span class="nav-text">进程分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度策略共定义了3类5种（表现方式）"><span class="nav-number">4.4.</span> <span class="nav-text">进程调度策略共定义了3类5种（表现方式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器"><span class="nav-number">4.5.</span> <span class="nav-text">调度器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度实体"><span class="nav-number">4.6.</span> <span class="nav-text">调度实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux调度器的演变"><span class="nav-number">4.7.</span> <span class="nav-text">linux调度器的演变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程调度一般的算法"><span class="nav-number">4.8.</span> <span class="nav-text">进程调度一般的算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关API"><span class="nav-number">4.9.</span> <span class="nav-text">相关API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可重入函数"><span class="nav-number">5.</span> <span class="nav-text">可重入函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#printf-是不可重入函数？"><span class="nav-number">5.1.</span> <span class="nav-text">printf 是不可重入函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用"><span class="nav-number">5.2.</span> <span class="nav-text">总结下各种情况的互斥锁(信号量)和自旋锁的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VFS-虚拟文件系统"><span class="nav-number">6.</span> <span class="nav-text">VFS(虚拟文件系统)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#超级块"><span class="nav-number">6.1.</span> <span class="nav-text">超级块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MMU"><span class="nav-number">7.</span> <span class="nav-text">MMU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MMU作用"><span class="nav-number">7.1.</span> <span class="nav-text">MMU作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要有虚拟地址？"><span class="nav-number">7.2.</span> <span class="nav-text">为什么要有虚拟地址？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存管理"><span class="nav-number">8.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RTOS栈空间"><span class="nav-number">8.1.</span> <span class="nav-text">RTOS栈空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DMA和一致性缓存"><span class="nav-number">8.2.</span> <span class="nav-text">DMA和一致性缓存</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内核中常见的数据结构"><span class="nav-number">9.</span> <span class="nav-text">Linux内核中常见的数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些常见术语"><span class="nav-number">10.</span> <span class="nav-text">一些常见术语</span></a></li></ol></div>
             
 
           </div>

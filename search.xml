@@ -12,7 +12,12 @@
 <h2 id="Linux系统中的线程间同步方式"><a href="#Linux系统中的线程间同步方式" class="headerlink" title="Linux系统中的线程间同步方式"></a>Linux系统中的线程间同步方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣锁机制：包括互斥锁、条件变量、读写锁和自旋锁。</span><br><span class="line"></span><br><span class="line">2️⃣信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</span><br><span class="line"></span><br><span class="line">3️⃣信号机制(Signal)：类似进程间的信号处理</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>提问：互斥锁与信号量的区别？<br>答：互斥锁用于线程的互斥，信号量用于线程的同步。这是互斥锁和信号量的根本区别，也就是互斥和同步之间的区别。同时互斥锁的作用域仅仅在于线程，信号量可以作用于线程和进程。 </li>
+<li><p>提问：互斥锁与信号量的区别？<br>答：互斥锁用于线程的互斥，信号量用于线程的同步。这是互斥锁和信号量的根本区别，也就是互斥和同步之间的区别。同时互斥锁的作用域仅仅在于线程，信号量可以作用于线程和进程。  </p>
+</li>
+<li><p>并发是指2个核同时运行线程形成一起运行的形象。并发是线程之间切换频繁形成一起运行的形象</p>
+</li>
+<li><p>线程有自己的屏蔽控制字段，当是一个进程下的所有线程是共用一个信号处理函数的</p>
+</li>
 </ul>
 <h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>条件变量使用规范  ///不能用普通的全局变量，因为 线程等待的时候不会去进入休眠，而且也没有原子操作</p>
 <ul>
@@ -27,7 +32,9 @@
 
 
 <h2 id="Linux-内核的同步方式"><a href="#Linux-内核的同步方式" class="headerlink" title="Linux 内核的同步方式"></a>Linux 内核的同步方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">原子操作,信号量（semaphore）</span><br><span class="line">读写信号量（rw_semaphore）</span><br><span class="line">自旋锁（spinlock）  中断中同步的方式✨</span><br><span class="line">大内核锁（BKL，Big Kernel Lock）</span><br><span class="line">读写锁（rwlock）</span><br><span class="line">大读者锁（brlock-Big Reader Lock）</span><br><span class="line">读-拷贝修改(RCU，Read-Copy Update)</span><br><span class="line">顺序锁（seqlock）</span><br></pre></td></tr></table></figure>
-
+<h3 id="内核中同步的一些使用"><a href="#内核中同步的一些使用" class="headerlink" title="内核中同步的一些使用"></a>内核中同步的一些使用</h3><ul>
+<li>缓冲区的循环队列运用了自旋锁  </li>
+</ul>
 <h2 id="死锁条件和预防"><a href="#死锁条件和预防" class="headerlink" title="死锁条件和预防"></a>死锁条件和预防</h2><p><a href="https://blog.csdn.net/guaiguaihenguai/article/details/80303835" target="_blank" rel="noopener">参考文章🚎</a></p>
 <h3 id="死锁原因"><a href="#死锁原因" class="headerlink" title="死锁原因"></a>死锁原因</h3><p>1️⃣系统资源不足<br>2️⃣资源分配不当<br>3️⃣进程运行推进顺序不合适  </p>
 <h3 id="四个条件"><a href="#四个条件" class="headerlink" title="四个条件"></a>四个条件</h3><p>1️⃣互斥  2️⃣占有且等待 3️⃣不可抢占 4️⃣循环等待<br>四个必要条件同时存在,可能会发生死锁;发生死锁了,四个必要条件必然满足;</p>
@@ -44,8 +51,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">子进程继承父进程：</span><br><span class="line">○用户号UIDs和用户组号GIDs○环境Environment</span><br><span class="line">○堆栈○共享内存○打开文件的描述符</span><br><span class="line">○执行时关闭（Close-on-exec）标志</span><br><span class="line">○信号（Signal）控制设定</span><br><span class="line">○进程组号○当前工作目录</span><br><span class="line">○根目录○文件方式创建屏蔽字</span><br><span class="line">○资源限制○控制终端 </span><br><span class="line">子进程独有的：</span><br><span class="line">○进程号PID○不同的父进程号</span><br><span class="line">○自己的文件描述符和目录流的拷贝</span><br><span class="line">○子进程不继承父进程的进程正文（text），数据和其他锁定内存（memory locks）</span><br><span class="line">○不继承异步输入和输出</span><br></pre></td></tr></table></figure>
 <ul>
 <li>子进程从父进程继承的主要有：用户号和用户组号；堆栈；共享内存；目录（当前目录、根目录）；打开文件的描述符；但父进程和子进程拥有独立的地址空间和PID参数、不同的父进程号、自己的文件描述符。 </li>
-<li>每个进程在内核中都有一个进程控制块（PCB）来维护进程相关的信息</li>
+<li>每个进程在内核中都有一个进程控制块（PCB）来维护进程相关的信息  </li>
 </ul>
+<h2 id="Linux进程描述符task-struct结构体"><a href="#Linux进程描述符task-struct结构体" class="headerlink" title="Linux进程描述符task_struct结构体"></a>Linux进程描述符task_struct结构体</h2><p><a href="https://blog.csdn.net/gatieme/article/details/51383272" target="_blank" rel="noopener">链接🚎</a></p>
 <h2 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h2><ul>
 <li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣    数据段3️⃣    打开文件和信号 4️⃣堆 </p>
 </li>
@@ -63,7 +71,11 @@
 </ul>
 <h2 id="进程和线程的选择"><a href="#进程和线程的选择" class="headerlink" title="进程和线程的选择"></a>进程和线程的选择</h2><p><img src="/xzxaaa/images/choice.png" alt="upload successful">  </p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣创建和销毁较频繁使用线程，因为创建进程花销大嘛。</span><br><span class="line">2️⃣需要大量数据传送使用线程，因为多线程切换速度快，不需要跨越进程边界。</span><br><span class="line">3️⃣并行操作使用线程。线程是为了实现并行操作的一个手段，也就是刚才说的需要多个并行操作“合作完成大事”，当然是使用线程啦。</span><br><span class="line">4️⃣最后可以总结为：安全稳定选进程；快速频繁选线程；</span><br></pre></td></tr></table></figure>
-
+<ul>
+<li>例如：web服务器，来一个建立一个线程，断了就销毁线程  </li>
+<li>需要进行大量的计算优先使用线程，所谓大计算量，就是消耗CPU很多，切换频繁。例如：图像处理，算法处理，可以裂解为持续时间长，切换次数多，所以要减小开销</li>
+<li>强相关处理用线程，弱相关处理用进程。强相关又称高度相关，即当一列变量变化时，与之相应的另一列变量增大<br>一般的server需要完成的任务如下：消息接发和消息处理。接发消息和消息处理就是弱相关任务，而消息处理里面又能分为消息解码，业务处理，这两个任务相对来说相关性强很多，因此，消息接发和消息处理可以分进程设计，消息解码和业务处理可以分线程设计。</li>
+</ul>
 <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
 <li>一个进程可以创建多少线程，和什么有关<br>答：一个进程创建线程的个数由虚拟内存和分配给线程的调用栈大小决定。</li>
 </ul>
@@ -96,7 +108,9 @@
 <li>#ldd a.out(list, dynamic, dependencie)列出动态库依赖关系。</li>
 <li>目录不能硬链接 ✨</li>
 <li>iptables 防火墙<a href="http://www.zsythink.net/?s=iptables" target="_blank" rel="noopener">参考🚎</a>  </li>
-<li>tcpdump -i ens38  icmp（tcpdump是linux下的抓包工具）-i指定网卡  后面可以加协议</li>
+<li>tcpdump -i ens38  icmp（tcpdump是linux下的抓包工具）-i指定网卡  后面可以加协议  </li>
+<li>find /usr/ -name kill  查找文件，指定一个路径，再通过-name指定名字   </li>
+<li>ldd –version  //查看glibc库版本（ldd是库中的一个命令）</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">	proc文件系统常常被放置于Linux系统的&#x2F;proc目录下，常常用于查看有关硬件、进程的状态。 proc是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，储存系统运行信息文件。</span><br><span class="line">	系统启动后以&#x2F;sys目录作为 sysfs 文件系统的挂载点 ,sysfs 是一个类似于 proc 的殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</span><br><span class="line">* linux下的cmdline是uboot的bootargs参数传过去的</span><br></pre></td></tr></table></figure>
 
@@ -108,7 +122,7 @@
 <li>静态库：ar rcs libMyTest.a *.o </li>
 <li>.a是静态库 ， .so 为共享库</li>
 </ul>
-<h1 id="网络方面"><a href="#网络方面" class="headerlink" title="网络方面"></a>网络方面</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a><br><a href="https://blog.csdn.net/vjhghjghj/article/details/100985674#epoll_ctl()" target="_blank" rel="noopener">参考</a></p>
+<h1 id="网络方面"><a href="#网络方面" class="headerlink" title="网络方面"></a>网络方面</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a><br><a href="https://blog.csdn.net/vjhghjghj/article/details/100985674#epoll_ctl(" target="_blank" rel="noopener">参考🚎</a></p>
 <ul>
 <li><p>就绪列表的数据结构<br>就绪列表引用着就绪的 socket，所以它应能够快速的插入数据。<br>程序可能随时调用 epoll_ctl 添加监视 socket，也可能随时删除。当删除时，若该 socket 已经存放在就绪列表中，它也应该被移除。所以就绪列表应是一种能够快速插入和删除的数据结构。<br>双向链表就是这样一种数据结构，epoll 使用双向链表来实现就绪队列。✨</p>
 </li>
@@ -145,7 +159,10 @@
 <h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p><a href="https://www.jianshu.com/p/275602182f39" target="_blank" rel="noopener">参考🚎</a>  </p>
 <ul>
 <li>mmap 优化 将内核的file文件缓冲区映射到用户空间 ——少去了内核拷贝到用户空间的过程 </li>
-<li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中</li>
+<li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中 </li>
+</ul>
+<h2 id="线程函数为什么不是系统调用"><a href="#线程函数为什么不是系统调用" class="headerlink" title="线程函数为什么不是系统调用"></a>线程函数为什么不是系统调用</h2><ul>
+<li>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。</li>
 </ul>
 ]]></content>
       <categories>
@@ -158,10 +175,11 @@
   <entry>
     <title>操作系统(Linux)👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/</url>
-    <content><![CDATA[<h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
+    <content><![CDATA[<h1 id="一个大佬的博客🚎🚎🚎"><a href="#一个大佬的博客🚎🚎🚎" class="headerlink" title="一个大佬的博客🚎🚎🚎"></a>一个大佬的博客<a href="https://me.csdn.net/column/gatieme" target="_blank" rel="noopener">🚎🚎🚎</a></h1><hr>
+<h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
 <li><p>Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。</p>
 </li>
-<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨  </p>
+<li><p>内核栈在进程创建的时候一起创建，每个进程有每个进程的内核栈✨ 可以说每个线程有自己的内核栈，在linux内核角度看，线程和进程统称为线程（有自己的thread_info） </p>
 </li>
 <li><p>内核两个段特权级都为最高级 0，用户两个段特权级都为最低级 3。内核代码段可以访问内核数据段，但不能访问用户数据段和用户代码段，同样地，用户代码段可以访问用户数据段，但不能访问内核数据段或内核代码段</p>
 </li>
@@ -169,7 +187,7 @@
 </li>
 <li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
 <a id="more"></a></li>
-<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序,有点向内核注册回调函数类似    </p>
+<li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序    </p>
 </li>
 <li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
 </li>
@@ -193,6 +211,11 @@
 </ul>
 <p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">   </p>
 <p><img src="/xzxaaa/images/image1.png" alt="upload successful"></p>
+<h2 id="系统调用表"><a href="#系统调用表" class="headerlink" title="系统调用表"></a>系统调用表</h2><p><a href="https://www.cnblogs.com/oddcat/articles/9820726.html" target="_blank" rel="noopener">链接🚎</a><br><a href="http://gityuan.com/2016/05/21/syscall/" target="_blank" rel="noopener">通过API查找内核对应的函数🚎</a>   </p>
+<ul>
+<li>用户空间对应的函数在glibc中(具体得看glibc的源码，有些函数得编译后才能看到，因为.s是汇编文件，需要根据编译目标平台来生成) 😂一直编不出来</li>
+</ul>
+<p>1️⃣arch\arm\include\uapi\unistd.h   用户态API名字  得到号（用户态传下来的系统调用号）<br>2️⃣arch\arm\kernel\entry-common.S   SWI中断会拿到调用号,执行CALL调用<br>3️⃣arch\arm\kernel\calls.S       通过号查找对应的系统调用<br>4️⃣通过全局查找得到函数在 include\linux\xxxx.h   //找到函数声明<br>5️⃣kernel\xxx.c 找到函数的实现 ，定义都是通过宏的<br>SYSCALL_DEFINE2(kill, pid_t, pid, int, sig) 基本等价于 asmlinkage long sys_kill(int pid, int sig) </p>
 <h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
 <ul>
 <li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，API调用进入内核态的陷入属于软件中断(SWI)</p>
@@ -214,8 +237,17 @@
 </ul>
 <h1 id="Linux进程调度"><a href="#Linux进程调度" class="headerlink" title="Linux进程调度"></a>Linux进程调度</h1><h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
 <ul>
-<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。</li>
+<li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。  </li>
 </ul>
+<h2 id="task-struct"><a href="#task-struct" class="headerlink" title="task_struct"></a>task_struct</h2><p><img src="/xzxaaa/images/task_struct.png" alt="upload successful">  </p>
+<ul>
+<li>整个thread_union在内核空间,图片中的进程描述符就是task_struct</li>
+<li>task_struct里面有 struct thread_struct thread;(现成信息保存在这里)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">union thread_union</span><br><span class="line">&#123;</span><br><span class="line">    struct thread_info thread_info;</span><br><span class="line">    unsigned long stack[THREAD_SIZE&#x2F;sizeof(long)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="PID"><a href="#PID" class="headerlink" title="PID"></a>PID</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pid_t pid;  &#x2F;&#x2F;在用户态看是spid</span><br><span class="line">pid_t tgid; </span><br><span class="line">一个线程组所有线程与领头线程具有相同的pid，存入tgid字段，getpid()返回当前进程的tgid值而不是pid的值。</span><br></pre></td></tr></table></figure>
+
 <h2 id="进程分类"><a href="#进程分类" class="headerlink" title="进程分类"></a>进程分类</h2><ul>
 <li><p>Linux系统中，为了高效地调度进程，将进程分为两类：🟥实时进程和🟩普通进程(又称非实时进程或一般进程) 实时进程的优先级要高于其他进程，如果一个实时进程处于可执行状态，它将先得到执行</p>
 </li>
@@ -364,11 +396,15 @@
 <ul>
 <li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射</li>
 </ul>
-<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><p> <a href>连接🚎</a></p>
-<ul>
-<li>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入</li>
-<li>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </li>
-<li>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过链表，将同种类型的数据串联起来  </li>
+<h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><ul>
+<li><p>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入，生产消费模型，循环队列(内核通过自旋锁同步)</p>
+</li>
+<li><p>红黑树（Red Black Tree）被广泛应用在内核的内存管理和进程调度中，红黑树的一个优点是，所有重要的操作（例如插入、删除、搜索）都可以在O(log n)时间内完成， </p>
+</li>
+<li><p>链表是在解决数组不能动态扩展这个缺陷而产生的一种数据结构，Linux中通过双向循环链表✨，将同种类型的数据串联起来  </p>
+</li>
+<li><p>循环链表优点<br>循环链表的特点是无须增加来存储量，仅对表的链接方式稍作改变，即可使得表处理更加自方便灵活。1️⃣循环链表中没有NULL指针✨。涉及遍历操作时，其终止条件就不再是像非循环链表那样判别p或p-＞next是否为空，而是判别它们是否等百于某一指定指针，如头指针或尾指针等。2️⃣在单链表中，从一已知结点出发，只能访问到该问结点及其后续结点，无法找到该结点之前的其它结点❗。而在单循环链表中，从任一结点出发都可访问到表中所有结点，这一优点使某些答运算在单循环链表上易于实现。</p>
+</li>
 </ul>
 <h1 id="一些常见术语"><a href="#一些常见术语" class="headerlink" title="一些常见术语"></a>一些常见术语</h1><ul>
 <li>进程上下文 ，用户空间的代码将通过“系统调用（操作系统提供给用户空间的接口函数）进入内核空间</li>
@@ -577,7 +613,7 @@
 <h2 id="C-头文件"><a href="#C-头文件" class="headerlink" title="C++头文件"></a>C++头文件</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#ifdef __cplusplus </span><br><span class="line">extern &quot;C&quot; &#123; </span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;一段代码  头文件中，声名方式为C语言，这样才能在C库中找到对应的函数</span><br><span class="line"></span><br><span class="line">#ifdef __cplusplus </span><br><span class="line">&#125; </span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
 
 <h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><ul>
-<li>int printf(const char* format, …);  </li>
+<li>int printf(const char* format, …);  %p —指针变量 ， %lu —32位无符号整型(llu,64位)， %f —double或float ，%x(X)—16进制无符号整型</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;stdarg.h&gt;  </span><br><span class="line">int VarArgFunc(int dwFixedArg, ...)&#123; &#x2F;&#x2F;以固定参数的地址为起点依次确定各变参的内存起始地址</span><br><span class="line"></span><br><span class="line">    va_list pArgs &#x3D; NULL;  &#x2F;&#x2F;定义va_list类型的指针pArgs，用于存储参数地址</span><br><span class="line"></span><br><span class="line">   1️⃣ va_start(pArgs, dwFixedArg); &#x2F;&#x2F;初始化pArgs指针，使其指向第一个可变参数。该宏第二个参数是变参列表的前一个参数，即最后一个固定参数</span><br><span class="line"></span><br><span class="line">   2️⃣ int dwVarArg &#x3D; va_arg(pArgs, int); &#x2F;&#x2F;该宏返回变参列表中的当前变参值并使pArgs指向列表中的下个变参。该宏第二个参数是要返回的当前变参类型</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;若函数有多个可变参数，则依次调用va_arg宏获取各个变参</span><br><span class="line"></span><br><span class="line">   3️⃣  va_end(pArgs);  &#x2F;&#x2F;将指针pArgs置为无效，结束变参的获取</span><br><span class="line"></span><br><span class="line">    &#x2F;* Code Block using variable arguments *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -616,6 +652,13 @@
 
 <h2 id="函数参数压栈顺序，stdcall和cdecl调用方式的理解"><a href="#函数参数压栈顺序，stdcall和cdecl调用方式的理解" class="headerlink" title="函数参数压栈顺序，stdcall和cdecl调用方式的理解"></a>函数参数压栈顺序，<strong>stdcall和</strong>cdecl调用方式的理解</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">__stdcall和__cdecl都是函数调用约定关键字，先来看看__stdcall和__cdecl调用方式的概念：</span><br><span class="line"></span><br><span class="line">1️⃣_stdcall：是StandardCall的缩写，是C++的标准调用方式，参数由右向左压入堆栈，由调用者负责把参数压入栈，最后由被调用❗者负责清除栈的内容。</span><br><span class="line"></span><br><span class="line">2️⃣__cdecl：是C Declaration的缩写（declaration，声明），表示C语言默认的函数调用方法：参数也是由右向左压入堆栈；由调用者负责把参数压入栈，最后也由调用者负责清除栈的内容。</span><br><span class="line"></span><br><span class="line">总结：因为以上2点，_cdecl这种调用约定的特点是支持可变数量的参数，比如printf方法，__stdcall不支持可变数量的参数。</span><br><span class="line"></span><br><span class="line">假设函数fun（）作为调用者调用printf打印东西时，可以输入不同数量的参数，printf作为被调用者，并不知道调用者fun（）到底将多少参数压入堆栈，因此printf就没有办法自己清理堆栈，所以只有函数退出之后，由fun清理堆栈，因为fun总是知道自己传入了多少参数。</span><br></pre></td></tr></table></figure>
 
+<h2 id="临时对象做返回值"><a href="#临时对象做返回值" class="headerlink" title="临时对象做返回值"></a>临时对象做返回值</h2><p><a href="https://www.itranslater.com/qa/details/2118172124685796352" target="_blank" rel="noopener">参考🚎</a></p>
+<pre><code class="text">在返回一个临时对象，即所谓的“右值”。 您可以将rvalues复制到对象（也称为变量）或将它们绑定到const引用（这将延长它们的生命周期直到引用生命的结束）。 您不能将rvalues绑定到非const引用。
+
+这是一个深思熟虑的设计决策，以防止用户意外修改将在表达式结尾处死亡的对象：</code></pre>
+<ul>
+<li>临时对象如果做返回值，相当于右值  1️⃣如果接收的是对象定义的时候，临时对象转正（编译器上的转移语义）2️⃣ 如果是对象定义后，考虑有没有右值引用函数，如果有优先匹配  </li>
+</ul>
 <hr>
 ]]></content>
       <tags>
@@ -660,7 +703,7 @@
 <ul>
 <li>在一个程序崩溃时，它一般会在指定目录下生成一个core文件。core文件仅仅是一个内存映象(同时加上调试信息)，主要是用来调试的。  </li>
 <li>开启或关闭core文件的生成<br>用以下命令来阻止系统生成core文件:   ulimit -c 0<br>下面的命令可以检查生成core文件的选项是否打开:ulimit -a  </li>
-<li>gdb -c core  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ gdb a.out</span><br><span class="line">...</span><br><span class="line">(gdb) core-file core</span><br><span class="line">...</span><br><span class="line">(gdb) bt </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<li>gdb -c core  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ gdb a.out</span><br><span class="line">...</span><br><span class="line">(gdb) core-file core</span><br><span class="line">...</span><br><span class="line">(gdb) bt  &#x2F;&#x2F;&#x2F;查看函数的调用栈，同时查看程序哪里done掉</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 
 </li>
