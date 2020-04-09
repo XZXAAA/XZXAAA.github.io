@@ -115,7 +115,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/U4.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/choice.png">
 <meta property="article:published_time" content="2020-03-29T14:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-09T08:12:10.555Z">
+<meta property="article:modified_time" content="2020-04-09T09:30:58.081Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux应用层👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -322,7 +322,6 @@
 </nav>
 
 
-
  </div>
     </header>
 
@@ -391,7 +390,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T16:12:10+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T17:30:58+08:00">
                 2020-04-09
               </time>
             
@@ -630,7 +629,10 @@
 <li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中 </li>
 </ul>
 <h2 id="线程函数为什么不是系统调用"><a href="#线程函数为什么不是系统调用" class="headerlink" title="线程函数为什么不是系统调用"></a>线程函数为什么不是系统调用</h2><ul>
-<li>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。</li>
+<li><p>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。 </p>
+</li>
+<li><p>线程函数的实现在glibc(😂找不到，不知道是不是要编译后才有)</p>
+</li>
 </ul>
 
       
@@ -837,7 +839,6 @@
           
 
           
-
         </div>
       </section>
 	  
@@ -872,7 +873,12 @@
 				</canvas>
 			</div>
 		</div>
-			
+		
+		
+
+
+
+
 
     </div>
   </aside>

@@ -116,7 +116,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/task_struct.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/VFS.png">
 <meta property="article:published_time" content="2020-03-29T14:22:00.000Z">
-<meta property="article:modified_time" content="2020-04-09T08:05:26.673Z">
+<meta property="article:modified_time" content="2020-04-09T13:02:55.394Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="操作系统Linux👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -323,7 +323,6 @@
 </nav>
 
 
-
  </div>
     </header>
 
@@ -392,7 +391,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T16:05:26+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T21:02:55+08:00">
                 2020-04-09
               </time>
             
@@ -482,18 +481,18 @@
 </li>
 <li><p>当前进程运行的代码若属于内核代码段，则称当前进程处于内核态，若属于用户代码段，则称当前进程处于用户态。用户代码段和内核代码段的代码分别运行在用户栈上和内核栈上。  </p>
 </li>
-<li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
+<li><p>处于用户态的进程若想要切换到内核态，便要依靠系统调用(软件中断)或中断✨</p>
 <a id="more"></a></li>
 <li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序    </p>
 </li>
 <li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
 </li>
-<li><p>驱动编写无法调用API，API是给应用层的。驱动属于内核空间  </p>
+<li><p>驱动编写无法调用API，API是给应用层的，属于glibc的库函数。驱动属于内核空间 是内核源码里面的函数</p>
 </li>
 </ul>
 <h2 id="Linux下如何从用户态切换到内核态？"><a href="#Linux下如何从用户态切换到内核态？" class="headerlink" title="Linux下如何从用户态切换到内核态？"></a>Linux下如何从用户态切换到内核态？</h2><p> <a href="https://blog.csdn.net/shanghx_123/article/details/83151064" target="_blank" rel="noopener">详细切换过程🚎</a>      </p>
 <ul>
-<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。  </p>
+<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令(X86)，这条汇编指令将产生向量为0x80的编程异常。  </p>
 </li>
 <li><p>陷入内核后调用system_call()  </p>
 </li>
@@ -503,7 +502,7 @@
 </li>
 <li><p>软中断会进入SVC模式，所以linux系统调用后再ARM工作在SVC模式✨  </p>
 </li>
-<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈和用户栈 ✨   </p>
+<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈(内核空间)和用户栈(用户空间) ✨   </p>
 </li>
 </ul>
 <p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">   </p>
@@ -519,7 +518,7 @@
 </li>
 <li><p>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中（面试+1✨） </p>
 </li>
-<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
+<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
 </li>
 <li><p>中断中不能进行系统调用，系统调用是给用户态的代码的，而且内核态无调用API函数  </p>
 </li>
@@ -539,7 +538,7 @@
 <h2 id="task-struct"><a href="#task-struct" class="headerlink" title="task_struct"></a>task_struct</h2><p><img src="/xzxaaa/images/task_struct.png" alt="upload successful">  </p>
 <ul>
 <li>整个thread_union在内核空间,图片中的进程描述符就是task_struct</li>
-<li>task_struct里面有 struct thread_struct thread;(现成信息保存在这里)</li>
+<li>task_struct里面有 struct thread_struct thread;(用户空间的现场信息保存在这里)</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">union thread_union</span><br><span class="line">&#123;</span><br><span class="line">    struct thread_info thread_info;</span><br><span class="line">    unsigned long stack[THREAD_SIZE&#x2F;sizeof(long)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -619,7 +618,7 @@
 <h2 id="总结下各种情况的互斥锁-信号量-和自旋锁的使用"><a href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用" class="headerlink" title="总结下各种情况的互斥锁(信号量)和自旋锁的使用"></a>总结下各种情况的互斥锁(信号量)和自旋锁的使用</h2><ul>
 <li><p>自旋锁获取锁后会关闭本地抢占 ,关闭中断✨  </p>
 </li>
-<li><p>异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
+<li><p>信号异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
 </li>
 </ul>
 <table>
@@ -629,7 +628,7 @@
 <th align="center">内核代码</th>
 <th align="center">中断</th>
 <th align="center">用户代码</th>
-<th align="center">用户异步处理代码</th>
+<th align="center">用户信号异步处理代码</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -659,7 +658,7 @@
 </li>
 <li><p>struct files_struct 是PCB块的一个成员，记录了fd的最大值,里面有struct file **成员</p>
 </li>
-<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来</p>
+<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来 文件对象记录的偏移量只有一个</p>
 </li>
 </ul>
 <h2 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h2><ul>
@@ -672,7 +671,7 @@
 <ul>
 <li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
 </li>
-<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
+<li><p>发生时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
 </li>
 <li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制  </p>
 </li>
@@ -920,7 +919,6 @@
           
 
           
-
         </div>
       </section>
 	  
@@ -955,7 +953,12 @@
 				</canvas>
 			</div>
 		</div>
-			
+		
+		
+
+
+
+
 
     </div>
   </aside>

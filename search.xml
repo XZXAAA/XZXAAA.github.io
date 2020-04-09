@@ -3,7 +3,7 @@
   <entry>
     <title>Linux应用层👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/Linux%E5%BA%94%E7%94%A8%E5%B1%82/</url>
-    <content><![CDATA[<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
  <a id="more"></a>
 <h3 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h3><ul>
 <li>有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是1-n。  </li>
@@ -162,7 +162,10 @@
 <li>sendFile  直接将文件file文件的缓冲去DMA到socket协议栈中 </li>
 </ul>
 <h2 id="线程函数为什么不是系统调用"><a href="#线程函数为什么不是系统调用" class="headerlink" title="线程函数为什么不是系统调用"></a>线程函数为什么不是系统调用</h2><ul>
-<li>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。</li>
+<li><p>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。 </p>
+</li>
+<li><p>线程函数的实现在glibc(😂找不到，不知道是不是要编译后才有)</p>
+</li>
 </ul>
 ]]></content>
       <categories>
@@ -175,7 +178,7 @@
   <entry>
     <title>操作系统(Linux)👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/%E4%BD%9C%E7%B3%BB%E7%BB%9F-Linux/</url>
-    <content><![CDATA[<h1 id="一个大佬的博客🚎🚎🚎"><a href="#一个大佬的博客🚎🚎🚎" class="headerlink" title="一个大佬的博客🚎🚎🚎"></a>一个大佬的博客<a href="https://me.csdn.net/column/gatieme" target="_blank" rel="noopener">🚎🚎🚎</a></h1><hr>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="一个大佬的博客🚎🚎🚎"><a href="#一个大佬的博客🚎🚎🚎" class="headerlink" title="一个大佬的博客🚎🚎🚎"></a>一个大佬的博客<a href="https://me.csdn.net/column/gatieme" target="_blank" rel="noopener">🚎🚎🚎</a></h1><hr>
 <h1 id="用户态与内核态"><a href="#用户态与内核态" class="headerlink" title="用户态与内核态"></a>用户态与内核态</h1><ul>
 <li><p>Linux 把内存主要分为 4 个段，分别是内核代码段、内核数据段、用户代码段、用户数据段。</p>
 </li>
@@ -185,18 +188,18 @@
 </li>
 <li><p>当前进程运行的代码若属于内核代码段，则称当前进程处于内核态，若属于用户代码段，则称当前进程处于用户态。用户代码段和内核代码段的代码分别运行在用户栈上和内核栈上。  </p>
 </li>
-<li><p>处于用户态的进程若想要切换到内核态，便要依靠中断。(软件中断)✨</p>
+<li><p>处于用户态的进程若想要切换到内核态，便要依靠系统调用(软件中断)或中断✨</p>
 <a id="more"></a></li>
 <li><p>驱动程序运行在内核空间，而应用程序运行于用户空间。一般情况下应用程序是不能直接访问硬件的，但最终程序的执行结果必然是要到硬件的，这时就需要驱动程序    </p>
 </li>
 <li><p>以32位Linux、3G+1G的配置为例：<br>Linux里的每个进程都有4G的地址空间，其中0至3G是用户空间，3G至4G是内核。✨内核被共享在每个进程的地址空间中。  </p>
 </li>
-<li><p>驱动编写无法调用API，API是给应用层的。驱动属于内核空间  </p>
+<li><p>驱动编写无法调用API，API是给应用层的，属于glibc的库函数。驱动属于内核空间 是内核源码里面的函数</p>
 </li>
 </ul>
 <h2 id="Linux下如何从用户态切换到内核态？"><a href="#Linux下如何从用户态切换到内核态？" class="headerlink" title="Linux下如何从用户态切换到内核态？"></a>Linux下如何从用户态切换到内核态？</h2><p> <a href="https://blog.csdn.net/shanghx_123/article/details/83151064" target="_blank" rel="noopener">详细切换过程🚎</a>      </p>
 <ul>
-<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令，这条汇编指令将产生向量为0x80的编程异常。  </p>
+<li><p>系统调用切换时通过软件中断来完成，该中断是程序人员自己开发出的一种正常的异常，在Linux下，这个异常具体就是调用int $0x80的汇编指令(X86)，这条汇编指令将产生向量为0x80的编程异常。  </p>
 </li>
 <li><p>陷入内核后调用system_call()  </p>
 </li>
@@ -206,7 +209,7 @@
 </li>
 <li><p>软中断会进入SVC模式，所以linux系统调用后再ARM工作在SVC模式✨  </p>
 </li>
-<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈和用户栈 ✨   </p>
+<li><p>系统调用后现场信息保存在内核栈中，每一个进程都有自己的内核栈(内核空间)和用户栈(用户空间) ✨   </p>
 </li>
 </ul>
 <p><img src="/xzxaaa/images/user_to_kernel.png" alt="upload successful">   </p>
@@ -222,7 +225,7 @@
 </li>
 <li><p>中断服务有没有参数主要是看中断发生在裸机上还是实时系统中（面试+1✨） </p>
 </li>
-<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的内核栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
+<li><p>Linux不用FIQ，只用到了IRQ<br>linux的中断处理都是在SVC模式下处理的。<br>当发生中断的时候，代码运行在内核空间(使用内核栈)<br>IRQ模式持续一小段时间,只是获取一下中断号而已<br>在IRQ回到SVC模式时候 R0存着irqnumber<br>在内核栈上保存中断时候正在执行任务的寄存器状态 R1-R12，R0保存在IRQ那边的栈。<br>随后会再搬到内核栈上 ✨(现场信息包含在内核栈上)</p>
 </li>
 <li><p>中断中不能进行系统调用，系统调用是给用户态的代码的，而且内核态无调用API函数  </p>
 </li>
@@ -242,7 +245,7 @@
 <h2 id="task-struct"><a href="#task-struct" class="headerlink" title="task_struct"></a>task_struct</h2><p><img src="/xzxaaa/images/task_struct.png" alt="upload successful">  </p>
 <ul>
 <li>整个thread_union在内核空间,图片中的进程描述符就是task_struct</li>
-<li>task_struct里面有 struct thread_struct thread;(现成信息保存在这里)</li>
+<li>task_struct里面有 struct thread_struct thread;(用户空间的现场信息保存在这里)</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">union thread_union</span><br><span class="line">&#123;</span><br><span class="line">    struct thread_info thread_info;</span><br><span class="line">    unsigned long stack[THREAD_SIZE&#x2F;sizeof(long)];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -322,7 +325,7 @@
 <h2 id="总结下各种情况的互斥锁-信号量-和自旋锁的使用"><a href="#总结下各种情况的互斥锁-信号量-和自旋锁的使用" class="headerlink" title="总结下各种情况的互斥锁(信号量)和自旋锁的使用"></a>总结下各种情况的互斥锁(信号量)和自旋锁的使用</h2><ul>
 <li><p>自旋锁获取锁后会关闭本地抢占 ,关闭中断✨  </p>
 </li>
-<li><p>异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
+<li><p>信号异步处理代码发生只能一个核上因为用户地址空间独立，中断和内核的竞争可能发生在不同核上，因为内核代码段共享</p>
 </li>
 </ul>
 <table>
@@ -332,7 +335,7 @@
 <th align="center">内核代码</th>
 <th align="center">中断</th>
 <th align="center">用户代码</th>
-<th align="center">用户异步处理代码</th>
+<th align="center">用户信号异步处理代码</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -362,7 +365,7 @@
 </li>
 <li><p>struct files_struct 是PCB块的一个成员，记录了fd的最大值,里面有struct file **成员</p>
 </li>
-<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来</p>
+<li><p>struct file，表示一个文件对象，里面也有file_operations，打开文件的时候会把indoe的file_operations复制过来 文件对象记录的偏移量只有一个</p>
 </li>
 </ul>
 <h2 id="超级块"><a href="#超级块" class="headerlink" title="超级块"></a>超级块</h2><ul>
@@ -375,7 +378,7 @@
 <ul>
 <li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
 </li>
-<li><p>发送时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
+<li><p>发生时间：1️⃣缺页如果是user，说明fault的是user空间。通过force_sig_info发送signal给相关异常进程。而内核不会挂起 2️⃣如果是其他模式，则说明fault的可能是内核模块，需要调用die函数来处理。在die函数通过__die函数来依次打印内核信息，打印内容和顺序如下：当前模块信息-&gt;硬件寄存器R0~PC内容-&gt;栈内容-&gt;打backtrace-&gt;打PC指针。  </p>
 </li>
 <li><p>执行用户程序的时候处理器处于用户模式，执行中断或系统调用的时候输出SVC特权模式，实现存储器访问权限的控制  </p>
 </li>
@@ -425,10 +428,10 @@
   <entry>
     <title>C/C++知识👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/C-%E9%9D%A2%E8%AF%95%E7%9F%A5%E8%AF%86%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/</url>
-    <content><![CDATA[<h1 id="C-绝佳总结网址🚎"><a href="#C-绝佳总结网址🚎" class="headerlink" title="C++绝佳总结网址🚎"></a><a href="https://interview.huihut.com/#/?id=%E2%9E%95-cc" target="_blank" rel="noopener">C++绝佳总结网址🚎</a></h1><a id="more"></a>  
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="C-绝佳总结网址🚎"><a href="#C-绝佳总结网址🚎" class="headerlink" title="C++绝佳总结网址🚎"></a><a href="https://interview.huihut.com/#/?id=%E2%9E%95-cc" target="_blank" rel="noopener">C++绝佳总结网址🚎</a></h1><a id="more"></a>  
 
 <h1 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h1><ul>
-<li><p>override：  表示要重写该函数，如果父类继承过来的没有能够继承，则编译报错</p>
+<li><p>override：  表示要重写该函数，如果父类中没有对应能够重写的，则编译报错</p>
 </li>
 <li><p>final ： 一个类不想被继承或一个函数不想被重写</p>
 </li>
@@ -452,10 +455,9 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣中断服务程序中修改的供其它程序检测的变量，需要加volatile  </span><br><span class="line">2️⃣多任务环境下各任务间共享的标志，应该加volatile  </span><br><span class="line">3️⃣存储器映射的硬件寄存器通常也要加volatile说明，因为每次对它的读写都可能由不同意义；(指针访问设备地址，输出突然改变)</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li><p>new和malloc<br>1️⃣ new是C++关键字，malloc是C库函数<br>2️⃣ new=malloc + 构造函数<br>3️⃣new返回的元素类型是确定的，malloc返回void</p>
+<li><p>new和malloc<br>1️⃣ new是C++关键字，malloc是C库函数<br>2️⃣ new=malloc + 构造函数<br>3️⃣new返回的元素类型是确定的，malloc返回void<br>4️⃣new可以进行操作符重载</p>
 <ul>
 <li>普通引用在声明时必须用其它的变量进行初始化，引用作为函数参数声明时不进行初始化  </li>
-<li></li>
 </ul>
 </li>
 </ul>
@@ -594,7 +596,7 @@
 </ul>
 <h2 id="函数覆盖"><a href="#函数覆盖" class="headerlink" title="函数覆盖"></a>函数覆盖</h2><ul>
 <li>子类覆盖父类函数时候，全部覆盖，无法实现子类和父类的重载  </li>
-<li>覆盖时候 public继承才可以显示调用，test.Base::fun(i)  </li>
+<li>覆盖时候可以显示调用，test.Base::fun(i)  </li>
 </ul>
 <h2 id="构造函数什么情况下必须在初始化列表中进行初始化"><a href="#构造函数什么情况下必须在初始化列表中进行初始化" class="headerlink" title="构造函数什么情况下必须在初始化列表中进行初始化"></a>构造函数什么情况下必须在初始化列表中进行初始化</h2><ul>
 <li>在父类对象只有有参构造函数的情况下  </li>
@@ -668,7 +670,7 @@
   <entry>
     <title>Linux 驱动👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/</url>
-    <content><![CDATA[<h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
 <li>芯片厂家编写<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动  <a id="more"></a>  </li>
 <li>linux内核编写<br>  input 核心层会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦  </li>
 </ul>
@@ -728,7 +730,7 @@
   <entry>
     <title>协议与一些硬件知识👩🏼‍🤝‍🧑🏻</title>
     <url>/xzxaaa/2020/03/29/%E5%8D%8F%E8%AE%AE%F0%9F%91%A9%F0%9F%8F%BC%E2%80%8D%F0%9F%A4%9D%E2%80%8D%F0%9F%A7%91%F0%9F%8F%BB/</url>
-    <content><![CDATA[<h1 id="IIC"><a href="#IIC" class="headerlink" title="IIC"></a>IIC</h1><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="IIC"><a href="#IIC" class="headerlink" title="IIC"></a>IIC</h1><ul>
 <li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
 <li>IIC 速度能到达400K  SPI:50M  </li>
 <li>IC为什么用开漏输出和上拉电阻  </li>
@@ -782,7 +784,7 @@
   <entry>
     <title>使用工具🚴‍♂️</title>
     <url>/xzxaaa/2020/03/29/%E5%B7%A5%E5%85%B7/</url>
-    <content><![CDATA[<h1 id="C-内存泄漏检测"><a href="#C-内存泄漏检测" class="headerlink" title="C++内存泄漏检测"></a>C++内存泄漏检测</h1><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="C-内存泄漏检测"><a href="#C-内存泄漏检测" class="headerlink" title="C++内存泄漏检测"></a>C++内存泄漏检测</h1><ul>
 <li>windows下有 微软的Visual Leak Detector 配合VS可视化 ，配置好#include vld.h </li>
 <li>linux下有 valgrind   <a id="more"></a>
 <a href="https://blog.csdn.net/gatieme/article/details/51959654" target="_blank" rel="noopener">使用方法🚎</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">开源的valgrind工具还是相当不错的</span><br><span class="line">Memcheck。这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。这也是本文将重点介绍的部分。</span><br><span class="line">Callgrind。它主要用来检查程序中函数调用过程中出现的问题。</span><br><span class="line">Cachegrind。它主要用来检查程序中缓存使用出现的问题。</span><br><span class="line">Helgrind。它主要用来检查多线程程序中出现的竞争问题。</span><br><span class="line">Massif。它主要用来检查程序中堆栈使用中出现的问题。</span><br><span class="line">Extension。可以利用core提供的功能，自己编写特定的内存调试工具</span><br><span class="line"> &#96;&#96;&#96;  </span><br><span class="line">&#96;&#96;&#96;bash</span><br><span class="line">编译:  gcc  -Wall -g valgrind_demo.c -o valgrind_demo</span><br><span class="line">执行条件 : valgrind --tool&#x3D;memcheck --leak-check&#x3D;full .&#x2F;valgrind_demo</span><br><span class="line">将错误写进日志: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log .&#x2F;valgrind_demo</span><br><span class="line">和gdb一起调试: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log gdb valgrind_demo</span><br></pre></td></tr></table></figure></li>
@@ -798,7 +800,7 @@
   <entry>
     <title>一些函数底层实现🤦‍♂️</title>
     <url>/xzxaaa/2020/03/29/%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0/</url>
-    <content><![CDATA[<h1 id="内存的分配和管理"><a href="#内存的分配和管理" class="headerlink" title="内存的分配和管理"></a>内存的分配和管理</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">malloc、calloc、realloc、alloca</span><br><span class="line">malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</span><br><span class="line">calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。</span><br><span class="line">realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。</span><br><span class="line">alloca：在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca 不具可移植性, 而且在没有传统堆栈的机器上很难实现。alloca 不宜使用在必须广泛移植的程序中。C99 中支持变长数组 (VLA)，可以用来替代 alloca。</span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="内存的分配和管理"><a href="#内存的分配和管理" class="headerlink" title="内存的分配和管理"></a>内存的分配和管理</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">malloc、calloc、realloc、alloca</span><br><span class="line">malloc：申请指定字节数的内存。申请到的内存中的初始值不确定。</span><br><span class="line">calloc：为指定长度的对象，分配能容纳其指定个数的内存。申请到的内存的每一位（bit）都初始化为 0。</span><br><span class="line">realloc：更改以前分配的内存长度（增加或减少）。当增加长度时，可能需将以前分配区的内容移到另一个足够大的区域，而新增区域内的初始值则不确定。</span><br><span class="line">alloca：在栈上申请内存。程序在出栈的时候，会自动释放内存。但是需要注意的是，alloca 不具可移植性, 而且在没有传统堆栈的机器上很难实现。alloca 不宜使用在必须广泛移植的程序中。C99 中支持变长数组 (VLA)，可以用来替代 alloca。</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>linux平台下堆的malloc堆申请 更底层用的是brk或者sbrk ，栈是alloca ✨</p>
 <a id="more"></a>
@@ -838,7 +840,7 @@
   <entry>
     <title>Linux移植</title>
     <url>/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/</url>
-    <content><![CDATA[<h1 id="参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><a href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌" class="headerlink" title="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌"></a>参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</h1><h1 id="Uboot启动分析"><a href="#Uboot启动分析" class="headerlink" title="Uboot启动分析"></a>Uboot启动分析</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><a href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌" class="headerlink" title="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌"></a>参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</h1><h1 id="Uboot启动分析"><a href="#Uboot启动分析" class="headerlink" title="Uboot启动分析"></a>Uboot启动分析</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
 <a id="more"></a>
 <ul>
 <li>2个宏<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ENTRY(save_boot_params )展开后</span><br><span class="line">.globl  save_boot_params  </span><br><span class="line">.align  4  </span><br><span class="line">save_boot_params: </span><br><span class="line">ENDPROC(save_boot_params)展开后</span><br><span class="line">.typename save_boot_params STTFUNC;</span><br><span class="line">.size save_boot_params,-save_boot_params</span><br></pre></td></tr></table></figure>
@@ -883,7 +885,7 @@
   <entry>
     <title>网络</title>
     <url>/xzxaaa/2020/03/22/%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="ICMP-DHCP"><a href="#ICMP-DHCP" class="headerlink" title="ICMP DHCP"></a>ICMP DHCP</h1><p><a href="https://blog.csdn.net/hello_program_world/article/details/80632014" target="_blank" rel="noopener">链接</a></p>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="ICMP-DHCP"><a href="#ICMP-DHCP" class="headerlink" title="ICMP DHCP"></a>ICMP DHCP</h1><p><a href="https://blog.csdn.net/hello_program_world/article/details/80632014" target="_blank" rel="noopener">链接</a></p>
 <ul>
 <li>ICMP Internet控制报文协议，处于网络层（IP层）(Internet Control Message Protocol)  </li>
 <li>ICMP协议主要用来检测网络通信故障和实现链路追踪，最典型的应用就是PING和tracerooute。</li>
@@ -925,7 +927,7 @@
   <entry>
     <title>嵌入式三级考试</title>
     <url>/xzxaaa/2020/03/20/%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%B8%89%E7%BA%A7%E8%80%83%E8%AF%95/</url>
-    <content><![CDATA[<h1 id="实时系统具备的7个特征"><a href="#实时系统具备的7个特征" class="headerlink" title="实时系统具备的7个特征"></a>实时系统具备的7个特征</h1><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="实时系统具备的7个特征"><a href="#实时系统具备的7个特征" class="headerlink" title="实时系统具备的7个特征"></a>实时系统具备的7个特征</h1><ul>
 <li>异步IO和中断处理能力 </li>
 <li>任务切换时间和中断延迟时间确定</li>
 <li>优先级中断调度</li>
@@ -966,7 +968,7 @@
   <entry>
     <title>算法</title>
     <url>/xzxaaa/2020/03/08/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><ul>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><ul>
 <li>参考资料<br>B站资料—&gt;<a href="https://www.bilibili.com/video/av39093184?t=256,主要是看过程图" target="_blank" rel="noopener">链接</a></li>
 </ul>
 <hr>
