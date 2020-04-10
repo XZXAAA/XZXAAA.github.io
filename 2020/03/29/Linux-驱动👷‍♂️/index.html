@@ -105,15 +105,15 @@
 
 
 
-<meta name="description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备，如RTC SPI_I2C适配器的驱动。 LCD屏幕驱动">
+<meta name="description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 驱动👷‍♂️">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备，如RTC SPI_I2C适配器的驱动。 LCD屏幕驱动">
+<meta property="og:description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/CMSIS.png">
 <meta property="article:published_time" content="2020-03-29T13:51:00.000Z">
-<meta property="article:modified_time" content="2020-04-08T03:35:38.154Z">
+<meta property="article:modified_time" content="2020-04-10T06:53:16.875Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux驱动👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -388,8 +388,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T11:35:38+08:00">
-                2020-04-08
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:53:16+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -469,17 +469,21 @@
 
       
         <h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
-<li>芯片厂家编写<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动  <a id="more"></a>  </li>
-<li>linux内核编写<br>  input 核心层会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦  </li>
+<li><p>芯片厂家编写<br>  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了<br> SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制<br> LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)</p>
+<a id="more"></a>   
+</li>
+<li><p>linux内核存在的驱动<br>input核心层：其会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦<br>按键驱动：linux内核有一个按键驱动，可以编译的时候配置使能。按照文档信息写好设备树就可以用<br>LED驱动：linux内核有LED驱动，可以配置使能。按照文档信息写好设备树就可以用了。其中使用了input的方式上报  </p>
+</li>
+<li><p>自己编译驱动<br>触摸屏驱动：需要按照input的规则上报<br>misc杂项驱动：无法分类的一些驱动</p>
+</li>
 </ul>
 <h2 id="驱动中相关函数"><a href="#驱动中相关函数" class="headerlink" title="驱动中相关函数"></a>驱动中相关函数</h2><ul>
-<li>异步通知的时候 需要实现file_op 中的fasync，在合适的时候通过kill_fasync发送信号，应用层通过fcntl操作来开启异步IO</li>
-<li>非阻塞访问的时候 需要实现poll</li>
-<li>阻塞访问的时候设备有一个共用的等待队列头，队列头里面是队列项(每个访问设备的进程都是一个队列项，当设备不可用的时候就要将这些进程对应的等待队列项添加到等待队列里面),在合适的时候唤醒  </li>
-<li>_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </li>
-<li>驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。  </li>
-<li>1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。<br>2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</li>
+<li>异步通知：需要实现file_op 中的fasync，在合适的时候通过kill_fasync发送信号，应用层通过fcntl操作来开启异步IO</li>
+<li>非阻塞访问： 需要实现poll</li>
+<li>阻塞访问：设备有一个共用的等待队列头，队列头里面是队列项(每个访问设备的进程都是一个队列项，当设备不可用的时候就要将这些进程对应的等待队列项添加到等待队列里面),在合适的时候唤醒   </li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </span><br><span class="line"> 驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。应用层的接口还是ioctl  </span><br><span class="line">1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。  </span><br><span class="line">2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</span><br></pre></td></tr></table></figure>
+
 <h2 id="FrameBuffer"><a href="#FrameBuffer" class="headerlink" title="FrameBuffer"></a>FrameBuffer</h2><p>1️⃣Linux抽象出FrameBuffer这个设备来供用户态进程实现直接写屏<br>2️⃣Framebuffer机制模仿显卡的功能，将显卡硬件结构抽象掉，可以通过Framebuffer的读写直接对显存进行操作<br>3️⃣用户可以将Framebuffer看成是显示内存的一个映像，通过mmap将其映射到进程地址空间之后，就可以直接进行读写操作，而写操作可以立即反应在屏幕上</p>
 <h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interrupt-parent &#x3D; &lt;&amp;gpio1&gt;;</span><br><span class="line">interrupts &#x3D; &lt;5 IRQ_TYPE_EDGE_RISING&gt;;  &#x2F;&#x2F;&#x2F;设备树</span><br><span class="line">1️⃣它表示要使用gpio1里的第5号中断，hwirq就是5。</span><br><span class="line">2️⃣但是我们在驱动中会使用request_irq(irq, handler)这样的函数来注册中断，irq是什么？它是软件中断号，它应该从“gpio1的第5号中断”转换得来。</span><br><span class="line">3️⃣谁把hwirq转换为irq？由gpio1的相关数据结构，就是gpio1对应的irq_domain结构体。  </span><br><span class="line">irq_desc</span><br><span class="line">&#123;	irq_data</span><br><span class="line">    &#123; unsigned int		irq;</span><br><span class="line">	unsigned long		hwirq;</span><br><span class="line">    struct irq_chip		*chip;</span><br><span class="line">	struct irq_domain	*domain;</span><br><span class="line">    &#125;</span><br><span class="line">    irq_flow_handler_t	handle_irq;</span><br><span class="line">    struct irqaction	*action;(多个GPIO多一个中断入口，通过这个串起来)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

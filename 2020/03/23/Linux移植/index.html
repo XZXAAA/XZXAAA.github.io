@@ -117,7 +117,7 @@
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/uboot.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/parse_dtb.png">
 <meta property="article:published_time" content="2020-03-23T01:13:43.000Z">
-<meta property="article:modified_time" content="2020-04-07T01:41:33.581Z">
+<meta property="article:modified_time" content="2020-04-10T06:17:46.689Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
@@ -391,8 +391,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T09:41:33+08:00">
-                2020-04-07
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:17:46+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -470,7 +470,27 @@
 <li>设备树下chosen节点</li>
 </ul>
 <p><img src="/xzxaaa/images/chosen.png" alt="upload successful">  </p>
-<p><img src="/xzxaaa/images/uboot.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/uboot.png" alt="upload successful">  </p>
+<h2 id="bootz和bootm"><a href="#bootz和bootm" class="headerlink" title="bootz和bootm"></a>bootz和bootm</h2><ul>
+<li>bootz是启动zImage，bootm是启动uImage</li>
+<li>内核编译（make）之后会生成两个文件，一个Image，一个zImage，<br>其中Image为内核映像文件，而zImage为内核的一种映像压缩文件，Image大约为4M，而zImage不到2M。<br>uboot专用的映像文件，它是在zImage之前加上一个长度为64字节的“头”  </li>
+</ul>
+<h2 id="ramdisk和initrd"><a href="#ramdisk和initrd" class="headerlink" title="ramdisk和initrd"></a>ramdisk和initrd</h2><p><a href="https://www.cnblogs.com/leaven/archive/2010/01/07/1641324.html" target="_blank" rel="noopener">参考🚎</a></p>
+<ul>
+<li>当根文件系统采用ramdisk挂载  </li>
+<li>配置内核编译的时候就预先留一个ramdisk空间 </li>
+<li>我们会先制作一个initrd.img.gz的跟文件系统(里面有initrd程序),在启动前先加载到RAM中</li>
+<li>initrd 的作用1️⃣格式化一个 Ramdisk2️⃣加载根文件系统内容到Ramdisk3️⃣将Ramdisk作为根文件系统</li>
+</ul>
+<h2 id="uboot命令"><a href="#uboot命令" class="headerlink" title="uboot命令"></a>uboot命令</h2><ul>
+<li>在uboot上看存储物质有NandFlash和MMC(SD卡接口)，MMC包括emmc的</li>
+<li>在emmc上有一个分区(1)为fat格式，存储的zImage和设备树。启动时候可以通过fat命令读取到DRAM就可以不用tftp了  </li>
+<li>如果使用的是NandFlash存储设备树和zImage，通过Nand的read命读到DRAM中  </li>
+<li>我们在emmc分（2）的格式是ext的格式。存放的是根文件系统通过ext系列的命令可以查看一些文件信息</li>
+</ul>
+<h2 id="grub"><a href="#grub" class="headerlink" title="grub"></a>grub</h2><ul>
+<li>GRUB是多系统引导管理器，简单的说既能引导Linux，同时也能引导Windows</li>
+</ul>
 <h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
 <p><img src="/xzxaaa/images/parse_dtb.png" alt="upload successful"></p>
 <ul>
@@ -479,7 +499,10 @@
 <li>init进程 查看uboot传递过来的bootarg参数 ，  </li>
 </ul>
 1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它  </li>
-<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID</li>
+<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID   </li>
+</ul>
+<h2 id="设备树？"><a href="#设备树？" class="headerlink" title="设备树？"></a>设备树？</h2><ul>
+<li>为了实现设备信息和驱动分离，不然设备信息都被添加到linux内核上了，导致linux内核一大堆重复的代码</li>
 </ul>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
 <li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>
@@ -705,7 +728,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><span class="nav-number">1.</span> <span class="nav-text">参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Uboot启动分析"><span class="nav-number">2.</span> <span class="nav-text">Uboot启动分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz命令解析"><span class="nav-number">2.1.</span> <span class="nav-text">bootz命令解析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux——kernel"><span class="nav-number">3.</span> <span class="nav-text">Linux——kernel</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><span class="nav-number">1.</span> <span class="nav-text">参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Uboot启动分析"><span class="nav-number">2.</span> <span class="nav-text">Uboot启动分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz命令解析"><span class="nav-number">2.1.</span> <span class="nav-text">bootz命令解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz和bootm"><span class="nav-number">2.2.</span> <span class="nav-text">bootz和bootm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ramdisk和initrd"><span class="nav-number">2.3.</span> <span class="nav-text">ramdisk和initrd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uboot命令"><span class="nav-number">2.4.</span> <span class="nav-text">uboot命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grub"><span class="nav-number">2.5.</span> <span class="nav-text">grub</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux——kernel"><span class="nav-number">3.</span> <span class="nav-text">Linux——kernel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设备树？"><span class="nav-number">3.1.</span> <span class="nav-text">设备树？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li></ol></div>
             
 
           </div>

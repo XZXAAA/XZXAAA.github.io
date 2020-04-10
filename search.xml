@@ -93,7 +93,7 @@
 </ul>
 <h2 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h2><ul>
 <li>/opt目录：这是给主机额外安装软件所摆放的目录    </li>
-<li>/tmp:暂时放置档案的地方; FHS甚至建议在开机时，应该要将/tmp下的资料都删除</li>
+<li>/tmp:暂时放置档案的地方; FHS甚至建议在开机时，应该要将/tmp下的资料都删除(内存文件系统挂载点)</li>
 <li>top 查看系统性能 进去后按f选择要显示的项</li>
 <li>free查看内存使用情况  </li>
 <li>查indoe命令 stat   </li>
@@ -218,7 +218,8 @@
 <ul>
 <li>用户空间对应的函数在glibc中(具体得看glibc的源码，有些函数得编译后才能看到，因为.s是汇编文件，需要根据编译目标平台来生成) 😂一直编不出来</li>
 </ul>
-<p>1️⃣arch\arm\include\uapi\unistd.h   用户态API名字  得到号（用户态传下来的系统调用号）<br>2️⃣arch\arm\kernel\entry-common.S   SWI中断会拿到调用号,执行CALL调用<br>3️⃣arch\arm\kernel\calls.S       通过号查找对应的系统调用<br>4️⃣通过全局查找得到函数在 include\linux\xxxx.h   //找到函数声明<br>5️⃣kernel\xxx.c 找到函数的实现 ，定义都是通过宏的<br>SYSCALL_DEFINE2(kill, pid_t, pid, int, sig) 基本等价于 asmlinkage long sys_kill(int pid, int sig) </p>
+<p>1️⃣arch\arm\include\uapi\unistd.h   用户态API名字  得到号（用户态传下来的系统调用号）<br>2️⃣arch\arm\kernel\entry-common.S   SWI中断会拿到调用号,执行CALL调用<br>3️⃣arch\arm\kernel\calls.S       通过号查找对应的系统调用<br>4️⃣通过全局查找得到函数在 include\linux\xxxx.h   //找到函数声明<br>5️⃣kernel\xxx.c 找到函数的实现 ，定义都是通过宏的<br>SYSCALL_DEFINE2(kill, pid_t, pid, int, sig) 基本等价于 asmlinkage long sys_kill(int pid, int sig)   </p>
+<hr>
 <h1 id="Linux中的中断"><a href="#Linux中的中断" class="headerlink" title="Linux中的中断"></a>Linux中的中断</h1><p><a href="http://www.wowotech.net/irq_subsystem/irq_handler.html" target="_blank" rel="noopener">linuxIRQ中断详细流程🚎</a> </p>
 <ul>
 <li><p>中断处理程序运行于内核态 ✨<br>中断发生于用户态时，要把进程的用户空间堆栈切换到进程的系统空间堆栈，刚切换时，内核堆栈是空的<br>中断发生于内核态时， 不需要堆栈空间的切换。<br>中断可以发生在内核态，中断属于IRQ，API调用进入内核态的陷入属于软件中断(SWI)</p>
@@ -236,8 +237,9 @@
 <h2 id="中断编程注意"><a href="#中断编程注意" class="headerlink" title="中断编程注意"></a>中断编程注意</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣睡眠或者放弃CPU。</span><br><span class="line">      这样做的后果是灾难性的，因为内核在进入中断之前会关闭进程调度✨，一旦睡眠或者放弃CPU，这时内核无法调度别的进程来执行，系统就会死掉</span><br><span class="line">2️⃣尝试获得信号量</span><br><span class="line">      如果获得不到信号量，代码就会睡眠，会产生和上面相同的情况</span><br><span class="line">3️⃣执行耗时的任务</span><br><span class="line">      中断处理应该尽可能快，因为内核要响应大量服务和请求，中断上下文占用CPU时间太长会严重影响系统功能。</span><br><span class="line">4️⃣访问用户空间的虚拟地址</span><br><span class="line">      因为中断上下文是和特定进程无关的，它是内核代表硬件运行在内核空间，所以在终端上下文无法访问用户空间的虚拟地址。</span><br></pre></td></tr></table></figure>
 <h2 id="Linux之时钟中断"><a href="#Linux之时钟中断" class="headerlink" title="Linux之时钟中断"></a>Linux之时钟中断</h2><p><a href="https://blog.csdn.net/farmwang/article/details/70173139" target="_blank" rel="noopener">连接🚎</a>  </p>
 <ul>
-<li>在Linux的0号中断是一个定时器中断。在固定的时间间隔都发生一次中断，也是说每秒发生该中断的频率都是固定的。该频率是常量HZ，该值一般是在100 ~ 1000之间。该中断的作用是为了定时更新系统日期和时间，使系统时间不断地得到跳转。另外该中断的中断处理函数除了更新系统时间外，还需要更新本地CPU统计数。指的是调用scheduler_tick递减进程的时间片，若进程的时间片递减到0，进程则被调度出去而放弃CPU使用权。</li>
+<li>在Linux的0号中断是一个定时器中断。在固定的时间间隔都发生一次中断，也是说每秒发生该中断的频率都是固定的。该频率是常量HZ，该值一般是在100 ~ 1000之间。该中断的作用是为了定时更新系统日期和时间，使系统时间不断地得到跳转。另外该中断的中断处理函数除了更新系统时间外，还需要更新本地CPU统计数。指的是调用scheduler_tick递减进程的时间片，若进程的时间片递减到0，进程则被调度出去而放弃CPU使用权。  </li>
 </ul>
+<hr>
 <h1 id="Linux进程调度"><a href="#Linux进程调度" class="headerlink" title="Linux进程调度"></a>Linux进程调度</h1><h2 id="Linux用户抢占和内核抢占详解-概念-实现和触发时机"><a href="#Linux用户抢占和内核抢占详解-概念-实现和触发时机" class="headerlink" title="Linux用户抢占和内核抢占详解(概念, 实现和触发时机)"></a>Linux用户抢占和内核抢占详解(概念, 实现和触发时机)</h2><p><a href="https://cloud.tencent.com/developer/article/1368153" target="_blank" rel="noopener">抢占？非抢占？用户抢占？内核抢占？ 🚎详细文章</a>  </p>
 <ul>
 <li>现在主流的操作系统都是分时操作系统，同时也是抢占式的。linux就是分时操作系统。。  </li>
@@ -297,8 +299,7 @@
 <li>子线程创建的时候 调度策略默认跟主线程一样，测试过了</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">例：创建优先级为10的线程   </span><br><span class="line">pthread_attr_t   attr;  </span><br><span class="line">struct   sched_param   param;  </span><br><span class="line">pthread_attr_init(&amp;attr);  </span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr, SCHED_RR);  </span><br><span class="line">param.sched_priority   &#x3D;   10;  </span><br><span class="line">pthread_attr_setschedparam(&amp;attr,  &amp;param);  </span><br><span class="line">pthread_create(xxx , &amp;attr, xxx,xxx);  </span><br><span class="line">例：设置最高优先级</span><br><span class="line">pthread_attr_t attr;</span><br><span class="line">struct sched_param  param;</span><br><span class="line">pthread_t  thread &#x3D; pthread_self();&#x2F;&#x2F;当前程序线程号</span><br><span class="line">int rs &#x3D; pthread_attr_init( &amp;attr );</span><br><span class="line">                   assert( rs &#x3D;&#x3D; 0 );</span><br><span class="line">pthread_attr_setschedpolicy(&amp;attr,SCHED_FIFO);&#x2F;&#x2F;设置线程调度策略</span><br><span class="line">param.sched_priority   &#x3D;  sched_get_priority_max(SCHED_FIFO); &#x2F;&#x2F;优先级设定</span><br><span class="line">rs &#x3D; pthread_attr_setschedparam( &amp;attr,  &amp;param );&#x2F;&#x2F;设置和获取schedparam属性pthread_attr_destroy(&amp;attr);</span><br></pre></td></tr></table></figure>
-
-
+<hr>
 <h1 id="可重入函数"><a href="#可重入函数" class="headerlink" title="可重入函数"></a>可重入函数</h1><p><a href="https://www.jianshu.com/p/2c8de98bf0db" target="_blank" rel="noopener">什么是可重入函数?🚎</a> </p>
 <ul>
 <li><p>可重入强调对单个线程执行时，重新进入同一个子程序，仍然是安全的。 </p>
@@ -353,6 +354,7 @@
 <td align="center">不可以(会出现连续2次获锁情况导致死锁,导致死锁)</td>
 </tr>
 </tbody></table>
+<hr>
 <h1 id="VFS-虚拟文件系统"><a href="#VFS-虚拟文件系统" class="headerlink" title="VFS(虚拟文件系统)"></a>VFS(虚拟文件系统)</h1><p><a href="https://www.jianshu.com/p/3af93fe0855c" target="_blank" rel="noopener">初识VFS🚎</a><br><a href="https://www.cnblogs.com/linux-xin/p/8126999.html" target="_blank" rel="noopener">虚拟文件系统VFS—-超级块、inode、dentry、file🚎</a><br><a href="http://www.360doc.com/content/15/0514/22/12144668_470541788.shtml" target="_blank" rel="noopener">补充参考2🚎</a></p>
 <ul>
 <li><p>VFS是一个抽象层，其向上提供了统一的文件访问接口，而向下则兼容了各种不同的文件系统。  </p>
@@ -372,8 +374,9 @@
 <li>查看超级块命令 #dumpe2fs  /dev/sd1</li>
 <li>一个超级块对应一个文件系统</li>
 <li>内核单独使用一个简单的结构体将所有的super_block都链接起来  </li>
-<li>Linux虚拟文件系统四大对象：<br>1️⃣超级块(super block)2️⃣索引节点(inode)<br>3️⃣目录项(dentry)4️⃣文件对象(file)<br><img src="/xzxaaa/images/VFS.png" alt="upload successful"></li>
+<li>Linux虚拟文件系统四大对象：<br>1️⃣超级块(super block)2️⃣索引节点(inode)<br>3️⃣目录项(dentry)4️⃣文件对象(file)<br><img src="/xzxaaa/images/VFS.png" alt="upload successful">  </li>
 </ul>
+<hr>
 <h1 id="MMU"><a href="#MMU" class="headerlink" title="MMU"></a>MMU</h1><p><a href="https://www.cnblogs.com/LoyenWang/p/11406693.html" target="_blank" rel="noopener">MMU是什么？🚎</a><br><a href="https://blog.csdn.net/rockrockwu/article/details/80993594" target="_blank" rel="noopener">缺页参考🚎</a><br><a href="https://www.jianshu.com/p/755338d11865" target="_blank" rel="noopener">mmap🚎</a></p>
 <ul>
 <li><p>缺页就虚拟地址在查表映射的时候失败发生的异常中断  </p>
@@ -391,14 +394,23 @@
 <li>windows上的虚拟内存在linux叫交换空间 </li>
 <li>虚拟内存中，允许将一个作业分多次调入内存。    </li>
 </ul>
+<hr>
 <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="RTOS栈空间"><a href="#RTOS栈空间" class="headerlink" title="RTOS栈空间"></a>RTOS栈空间</h2><p>请简述linux或RTOS中，栈空间最大使用率和栈溢出检测方法。<br>       方法一：在任务切换时检测任务指针是否过界了，如果过界了，在任务切换的时候会触发栈溢出的钩子函数。<br>       方法二：任务创建的时候将任务栈所有的数据初始化为0xa5，任务切换时进行任务栈检测的时候会检测末尾的16个字节是否都是0xa5，通过这种方式来检测任务栈是否溢出了。过这种方式来检测任务栈是否溢出了。    </p>
 <h2 id="DMA和一致性缓存"><a href="#DMA和一致性缓存" class="headerlink" title="DMA和一致性缓存"></a>DMA和一致性缓存</h2><p> <a href="https://blog.csdn.net/jasonchen_gbd/article/details/79462064" target="_blank" rel="noopener">为什么会有缓存不一致🚎</a>  </p>
 <ul>
 <li>缓存不一致性出现的原因？<br>1️⃣DMA直接与主存的数据交互，导致CPU中的cache内容与主存内容不一致；<br>2️⃣多组缓存中，直写和回写造成的不一致(多核) </li>
 </ul>
 <ul>
-<li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射</li>
+<li>如何解决缓存一致性问题？<br>1️⃣多组缓存, 通过共享总线的机制, 使用MESI协议, 实现缓存一致性;<br>2️⃣写操作: 只有缓存段处于某一个处理器独占E的时, 才允许写;<br>3️⃣DMA需要的内存由内核去申请，内核可能需要对这段内存重新做一遍映射  </li>
 </ul>
+<hr>
+<h1 id="Linux文件系统类型"><a href="#Linux文件系统类型" class="headerlink" title="Linux文件系统类型"></a>Linux文件系统类型</h1><p><a href="https://mp.weixin.qq.com/s/aEBaf98u2RSMjyITcLZlzw" target="_blank" rel="noopener">参考🚎</a>  </p>
+<ul>
+<li>sysfs与procfs文件系统是内核自动生成并挂载的文件系统   </li>
+<li>1️⃣sysfs与2️⃣procfs都属于虚拟文件系统  </li>
+<li>存储设备的文件系统有1️⃣内存文件系统2️⃣Flash文件系统3️⃣扩展SD卡文件系统4️⃣网络文件系统<br><img src="/xzxaaa/images/filesys.png" alt="upload successful"></li>
+</ul>
+<hr>
 <h1 id="Linux内核中常见的数据结构"><a href="#Linux内核中常见的数据结构" class="headerlink" title="Linux内核中常见的数据结构"></a>Linux内核中常见的数据结构</h1><ul>
 <li><p>生产者和消费者模型是计算机编程中最常见的一种模型，缓冲区用了循环队列 ，通过移动读指针和写指针实现缓冲区数据的读取和写入，生产消费模型，循环队列(内核通过自旋锁同步)</p>
 </li>
@@ -671,17 +683,21 @@
     <title>Linux 驱动👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
-<li>芯片厂家编写<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动  <a id="more"></a>  </li>
-<li>linux内核编写<br>  input 核心层会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦  </li>
+<li><p>芯片厂家编写<br>  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了<br> SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制<br> LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)</p>
+<a id="more"></a>   
+</li>
+<li><p>linux内核存在的驱动<br>input核心层：其会向 Linux 内核注册一个字符设备 ，应用层和驱动之间的解耦<br>按键驱动：linux内核有一个按键驱动，可以编译的时候配置使能。按照文档信息写好设备树就可以用<br>LED驱动：linux内核有LED驱动，可以配置使能。按照文档信息写好设备树就可以用了。其中使用了input的方式上报  </p>
+</li>
+<li><p>自己编译驱动<br>触摸屏驱动：需要按照input的规则上报<br>misc杂项驱动：无法分类的一些驱动</p>
+</li>
 </ul>
 <h2 id="驱动中相关函数"><a href="#驱动中相关函数" class="headerlink" title="驱动中相关函数"></a>驱动中相关函数</h2><ul>
-<li>异步通知的时候 需要实现file_op 中的fasync，在合适的时候通过kill_fasync发送信号，应用层通过fcntl操作来开启异步IO</li>
-<li>非阻塞访问的时候 需要实现poll</li>
-<li>阻塞访问的时候设备有一个共用的等待队列头，队列头里面是队列项(每个访问设备的进程都是一个队列项，当设备不可用的时候就要将这些进程对应的等待队列项添加到等待队列里面),在合适的时候唤醒  </li>
-<li>_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </li>
-<li>驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。  </li>
-<li>1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。<br>2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</li>
+<li>异步通知：需要实现file_op 中的fasync，在合适的时候通过kill_fasync发送信号，应用层通过fcntl操作来开启异步IO</li>
+<li>非阻塞访问： 需要实现poll</li>
+<li>阻塞访问：设备有一个共用的等待队列头，队列头里面是队列项(每个访问设备的进程都是一个队列项，当设备不可用的时候就要将这些进程对应的等待队列项添加到等待队列里面),在合适的时候唤醒   </li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </span><br><span class="line"> 驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。应用层的接口还是ioctl  </span><br><span class="line">1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。  </span><br><span class="line">2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</span><br></pre></td></tr></table></figure>
+
 <h2 id="FrameBuffer"><a href="#FrameBuffer" class="headerlink" title="FrameBuffer"></a>FrameBuffer</h2><p>1️⃣Linux抽象出FrameBuffer这个设备来供用户态进程实现直接写屏<br>2️⃣Framebuffer机制模仿显卡的功能，将显卡硬件结构抽象掉，可以通过Framebuffer的读写直接对显存进行操作<br>3️⃣用户可以将Framebuffer看成是显示内存的一个映像，通过mmap将其映射到进程地址空间之后，就可以直接进行读写操作，而写操作可以立即反应在屏幕上</p>
 <h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interrupt-parent &#x3D; &lt;&amp;gpio1&gt;;</span><br><span class="line">interrupts &#x3D; &lt;5 IRQ_TYPE_EDGE_RISING&gt;;  &#x2F;&#x2F;&#x2F;设备树</span><br><span class="line">1️⃣它表示要使用gpio1里的第5号中断，hwirq就是5。</span><br><span class="line">2️⃣但是我们在驱动中会使用request_irq(irq, handler)这样的函数来注册中断，irq是什么？它是软件中断号，它应该从“gpio1的第5号中断”转换得来。</span><br><span class="line">3️⃣谁把hwirq转换为irq？由gpio1的相关数据结构，就是gpio1对应的irq_domain结构体。  </span><br><span class="line">irq_desc</span><br><span class="line">&#123;	irq_data</span><br><span class="line">    &#123; unsigned int		irq;</span><br><span class="line">	unsigned long		hwirq;</span><br><span class="line">    struct irq_chip		*chip;</span><br><span class="line">	struct irq_domain	*domain;</span><br><span class="line">    &#125;</span><br><span class="line">    irq_flow_handler_t	handle_irq;</span><br><span class="line">    struct irqaction	*action;(多个GPIO多一个中断入口，通过这个串起来)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -734,9 +750,7 @@
 <li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
 <li>IIC 速度能到达400K  SPI:50M  </li>
 <li>IC为什么用开漏输出和上拉电阻  </li>
-</ul>
-<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
-<ul>
+<li>IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </li>
 <li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)<a id="more"></a>
 
 </li>
@@ -787,9 +801,11 @@
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="C-内存泄漏检测"><a href="#C-内存泄漏检测" class="headerlink" title="C++内存泄漏检测"></a>C++内存泄漏检测</h1><ul>
 <li>windows下有 微软的Visual Leak Detector 配合VS可视化 ，配置好#include vld.h </li>
 <li>linux下有 valgrind   <a id="more"></a>
-<a href="https://blog.csdn.net/gatieme/article/details/51959654" target="_blank" rel="noopener">使用方法🚎</a><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">开源的valgrind工具还是相当不错的</span><br><span class="line">Memcheck。这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。这也是本文将重点介绍的部分。</span><br><span class="line">Callgrind。它主要用来检查程序中函数调用过程中出现的问题。</span><br><span class="line">Cachegrind。它主要用来检查程序中缓存使用出现的问题。</span><br><span class="line">Helgrind。它主要用来检查多线程程序中出现的竞争问题。</span><br><span class="line">Massif。它主要用来检查程序中堆栈使用中出现的问题。</span><br><span class="line">Extension。可以利用core提供的功能，自己编写特定的内存调试工具</span><br><span class="line"> &#96;&#96;&#96;  </span><br><span class="line">&#96;&#96;&#96;bash</span><br><span class="line">编译:  gcc  -Wall -g valgrind_demo.c -o valgrind_demo</span><br><span class="line">执行条件 : valgrind --tool&#x3D;memcheck --leak-check&#x3D;full .&#x2F;valgrind_demo</span><br><span class="line">将错误写进日志: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log .&#x2F;valgrind_demo</span><br><span class="line">和gdb一起调试: valgrind --tool&#x3D;memcheck --leak-check&#x3D;full --log-file&#x3D;mem_leak.log gdb valgrind_demo</span><br></pre></td></tr></table></figure></li>
+<a href="https://blog.csdn.net/gatieme/article/details/51959654" target="_blank" rel="noopener">使用方法🚎</a>  </li>
 </ul>
-]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">开源的valgrind工具还是相当不错的</span><br><span class="line">Memcheck。这是valgrind应用最广泛的工具，一个重量级的内存检查器，能够发现开发中绝大多数内存错误使用情况，比如：使用未初始化的内存，使用已经释放了的内存，内存访问越界等。这也是本文将重点介绍的部分。</span><br><span class="line">Callgrind。它主要用来检查程序中函数调用过程中出现的问题。</span><br><span class="line">Cachegrind。它主要用来检查程序中缓存使用出现的问题。</span><br><span class="line">Helgrind。它主要用来检查多线程程序中出现的竞争问题。</span><br><span class="line">Massif。它主要用来检查程序中堆栈使用中出现的问题。</span><br><span class="line">Extension。可以利用core提供的功能，自己编写特定的内存调试工具</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">编译:  gcc  -Wall -g valgrind_demo.c -o valgrind_demo</span><br><span class="line">执行条件 : valgrind --tool=memcheck --leak-check=full ./valgrind_demo</span><br><span class="line">将错误写进日志: valgrind --tool=memcheck --leak-check=full --<span class="built_in">log</span>-file=mem_leak.log ./valgrind_demo</span><br><span class="line">和gdb一起调试: valgrind --tool=memcheck --leak-check=full --<span class="built_in">log</span>-file=mem_leak.log gdb valgrind_demo</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>面试</category>
       </categories>
@@ -861,7 +877,27 @@
 <li>设备树下chosen节点</li>
 </ul>
 <p><img src="/xzxaaa/images/chosen.png" alt="upload successful">  </p>
-<p><img src="/xzxaaa/images/uboot.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/uboot.png" alt="upload successful">  </p>
+<h2 id="bootz和bootm"><a href="#bootz和bootm" class="headerlink" title="bootz和bootm"></a>bootz和bootm</h2><ul>
+<li>bootz是启动zImage，bootm是启动uImage</li>
+<li>内核编译（make）之后会生成两个文件，一个Image，一个zImage，<br>其中Image为内核映像文件，而zImage为内核的一种映像压缩文件，Image大约为4M，而zImage不到2M。<br>uboot专用的映像文件，它是在zImage之前加上一个长度为64字节的“头”  </li>
+</ul>
+<h2 id="ramdisk和initrd"><a href="#ramdisk和initrd" class="headerlink" title="ramdisk和initrd"></a>ramdisk和initrd</h2><p><a href="https://www.cnblogs.com/leaven/archive/2010/01/07/1641324.html" target="_blank" rel="noopener">参考🚎</a></p>
+<ul>
+<li>当根文件系统采用ramdisk挂载  </li>
+<li>配置内核编译的时候就预先留一个ramdisk空间 </li>
+<li>我们会先制作一个initrd.img.gz的跟文件系统(里面有initrd程序),在启动前先加载到RAM中</li>
+<li>initrd 的作用1️⃣格式化一个 Ramdisk2️⃣加载根文件系统内容到Ramdisk3️⃣将Ramdisk作为根文件系统</li>
+</ul>
+<h2 id="uboot命令"><a href="#uboot命令" class="headerlink" title="uboot命令"></a>uboot命令</h2><ul>
+<li>在uboot上看存储物质有NandFlash和MMC(SD卡接口)，MMC包括emmc的</li>
+<li>在emmc上有一个分区(1)为fat格式，存储的zImage和设备树。启动时候可以通过fat命令读取到DRAM就可以不用tftp了  </li>
+<li>如果使用的是NandFlash存储设备树和zImage，通过Nand的read命读到DRAM中  </li>
+<li>我们在emmc分（2）的格式是ext的格式。存放的是根文件系统通过ext系列的命令可以查看一些文件信息</li>
+</ul>
+<h2 id="grub"><a href="#grub" class="headerlink" title="grub"></a>grub</h2><ul>
+<li>GRUB是多系统引导管理器，简单的说既能引导Linux，同时也能引导Windows</li>
+</ul>
 <h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
 <p><img src="/xzxaaa/images/parse_dtb.png" alt="upload successful"></p>
 <ul>
@@ -870,7 +906,10 @@
 <li>init进程 查看uboot传递过来的bootarg参数 ，  </li>
 </ul>
 1.找root的值，挂载跟文件系统<br>2.根据里面init的值去跟文件系统找init程序并运行（init会变成用户程序）<br>3.找console的值并把标准输入输出错误指向它  </li>
-<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID</li>
+<li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID   </li>
+</ul>
+<h2 id="设备树？"><a href="#设备树？" class="headerlink" title="设备树？"></a>设备树？</h2><ul>
+<li>为了实现设备信息和驱动分离，不然设备信息都被添加到linux内核上了，导致linux内核一大堆重复的代码</li>
 </ul>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
 <li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>

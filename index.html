@@ -386,8 +386,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T17:30:58+08:00">
-                2020-04-09
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T12:01:53+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -568,8 +568,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-09T21:02:55+08:00">
-                2020-04-09
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T13:32:23+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -920,8 +920,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-08T11:35:38+08:00">
-                2020-04-08
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:53:16+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -1002,7 +1002,7 @@
       
         
           <h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
-<li>芯片厂家编写<br>  Pinctrl子系统:芯片厂家负责编写，控制IO口的复用<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备，如RTC<br> SPI_I2C适配器的驱动。<br> LCD屏幕驱动</li></ul>
+<li><p>芯片厂家编写<br>  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了<br> SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制<br> LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)</p></li></ul>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/#more" rel="contents">
@@ -1103,8 +1103,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-02T22:28:04+08:00">
-                2020-04-02
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:57:14+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -1188,9 +1188,7 @@
 <li>8位IIC 最多连接127个器件。我们可以  2^8-最高位的广播(128)-1  最低位0是写，1是读</li>
 <li>IIC 速度能到达400K  SPI:50M  </li>
 <li>IC为什么用开漏输出和上拉电阻  </li>
-</ul>
-<p>1.IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </p>
-<ul>
+<li>IIC协议支持多个主设备与多个从设备在一条总线上, 如果不用开漏输出, 而用推挽输出, 会出现主设备之间短路的情况❗. 至于为什么需要上拉电阻, 那是因为IIC通信需要输出高电平的能力.  </li>
 <li>模拟IIC一定要将GPIO端口设置为开漏输出并加上上拉电阻.(硬件IIC会自动配置为开漏输出)</li></ul>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1292,8 +1290,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-05T19:08:38+08:00">
-                2020-04-05
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:54:24+08:00">
+                2020-04-10
               </time>
             
           </span>
@@ -1660,8 +1658,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-07T09:41:33+08:00">
-                2020-04-07
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:17:46+08:00">
+                2020-04-10
               </time>
             
           </span>
