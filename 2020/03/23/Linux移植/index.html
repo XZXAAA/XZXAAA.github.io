@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+<script src="/js/src/pjax/pjaxBase.js"></script>
+
+
+
 
   
 
@@ -105,19 +111,19 @@
 
 
 
-<meta name="description" content="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌Uboot启动分析链接">
+<meta name="description" content="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌 Uboot启动分析💨链接">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux移植">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/23/Linux%E7%A7%BB%E6%A4%8D/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌Uboot启动分析链接">
+<meta property="og:description" content="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌 Uboot启动分析💨链接">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/bootz.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/chosen.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/uboot.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/parse_dtb.png">
 <meta property="article:published_time" content="2020-03-23T01:13:43.000Z">
-<meta property="article:modified_time" content="2020-04-10T06:17:46.689Z">
+<meta property="article:modified_time" content="2020-04-12T08:09:17.922Z">
 <meta property="article:author" content="辛同学">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/reset.png">
@@ -391,8 +397,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:17:46+08:00">
-                2020-04-10
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-12T16:09:17+08:00">
+                2020-04-12
               </time>
             
           </span>
@@ -449,7 +455,8 @@
       
 
       
-        <h1 id="参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><a href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌" class="headerlink" title="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌"></a>参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</h1><h1 id="Uboot启动分析"><a href="#Uboot启动分析" class="headerlink" title="Uboot启动分析"></a>Uboot启动分析</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
+        <h1 id="参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><a href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌" class="headerlink" title="参考正点原I.MX6U嵌入式Linux驱动开发指南  👌"></a>参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</h1><hr>
+<h1 id="Uboot启动分析💨"><a href="#Uboot启动分析💨" class="headerlink" title="Uboot启动分析💨"></a>Uboot启动分析💨</h1><p><a href="http://www.cocoachina.com/articles/32750" target="_blank" rel="noopener">链接</a></p>
 <a id="more"></a>
 <ul>
 <li>2个宏<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ENTRY(save_boot_params )展开后</span><br><span class="line">.globl  save_boot_params  </span><br><span class="line">.align  4  </span><br><span class="line">save_boot_params: </span><br><span class="line">ENDPROC(save_boot_params)展开后</span><br><span class="line">.typename save_boot_params STTFUNC;</span><br><span class="line">.size save_boot_params,-save_boot_params</span><br></pre></td></tr></table></figure>
@@ -489,9 +496,10 @@
 <li>我们在emmc分（2）的格式是ext的格式。存放的是根文件系统通过ext系列的命令可以查看一些文件信息</li>
 </ul>
 <h2 id="grub"><a href="#grub" class="headerlink" title="grub"></a>grub</h2><ul>
-<li>GRUB是多系统引导管理器，简单的说既能引导Linux，同时也能引导Windows</li>
+<li>GRUB是多系统引导管理器，简单的说既能引导Linux，同时也能引导Windows  </li>
 </ul>
-<h1 id="Linux——kernel"><a href="#Linux——kernel" class="headerlink" title="Linux——kernel"></a>Linux——kernel</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
+<hr>
+<h1 id="Linux——kernel💨"><a href="#Linux——kernel💨" class="headerlink" title="Linux——kernel💨"></a>Linux——kernel💨</h1><p>Linux 内核启动之前要求如下<br>①、关闭 MMU。<br>②、关闭 D-cache。<br>③、 I-Cache 无所谓。<br>④、 r0=0。<br>⑤、 r1=machine nr(也就是机器 ID)。<br>⑥、 r2=atags 或者设备树(dtb)首地址。 </p>
 <p><img src="/xzxaaa/images/parse_dtb.png" alt="upload successful"></p>
 <ul>
 <li>执行start_kernel ，通过调用众多的子函数来完成 Linux 启动之前的一些初始化工作</li>
@@ -502,9 +510,10 @@
 <li>arch/arm/mach-imx/mach-imx6ul.c下的驱动有个compatible 如果与设备树匹配的compatible匹配成功就可以，不用以前的machine ID   </li>
 </ul>
 <h2 id="设备树？"><a href="#设备树？" class="headerlink" title="设备树？"></a>设备树？</h2><ul>
-<li>为了实现设备信息和驱动分离，不然设备信息都被添加到linux内核上了，导致linux内核一大堆重复的代码</li>
+<li>为了实现设备信息和驱动分离，不然设备信息都被添加到linux内核上了，导致linux内核一大堆重复的代码  </li>
 </ul>
-<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><ul>
+<hr>
+<h1 id="补充💨"><a href="#补充💨" class="headerlink" title="补充💨"></a>补充💨</h1><ul>
 <li><p>armv6, armv7, armv7s, arm64 是ARM CPU的不同指令集，原则上是向下兼容的，cortex-a8构架的都用armv7指令集</p>
 </li>
 <li><p>指令集架构如：ARMv5、ARMv6、ARMv7-A/R、ARMv8-A<br>ARM内核如：ARM7、ARM9、ARM11（v6)、到cortex-A7、A8、A9、A12、A15（v7-A/R)、到cortex-A53、A57（V8）、A72、A73。缓存(cache)就是在内核中的。这些内核又名公版架构，即ARM推出的通用的架构。</p>
@@ -643,7 +652,7 @@
               
                 <a href="/xzxaaa/archives">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -654,7 +663,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/xzxaaa/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -728,7 +737,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><span class="nav-number">1.</span> <span class="nav-text">参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Uboot启动分析"><span class="nav-number">2.</span> <span class="nav-text">Uboot启动分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz命令解析"><span class="nav-number">2.1.</span> <span class="nav-text">bootz命令解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz和bootm"><span class="nav-number">2.2.</span> <span class="nav-text">bootz和bootm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ramdisk和initrd"><span class="nav-number">2.3.</span> <span class="nav-text">ramdisk和initrd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uboot命令"><span class="nav-number">2.4.</span> <span class="nav-text">uboot命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grub"><span class="nav-number">2.5.</span> <span class="nav-text">grub</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux——kernel"><span class="nav-number">3.</span> <span class="nav-text">Linux——kernel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设备树？"><span class="nav-number">3.1.</span> <span class="nav-text">设备树？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">4.</span> <span class="nav-text">补充</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考正点原I-MX6U嵌入式Linux驱动开发指南-👌"><span class="nav-number">1.</span> <span class="nav-text">参考正点原I.MX6U嵌入式Linux驱动开发指南  👌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Uboot启动分析💨"><span class="nav-number">2.</span> <span class="nav-text">Uboot启动分析💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz命令解析"><span class="nav-number">2.1.</span> <span class="nav-text">bootz命令解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bootz和bootm"><span class="nav-number">2.2.</span> <span class="nav-text">bootz和bootm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ramdisk和initrd"><span class="nav-number">2.3.</span> <span class="nav-text">ramdisk和initrd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uboot命令"><span class="nav-number">2.4.</span> <span class="nav-text">uboot命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grub"><span class="nav-number">2.5.</span> <span class="nav-text">grub</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux——kernel💨"><span class="nav-number">3.</span> <span class="nav-text">Linux——kernel💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设备树？"><span class="nav-number">3.1.</span> <span class="nav-text">设备树？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充💨"><span class="nav-number">4.</span> <span class="nav-text">补充💨</span></a></li></ol></div>
             
 
           </div>
@@ -1428,4 +1437,16 @@
  <!-- 页面点击小红心 -->
 <script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
 
+
+
+//swig文件中的注释是这样子的
+<script type="text/javascript"   src="/js/src/pjax/category_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/opacity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/motion_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity.ui_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/bootstrap_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/scrollspy_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/utils_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/post-details_js.js" ></script>
 

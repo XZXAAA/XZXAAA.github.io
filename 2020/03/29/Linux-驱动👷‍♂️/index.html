@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+<script src="/js/src/pjax/pjaxBase.js"></script>
+
+
+
 
   
 
@@ -105,15 +111,15 @@
 
 
 
-<meta name="description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
+<meta name="description" content="驱动编写💨驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 驱动👷‍♂️">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/Linux-%E9%A9%B1%E5%8A%A8%F0%9F%91%B7%E2%80%8D%E2%99%82%EF%B8%8F/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="驱动编写驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
+<meta property="og:description" content="驱动编写💨驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/CMSIS.png">
 <meta property="article:published_time" content="2020-03-29T13:51:00.000Z">
-<meta property="article:modified_time" content="2020-04-10T06:53:16.875Z">
+<meta property="article:modified_time" content="2020-04-12T08:05:28.432Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux驱动👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -388,8 +394,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T14:53:16+08:00">
-                2020-04-10
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-12T16:05:28+08:00">
+                2020-04-12
               </time>
             
           </span>
@@ -468,7 +474,7 @@
       
 
       
-        <h1 id="驱动编写"><a href="#驱动编写" class="headerlink" title="驱动编写"></a>驱动编写</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
+        <h1 id="驱动编写💨"><a href="#驱动编写💨" class="headerlink" title="驱动编写💨"></a>驱动编写💨</h1><h2 id="驱动分配"><a href="#驱动分配" class="headerlink" title="驱动分配"></a>驱动分配</h2><ul>
 <li><p>芯片厂家编写<br>  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器<br> gpio子系统：芯片厂家负责编译，控制GPIO<br> 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了<br> SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制<br> LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)</p>
 <a id="more"></a>   
 </li>
@@ -484,38 +490,44 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_ioctl(struct file *filp,unsigned int cmd, unsigned long arg)   应用层通过cmd+arg方式来控制字符设备 </span><br><span class="line"> 驱动file_op在2.6.36以后ioctl函数已经不再存在了，用unlocked_ioctl和compat_ioctl两个函数实现以前版本的ioctl函数。应用层的接口还是ioctl  </span><br><span class="line">1️⃣支持64位的驱动必须要实现compat_ioctl，当有32位的用户程序调用64位kernel的ioctl时，就会调用到compat_ioctl 。如果没有实现compat_ioctl，那么32位的用户程序在64位的kernel上执行ioctl时会返回错误：Not a typewriter 。  </span><br><span class="line">2️⃣如果是64位的用户程序运行在64位的kernel上，调用的是unlocked_ioctl，如果是32位的用户程序运行在32位的kernel上，调用的也是unlocked_ioctl。</span><br></pre></td></tr></table></figure>
 
-<h2 id="FrameBuffer"><a href="#FrameBuffer" class="headerlink" title="FrameBuffer"></a>FrameBuffer</h2><p>1️⃣Linux抽象出FrameBuffer这个设备来供用户态进程实现直接写屏<br>2️⃣Framebuffer机制模仿显卡的功能，将显卡硬件结构抽象掉，可以通过Framebuffer的读写直接对显存进行操作<br>3️⃣用户可以将Framebuffer看成是显示内存的一个映像，通过mmap将其映射到进程地址空间之后，就可以直接进行读写操作，而写操作可以立即反应在屏幕上</p>
-<h1 id="中断"><a href="#中断" class="headerlink" title="中断"></a>中断</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
+<h2 id="FrameBuffer"><a href="#FrameBuffer" class="headerlink" title="FrameBuffer"></a>FrameBuffer</h2><p>1️⃣Linux抽象出FrameBuffer这个设备来供用户态进程实现直接写屏<br>2️⃣Framebuffer机制模仿显卡的功能，将显卡硬件结构抽象掉，可以通过Framebuffer的读写直接对显存进行操作<br>3️⃣用户可以将Framebuffer看成是显示内存的一个映像，通过mmap将其映射到进程地址空间之后，就可以直接进行读写操作，而写操作可以立即反应在屏幕上  </p>
+<hr>
+<h1 id="中断💨"><a href="#中断💨" class="headerlink" title="中断💨"></a>中断💨</h1><h2 id="相关结构体"><a href="#相关结构体" class="headerlink" title="相关结构体"></a>相关结构体</h2><p><a href="Linux中断系统中的重要数据结构">参考🚎</a>  </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">interrupt-parent &#x3D; &lt;&amp;gpio1&gt;;</span><br><span class="line">interrupts &#x3D; &lt;5 IRQ_TYPE_EDGE_RISING&gt;;  &#x2F;&#x2F;&#x2F;设备树</span><br><span class="line">1️⃣它表示要使用gpio1里的第5号中断，hwirq就是5。</span><br><span class="line">2️⃣但是我们在驱动中会使用request_irq(irq, handler)这样的函数来注册中断，irq是什么？它是软件中断号，它应该从“gpio1的第5号中断”转换得来。</span><br><span class="line">3️⃣谁把hwirq转换为irq？由gpio1的相关数据结构，就是gpio1对应的irq_domain结构体。  </span><br><span class="line">irq_desc</span><br><span class="line">&#123;	irq_data</span><br><span class="line">    &#123; unsigned int		irq;</span><br><span class="line">	unsigned long		hwirq;</span><br><span class="line">    struct irq_chip		*chip;</span><br><span class="line">	struct irq_domain	*domain;</span><br><span class="line">    &#125;</span><br><span class="line">    irq_flow_handler_t	handle_irq;</span><br><span class="line">    struct irqaction	*action;(多个GPIO多一个中断入口，通过这个串起来)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>printk函数在中断处理函数中可以使用，但是会占用较多时间，降低效率</li>
 </ul>
-<h1 id="Linux启动init"><a href="#Linux启动init" class="headerlink" title="Linux启动init"></a>Linux启动init</h1><ul>
+<hr>
+<h1 id="Linux启动init💨"><a href="#Linux启动init💨" class="headerlink" title="Linux启动init💨"></a>Linux启动init💨</h1><ul>
 <li>linux在进入init时要经过几个步骤，服务器启动时流程，服务器加电自检→加载内核→驱动硬件→启动进程→读取配置<br>firmware→bootloader→kernel→init→/etc/inittab→initdefault→/etc/rc.d/rc.sysinit→/etc/rc.d/rc→/etc/rc.d/rcN.d (N=0-6)→username,password</li>
-<li>/etc/rc.d/init.d 是/etc/init.d的软连接😒我找不到 </li>
+<li>/etc/rc.d/init.d 是/etc/init.d的软连接😒我找不到   </li>
 </ul>
-<h1 id="内核中的宏"><a href="#内核中的宏" class="headerlink" title="内核中的宏"></a>内核中的宏</h1><ul>
+<hr>
+<h1 id="内核中的宏💨"><a href="#内核中的宏💨" class="headerlink" title="内核中的宏💨"></a>内核中的宏💨</h1><ul>
 <li>offsetof: 用于计算 TYPE 结构体中 MEMBER 成员的偏移位置<br>#define offsetof(TYPE, MEMBER) ((size_t)&amp;((TYPE*)0)-&gt;MEMBER)  </li>
-<li>typeof: 用于得到结构体的首地址<br>#define XXX(ptr,type,member)({ const typeof(((type<em>)0)-&gt;member) *__mptr=(ptr);\<br>  (type</em>)((char*)__mptr – offsetof(type,member));})  </li>
+<li>typeof: 用于得到结构体的首地址<br>#define XXX(ptr,type,member)({ const typeof(((type<em>)0)-&gt;member) *__mptr=(ptr);\<br>  (type</em>)((char*)__mptr – offsetof(type,member));})    </li>
 </ul>
-<h1 id="主设备号和次设备号的用途"><a href="#主设备号和次设备号的用途" class="headerlink" title="主设备号和次设备号的用途"></a>主设备号和次设备号的用途</h1><p>1️⃣主设备号<br>主设备号标识设备对应的驱动程序。<br>虽然现代的linux内核允许多个驱动程序共享主设备号，但我们看待的大多数设备仍然按照“一个主设备对应一个驱动程序”的原则组织。  </p>
-<p>2️⃣次设备号<br>次设备号由内核使用，用于正确确定设备文件所指的设备。<br>依赖于驱动程序的编写方式，我们可以通过次设备号获得一个指向内核设备的直接指针，也可将此设备号当作设备本地数组的索引。  </p>
-<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><ul>
-<li>.PHONY表示伪目标。当执行  make 为目标 的时候，会去找为目标对应的依赖和命令。不管当前目录下是否已经存在跟伪目标同名的文件 </li>
+<hr>
+<h1 id="主设备号和次设备号的用途💨"><a href="#主设备号和次设备号的用途💨" class="headerlink" title="主设备号和次设备号的用途💨"></a>主设备号和次设备号的用途💨</h1><p>1️⃣主设备号<br>主设备号标识设备对应的驱动程序。<br>虽然现代的linux内核允许多个驱动程序共享主设备号，但我们看待的大多数设备仍然按照“一个主设备对应一个驱动程序”的原则组织。  </p>
+<p>2️⃣次设备号<br>次设备号由内核使用，用于正确确定设备文件所指的设备。<br>依赖于驱动程序的编写方式，我们可以通过次设备号获得一个指向内核设备的直接指针，也可将此设备号当作设备本地数组的索引。   </p>
+<hr>
+<h1 id="Makefile💨"><a href="#Makefile💨" class="headerlink" title="Makefile💨"></a>Makefile💨</h1><ul>
+<li>.PHONY表示伪目标。当执行  make 为目标 的时候，会去找为目标对应的依赖和命令。不管当前目录下是否已经存在跟伪目标同名的文件   </li>
 </ul>
-<h1 id="core文件"><a href="#core文件" class="headerlink" title="core文件"></a>core文件</h1><p><a href="https://www.cnblogs.com/beanmoon/archive/2012/10/19/2731481.html" target="_blank" rel="noopener">连接🚎</a></p>
+<hr>
+<h1 id="core文件💨"><a href="#core文件💨" class="headerlink" title="core文件💨"></a>core文件💨</h1><p><a href="https://www.cnblogs.com/beanmoon/archive/2012/10/19/2731481.html" target="_blank" rel="noopener">连接🚎</a></p>
 <ul>
 <li>在一个程序崩溃时，它一般会在指定目录下生成一个core文件。core文件仅仅是一个内存映象(同时加上调试信息)，主要是用来调试的。  </li>
 <li>开启或关闭core文件的生成<br>用以下命令来阻止系统生成core文件:   ulimit -c 0<br>下面的命令可以检查生成core文件的选项是否打开:ulimit -a  </li>
 <li>gdb -c core  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ gdb a.out</span><br><span class="line">...</span><br><span class="line">(gdb) core-file core</span><br><span class="line">...</span><br><span class="line">(gdb) bt  &#x2F;&#x2F;&#x2F;查看函数的调用栈，同时查看程序哪里done掉</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-
 </li>
 </ul>
-<h1 id="模块化-标准接口耦合"><a href="#模块化-标准接口耦合" class="headerlink" title="模块化+标准接口耦合"></a>模块化+标准接口耦合</h1><ul>
-<li>ARM CMSIS<br>ARM 与芯片厂商建立<br><img src="/xzxaaa/images/CMSIS.png" alt="upload successful">  </li>
+<hr>
+<h1 id="模块化-标准接口耦合💨"><a href="#模块化-标准接口耦合💨" class="headerlink" title="模块化+标准接口耦合💨"></a>模块化+标准接口耦合💨</h1><ul>
+<li>ARM CMSIS<br>ARM 与芯片厂商建立<br><img src="/xzxaaa/images/CMSIS.png" alt="upload successful">    </li>
 </ul>
-<h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><ul>
+<hr>
+<h1 id="杂项💨"><a href="#杂项💨" class="headerlink" title="杂项💨"></a>杂项💨</h1><ul>
 <li><p>在高性能的I/O设计中，有两个比较著名的模式Reactor和Proactor模式<a href="https://segmentfault.com/a/1190000018331509" target="_blank" rel="noopener">参考🚎</a>，其中Reactor模式用于同步I/O，而Proactor运用于异步I/O操作，Linux网络编程 </p>
 </li>
 <li><p>使用 ioremap 函数将寄存器的物<br>理地址映射到虚拟地址以后</p>
@@ -658,7 +670,7 @@
               
                 <a href="/xzxaaa/archives">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -669,7 +681,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/xzxaaa/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -743,7 +755,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动编写"><span class="nav-number">1.</span> <span class="nav-text">驱动编写</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动分配"><span class="nav-number">1.1.</span> <span class="nav-text">驱动分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动中相关函数"><span class="nav-number">1.2.</span> <span class="nav-text">驱动中相关函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FrameBuffer"><span class="nav-number">1.3.</span> <span class="nav-text">FrameBuffer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断"><span class="nav-number">2.</span> <span class="nav-text">中断</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关结构体"><span class="nav-number">2.1.</span> <span class="nav-text">相关结构体</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux启动init"><span class="nav-number">3.</span> <span class="nav-text">Linux启动init</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核中的宏"><span class="nav-number">4.</span> <span class="nav-text">内核中的宏</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主设备号和次设备号的用途"><span class="nav-number">5.</span> <span class="nav-text">主设备号和次设备号的用途</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile"><span class="nav-number">6.</span> <span class="nav-text">Makefile</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#core文件"><span class="nav-number">7.</span> <span class="nav-text">core文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块化-标准接口耦合"><span class="nav-number">8.</span> <span class="nav-text">模块化+标准接口耦合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项"><span class="nav-number">9.</span> <span class="nav-text">杂项</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#驱动编写💨"><span class="nav-number">1.</span> <span class="nav-text">驱动编写💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动分配"><span class="nav-number">1.1.</span> <span class="nav-text">驱动分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#驱动中相关函数"><span class="nav-number">1.2.</span> <span class="nav-text">驱动中相关函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FrameBuffer"><span class="nav-number">1.3.</span> <span class="nav-text">FrameBuffer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中断💨"><span class="nav-number">2.</span> <span class="nav-text">中断💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关结构体"><span class="nav-number">2.1.</span> <span class="nav-text">相关结构体</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux启动init💨"><span class="nav-number">3.</span> <span class="nav-text">Linux启动init💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内核中的宏💨"><span class="nav-number">4.</span> <span class="nav-text">内核中的宏💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主设备号和次设备号的用途💨"><span class="nav-number">5.</span> <span class="nav-text">主设备号和次设备号的用途💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Makefile💨"><span class="nav-number">6.</span> <span class="nav-text">Makefile💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#core文件💨"><span class="nav-number">7.</span> <span class="nav-text">core文件💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块化-标准接口耦合💨"><span class="nav-number">8.</span> <span class="nav-text">模块化+标准接口耦合💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项💨"><span class="nav-number">9.</span> <span class="nav-text">杂项💨</span></a></li></ol></div>
             
 
           </div>
@@ -1443,4 +1455,16 @@
  <!-- 页面点击小红心 -->
 <script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
 
+
+
+//swig文件中的注释是这样子的
+<script type="text/javascript"   src="/js/src/pjax/category_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/opacity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/motion_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity.ui_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/bootstrap_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/scrollspy_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/utils_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/post-details_js.js" ></script>
 

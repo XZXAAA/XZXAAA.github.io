@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+<script src="/js/src/pjax/pjaxBase.js"></script>
+
+
+
 
   
 
@@ -105,17 +111,17 @@
 
 
 
-<meta name="description" content="进程与线程Linux下进程通信的方法12341️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  3️⃣ 信号(signal)  5️⃣ 套接字(Socket) (不同主机之间的进程通讯)">
+<meta name="description" content="进程与线程💨Linux下进程通信的方法12341️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  3️⃣ 信号(signal)  5️⃣ 套接字(Socket) (不同主机之间的进程通讯)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux应用层👷‍♂️">
 <meta property="og:url" content="https://xzxaaaa.gitee.io/xzxaaa/2020/03/29/Linux%E5%BA%94%E7%94%A8%E5%B1%82/index.html">
 <meta property="og:site_name" content="辛同学的博客">
-<meta property="og:description" content="进程与线程Linux下进程通信的方法12341️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  3️⃣ 信号(signal)  5️⃣ 套接字(Socket) (不同主机之间的进程通讯)">
+<meta property="og:description" content="进程与线程💨Linux下进程通信的方法12341️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  3️⃣ 信号(signal)  5️⃣ 套接字(Socket) (不同主机之间的进程通讯)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/memfengbu.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/U4.png">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/choice.png">
 <meta property="article:published_time" content="2020-03-29T14:31:00.000Z">
-<meta property="article:modified_time" content="2020-04-10T04:01:53.469Z">
+<meta property="article:modified_time" content="2020-04-12T08:00:23.169Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux应用层👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -390,8 +396,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-10T12:01:53+08:00">
-                2020-04-10
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-12T16:00:23+08:00">
+                2020-04-12
               </time>
             
           </span>
@@ -470,12 +476,11 @@
       
 
       
-        <h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
+        <h1 id="进程与线程💨"><a href="#进程与线程💨" class="headerlink" title="进程与线程💨"></a>进程与线程💨</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
  <a id="more"></a>
 <h3 id="相关题目"><a href="#相关题目" class="headerlink" title="相关题目"></a>相关题目</h3><ul>
 <li>有n个进程共享一个临界资源，使用信号量机制实现资源的访问互斥，信号量的最小取值是1-n。  </li>
 </ul>
-<hr>
 <h2 id="Linux系统中的线程间同步方式"><a href="#Linux系统中的线程间同步方式" class="headerlink" title="Linux系统中的线程间同步方式"></a>Linux系统中的线程间同步方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1️⃣锁机制：包括互斥锁、条件变量、读写锁和自旋锁。</span><br><span class="line"></span><br><span class="line">2️⃣信号量机制(Semaphore)：包括无名线程信号量和命名线程信号量</span><br><span class="line"></span><br><span class="line">3️⃣信号机制(Signal)：类似进程间的信号处理</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -522,7 +527,7 @@
 </ul>
 <h2 id="Linux进程描述符task-struct结构体"><a href="#Linux进程描述符task-struct结构体" class="headerlink" title="Linux进程描述符task_struct结构体"></a>Linux进程描述符task_struct结构体</h2><p><a href="https://blog.csdn.net/gatieme/article/details/51383272" target="_blank" rel="noopener">链接🚎</a></p>
 <h2 id="线程共享资源"><a href="#线程共享资源" class="headerlink" title="线程共享资源"></a>线程共享资源</h2><ul>
-<li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣    数据段3️⃣    打开文件和信号 4️⃣堆 </p>
+<li><p>一个进程内部的线程可以共享资源<br>1️⃣    代码段2️⃣数据段3️⃣打开文件和信号处理函数4️⃣堆 </p>
 </li>
 <li><p>线程和信号出来函数方面 ，每个线程有自己的信号掩码<br>Linux还是采取了尽力而为的策略， 尽量地尊重函数调用者的意愿， 如果进程的主线程方便的话， 则优先选择主线程来处理信号； 如果主线程确实不方便， 那就有可能由线程组里的其他线程来负责处理信号 </p>
 </li>
@@ -544,9 +549,10 @@
 <li>强相关处理用线程，弱相关处理用进程。强相关又称高度相关，即当一列变量变化时，与之相应的另一列变量增大<br>一般的server需要完成的任务如下：消息接发和消息处理。接发消息和消息处理就是弱相关任务，而消息处理里面又能分为消息解码，业务处理，这两个任务相对来说相关性强很多，因此，消息接发和消息处理可以分进程设计，消息解码和业务处理可以分线程设计。</li>
 </ul>
 <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><ul>
-<li>一个进程可以创建多少线程，和什么有关<br>答：一个进程创建线程的个数由虚拟内存和分配给线程的调用栈大小决定。</li>
+<li>一个进程可以创建多少线程，和什么有关<br>答：一个进程创建线程的个数由虚拟内存和分配给线程的调用栈大小决定。  </li>
 </ul>
-<h1 id="目录-amp-amp-命令"><a href="#目录-amp-amp-命令" class="headerlink" title="目录&amp;&amp;命令"></a>目录&amp;&amp;命令</h1><h2 id="七种文件类型"><a href="#七种文件类型" class="headerlink" title="七种文件类型"></a>七种文件类型</h2><p>1️⃣ 普通文件类型 （-）2️⃣目录文件 （d）3️⃣块设备（b）<br>4️⃣字符设备（c）5️⃣套接字文件 （s）6️⃣ 管道文件 （p）<br>7️⃣符号链接（l）  </p>
+<hr>
+<h1 id="目录-amp-amp-命令💨"><a href="#目录-amp-amp-命令💨" class="headerlink" title="目录&amp;&amp;命令💨"></a>目录&amp;&amp;命令💨</h1><h2 id="七种文件类型"><a href="#七种文件类型" class="headerlink" title="七种文件类型"></a>七种文件类型</h2><p>1️⃣ 普通文件类型 （-）2️⃣目录文件 （d）3️⃣块设备（b）<br>4️⃣字符设备（c）5️⃣套接字文件 （s）6️⃣ 管道文件 （p）<br>7️⃣符号链接（l）  </p>
 <h2 id="关键目录"><a href="#关键目录" class="headerlink" title="关键目录"></a>关键目录</h2><p>1️⃣ /bin 系统的必备执行工具 所有的客户都可以使用<br>2️⃣ /sbin 系统管理工具  要有管理员权限才能执行<br>3️⃣ /usr/bin 应用软件的必备工具<br>4️⃣ /usr/sbin 网络管理工具</p>
 <h2 id="内核打印的信息"><a href="#内核打印的信息" class="headerlink" title="内核打印的信息"></a>内核打印的信息</h2><ul>
 <li>#dmesg命令 </li>
@@ -581,15 +587,16 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	proc文件系统常常被放置于Linux系统的&#x2F;proc目录下，常常用于查看有关硬件、进程的状态。 proc是个虚拟文件系统，没有实际的存储设备。 proc 里面的文件都是临时存在的，储存系统运行信息文件。</span><br><span class="line">	系统启动后以&#x2F;sys目录作为 sysfs 文件系统的挂载点 ,sysfs 是一个类似于 proc 的殊文件系统， sysfs 也是基于 ram 的文件系统，也就是说它也没有实际的存储设备。此目录是系统设备管理的重要目录，此目录通过一定的组织结构向用户提供详细的内核数据结构信息。</span><br><span class="line">* linux下的cmdline是uboot的bootargs参数传过去的</span><br></pre></td></tr></table></figure>
 
-<h1 id="日志文件系统"><a href="#日志文件系统" class="headerlink" title="日志文件系统"></a>日志文件系统</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   </span><br><span class="line">由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。 </span><br><span class="line">  在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</span><br></pre></td></tr></table></figure>
-
-<h1 id="gcc编译、静态库与动态库"><a href="#gcc编译、静态库与动态库" class="headerlink" title="gcc编译、静态库与动态库"></a>gcc编译、静态库与动态库</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">参考链接🚎</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名✨</p>
+<h1 id="日志文件系统💨"><a href="#日志文件系统💨" class="headerlink" title="日志文件系统💨"></a>日志文件系统💨</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">此类文件系统最大的特色是，它会将整个磁盘的写入动作完整记录在磁盘的某个区域上，以便有需要时可以回溯追踪。   </span><br><span class="line">由于资料的写入动作包含许多的细节，像是改变文件标头资料、搜寻磁盘可写入空间、一个个写入资料区段等等，每一个细节进行到一半若被中断，就会造成文件系统的不一致，因而需要重整。 </span><br><span class="line">  在日志式文件系统中，由于详细纪录了每个细节，故当在某个过程中被中断时，系统可以根据这些记录直接回溯并重整被中断的部分，而不必花时间去检查其他的部分，故重整的工作速度相当快，几乎不需要花时间。</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="gcc编译、静态库与动态库💨"><a href="#gcc编译、静态库与动态库💨" class="headerlink" title="gcc编译、静态库与动态库💨"></a>gcc编译、静态库与动态库💨</h1><p><a href="https://blog.csdn.net/daidaihema/article/details/80902012" target="_blank" rel="noopener">参考链接🚎</a><br>gcc + 源文件 + -L 动态库路径 + -l动态库名 + -I头文件目录 + -o 可执行文件名✨</p>
 <ul>
 <li>动态库 ：gcc -shared -o libMyTest.so *.o  </li>
 <li>静态库：ar rcs libMyTest.a *.o </li>
-<li>.a是静态库 ， .so 为共享库</li>
+<li>.a是静态库 ， .so 为共享库  </li>
 </ul>
-<h1 id="网络方面"><a href="#网络方面" class="headerlink" title="网络方面"></a>网络方面</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a><br><a href="https://blog.csdn.net/vjhghjghj/article/details/100985674#epoll_ctl(" target="_blank" rel="noopener">参考🚎</a></p>
+<hr>
+<h1 id="网络方面💨"><a href="#网络方面💨" class="headerlink" title="网络方面💨"></a>网络方面💨</h1><h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p><a href="https://www.jianshu.com/p/e6b9481ca754" target="_blank" rel="noopener">参考简书🚎</a><br><a href="https://blog.csdn.net/vjhghjghj/article/details/100985674#epoll_ctl(" target="_blank" rel="noopener">参考🚎</a></p>
 <ul>
 <li><p>就绪列表的数据结构<br>就绪列表引用着就绪的 socket，所以它应能够快速的插入数据。<br>程序可能随时调用 epoll_ctl 添加监视 socket，也可能随时删除。当删除时，若该 socket 已经存放在就绪列表中，它也应该被移除。所以就绪列表应是一种能够快速插入和删除的数据结构。<br>双向链表就是这样一种数据结构，epoll 使用双向链表来实现就绪队列。✨</p>
 </li>
@@ -598,9 +605,10 @@
 </ul>
 <h2 id="TCP可靠"><a href="#TCP可靠" class="headerlink" title="TCP可靠"></a>TCP可靠</h2><p><a href="https://www.iteye.com/blog/uule-2429131" target="_blank" rel="noopener">可靠如何保证🚎</a>  </p>
 <ul>
-<li>TCP头的窗口是在向对方声明自己的接受窗口大小，拥塞窗口是指发送窗口，为了避免超时重传，拥塞窗口的控制很重要，也比较复杂。 总而言之就是发送窗口要发送数据，其大小根据1️⃣接收窗口和2️⃣网络共同影响，为了避免超时重传，需要合理设置。  关键字:慢启动阈值 ，拥塞控制算法  </li>
+<li>TCP头的窗口是在向对方声明自己的接受窗口大小，拥塞窗口是指发送窗口，为了避免超时重传，拥塞窗口的控制很重要，也比较复杂。 总而言之就是发送窗口要发送数据，其大小根据1️⃣接收窗口和2️⃣网络共同影响，为了避免超时重传，需要合理设置。  关键字:慢启动阈值 ，拥塞控制算法    </li>
 </ul>
-<h1 id="杂项-1"><a href="#杂项-1" class="headerlink" title="杂项"></a>杂项</h1><h2 id="换行符："><a href="#换行符：" class="headerlink" title="换行符："></a>换行符：</h2><ul>
+<hr>
+<h1 id="杂项💨"><a href="#杂项💨" class="headerlink" title="杂项💨"></a>杂项💨</h1><h2 id="换行符："><a href="#换行符：" class="headerlink" title="换行符："></a>换行符：</h2><ul>
 <li>windows中的换行符是\r\n，</li>
 <li>linux/unix下的换行符是\n。 </li>
 </ul>
@@ -767,7 +775,7 @@
               
                 <a href="/xzxaaa/archives">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -778,7 +786,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/xzxaaa/categories/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -852,7 +860,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">1.</span> <span class="nav-text">进程与线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下进程通信的方法"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下进程通信的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关题目"><span class="nav-number">1.1.1.</span> <span class="nav-text">相关题目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux系统中的线程间同步方式"><span class="nav-number">1.2.</span> <span class="nav-text">Linux系统中的线程间同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">1.2.1.</span> <span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-内核的同步方式"><span class="nav-number">1.3.</span> <span class="nav-text">Linux 内核的同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内核中同步的一些使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">内核中同步的一些使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁条件和预防"><span class="nav-number">1.4.</span> <span class="nav-text">死锁条件和预防</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁原因"><span class="nav-number">1.4.1.</span> <span class="nav-text">死锁原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四个条件"><span class="nav-number">1.4.2.</span> <span class="nav-text">四个条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预防"><span class="nav-number">1.4.3.</span> <span class="nav-text">预防</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用了锁怎么保证中途退出的释放"><span class="nav-number">1.4.4.</span> <span class="nav-text">用了锁怎么保证中途退出的释放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">1.5.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">1.6.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux进程描述符task-struct结构体"><span class="nav-number">1.7.</span> <span class="nav-text">Linux进程描述符task_struct结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程共享资源"><span class="nav-number">1.8.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程优劣"><span class="nav-number">1.9.</span> <span class="nav-text">进程和线程优劣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程的选择"><span class="nav-number">1.10.</span> <span class="nav-text">进程和线程的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.11.</span> <span class="nav-text">题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录-amp-amp-命令"><span class="nav-number">2.</span> <span class="nav-text">目录&amp;&amp;命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#七种文件类型"><span class="nav-number">2.1.</span> <span class="nav-text">七种文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键目录"><span class="nav-number">2.2.</span> <span class="nav-text">关键目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">2.3.</span> <span class="nav-text">内核打印的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-模块加载相关命令"><span class="nav-number">2.4.</span> <span class="nav-text">Linux 模块加载相关命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#export和source区别"><span class="nav-number">2.5.</span> <span class="nav-text">export和source区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂项"><span class="nav-number">2.6.</span> <span class="nav-text">杂项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统"><span class="nav-number">3.</span> <span class="nav-text">日志文件系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库"><span class="nav-number">4.</span> <span class="nav-text">gcc编译、静态库与动态库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络方面"><span class="nav-number">5.</span> <span class="nav-text">网络方面</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll"><span class="nav-number">5.1.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">5.2.</span> <span class="nav-text">TCP可靠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项-1"><span class="nav-number">6.</span> <span class="nav-text">杂项</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换行符："><span class="nav-number">6.1.</span> <span class="nav-text">换行符：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">6.2.</span> <span class="nav-text">会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.3.</span> <span class="nav-text">SSH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO模型"><span class="nav-number">6.4.</span> <span class="nav-text">IO模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零拷贝"><span class="nav-number">6.5.</span> <span class="nav-text">零拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程函数为什么不是系统调用"><span class="nav-number">6.6.</span> <span class="nav-text">线程函数为什么不是系统调用</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程💨"><span class="nav-number">1.</span> <span class="nav-text">进程与线程💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux下进程通信的方法"><span class="nav-number">1.1.</span> <span class="nav-text">Linux下进程通信的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关题目"><span class="nav-number">1.1.1.</span> <span class="nav-text">相关题目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux系统中的线程间同步方式"><span class="nav-number">1.2.</span> <span class="nav-text">Linux系统中的线程间同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#条件变量"><span class="nav-number">1.2.1.</span> <span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-内核的同步方式"><span class="nav-number">1.3.</span> <span class="nav-text">Linux 内核的同步方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内核中同步的一些使用"><span class="nav-number">1.3.1.</span> <span class="nav-text">内核中同步的一些使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#死锁条件和预防"><span class="nav-number">1.4.</span> <span class="nav-text">死锁条件和预防</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#死锁原因"><span class="nav-number">1.4.1.</span> <span class="nav-text">死锁原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四个条件"><span class="nav-number">1.4.2.</span> <span class="nav-text">四个条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预防"><span class="nav-number">1.4.3.</span> <span class="nav-text">预防</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用了锁怎么保证中途退出的释放"><span class="nav-number">1.4.4.</span> <span class="nav-text">用了锁怎么保证中途退出的释放</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux-内存映像分布"><span class="nav-number">1.5.</span> <span class="nav-text">linux 内存映像分布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork"><span class="nav-number">1.6.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux进程描述符task-struct结构体"><span class="nav-number">1.7.</span> <span class="nav-text">Linux进程描述符task_struct结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程共享资源"><span class="nav-number">1.8.</span> <span class="nav-text">线程共享资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程优劣"><span class="nav-number">1.9.</span> <span class="nav-text">进程和线程优劣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程的选择"><span class="nav-number">1.10.</span> <span class="nav-text">进程和线程的选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.11.</span> <span class="nav-text">题目</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录-amp-amp-命令💨"><span class="nav-number">2.</span> <span class="nav-text">目录&amp;&amp;命令💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#七种文件类型"><span class="nav-number">2.1.</span> <span class="nav-text">七种文件类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键目录"><span class="nav-number">2.2.</span> <span class="nav-text">关键目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核打印的信息"><span class="nav-number">2.3.</span> <span class="nav-text">内核打印的信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux-模块加载相关命令"><span class="nav-number">2.4.</span> <span class="nav-text">Linux 模块加载相关命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#export和source区别"><span class="nav-number">2.5.</span> <span class="nav-text">export和source区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杂项"><span class="nav-number">2.6.</span> <span class="nav-text">杂项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志文件系统💨"><span class="nav-number">3.</span> <span class="nav-text">日志文件系统💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gcc编译、静态库与动态库💨"><span class="nav-number">4.</span> <span class="nav-text">gcc编译、静态库与动态库💨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络方面💨"><span class="nav-number">5.</span> <span class="nav-text">网络方面💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#epoll"><span class="nav-number">5.1.</span> <span class="nav-text">epoll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP可靠"><span class="nav-number">5.2.</span> <span class="nav-text">TCP可靠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杂项💨"><span class="nav-number">6.</span> <span class="nav-text">杂项💨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#换行符："><span class="nav-number">6.1.</span> <span class="nav-text">换行符：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">6.2.</span> <span class="nav-text">会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSH"><span class="nav-number">6.3.</span> <span class="nav-text">SSH</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO模型"><span class="nav-number">6.4.</span> <span class="nav-text">IO模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#零拷贝"><span class="nav-number">6.5.</span> <span class="nav-text">零拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程函数为什么不是系统调用"><span class="nav-number">6.6.</span> <span class="nav-text">线程函数为什么不是系统调用</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -1552,4 +1560,16 @@
  <!-- 页面点击小红心 -->
 <script type="text/javascript" src="/xzxaaa/js/src/clicklove.js"></script>
 
+
+
+//swig文件中的注释是这样子的
+<script type="text/javascript"   src="/js/src/pjax/category_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/opacity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/motion_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity.ui_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/velocity_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/bootstrap_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/scrollspy_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/utils_js.js" ></script>
+<script type="text/javascript"   src="/js/src/pjax/post-details_js.js" ></script>
 
