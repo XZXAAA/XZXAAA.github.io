@@ -119,7 +119,7 @@
 <meta property="og:description" content="驱动编写💨驱动分配 芯片厂家编写  Pinctrl子系统驱动：芯片厂家负责编写，控制IO口的复用。毕竟他们自己非常清楚怎么控制寄存器 gpio子系统：芯片厂家负责编译，控制GPIO 一些平台外设设备：如RTC 根本就不用匹配设备。单在芯片里面了 SPI和I2C适配器的驱动：这2个很复杂，涉及到底层寄存器的控制 LCD屏幕驱动：这个也涉及底层的寄存器(用了FrameBuffer的方式)">
 <meta property="og:image" content="https://xzxaaaa.gitee.io/xzxaaa/images/CMSIS.png">
 <meta property="article:published_time" content="2020-03-29T13:51:00.000Z">
-<meta property="article:modified_time" content="2020-04-12T08:05:28.432Z">
+<meta property="article:modified_time" content="2020-04-13T11:52:38.382Z">
 <meta property="article:author" content="辛同学">
 <meta property="article:tag" content="Linux驱动👷‍♂️">
 <meta name="twitter:card" content="summary">
@@ -394,8 +394,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-04-12T16:05:28+08:00">
-                2020-04-12
+              <time title="更新于" itemprop="dateModified" datetime="2020-04-13T19:52:38+08:00">
+                2020-04-13
               </time>
             
           </span>
@@ -528,10 +528,12 @@
 </ul>
 <hr>
 <h1 id="杂项💨"><a href="#杂项💨" class="headerlink" title="杂项💨"></a>杂项💨</h1><ul>
-<li><p>在高性能的I/O设计中，有两个比较著名的模式Reactor和Proactor模式<a href="https://segmentfault.com/a/1190000018331509" target="_blank" rel="noopener">参考🚎</a>，其中Reactor模式用于同步I/O，而Proactor运用于异步I/O操作，Linux网络编程 </p>
-</li>
-<li><p>使用 ioremap 函数将寄存器的物<br>理地址映射到虚拟地址以后</p>
-</li>
+<li>在高性能的I/O设计中，有两个比较著名的模式Reactor和Proactor模式<a href="https://segmentfault.com/a/1190000018331509" target="_blank" rel="noopener">参考🚎</a>，其中Reactor模式用于同步I/O，而Proactor运用于异步I/O操作，Linux网络编程  </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1️⃣Reactor  </span><br><span class="line">* 应用程序注册读就需事件和相关联的事件处理器。   </span><br><span class="line">* 事件分离器等待事件的发生。   </span><br><span class="line">* 当发生读就需事件的时候，事件分离器调用第一步注册的事件处理器。  </span><br><span class="line">* 事件处理器首先执行实际的读取操作，然后根据读取到的内容进行进一步的处理。  </span><br><span class="line">2️⃣Preactor  </span><br><span class="line">* 应用程序初始化一个异步读取操作，然后注册相应的事件处理器，此时事件处理器不关注读取就绪事件，而是关注读取完成事件✨，这是区别于Reactor的关键。</span><br><span class="line">* 事件分离器等待读取操作完成事件。</span><br><span class="line">* 在事件分离器等待读取操作完成的时候，操作系统调用内核线程完成读取操作，并将读取的内容放入用户传递过来的缓存区中。这也是区别于Reactor的一点，在Proactor中，应用程序需要传递缓存区✨。</span><br><span class="line">* 事件分离器捕获到读取完成事件后，激活应用程序注册的事件处理器，事件处理器直接从缓存区读取数据，而不需要进行实际的读取操作。</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 ioremap 函数将寄存器的物<br>理地址映射到虚拟地址以后</li>
 </ul>
 
       
@@ -1457,7 +1459,7 @@
 
 
 
-//swig文件中的注释是这样子的
+
 <script type="text/javascript"   src="/js/src/pjax/category_js.js" ></script>
 <script type="text/javascript"   src="/js/src/pjax/opacity_js.js" ></script>
 <script type="text/javascript"   src="/js/src/pjax/motion_js.js" ></script>
