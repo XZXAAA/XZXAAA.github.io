@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>搭建一台NAS🛫</title>
+    <url>/xzxaaa/2020/04/16/%E6%90%AD%E5%BB%BA%E4%B8%80%E5%8F%B0NAS/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="B站视频🚎💨"><a href="#B站视频🚎💨" class="headerlink" title="B站视频🚎💨"></a><a href="https://www.bilibili.com/video/BV1b7411f79K" target="_blank" rel="noopener">B站视频🚎💨</a></h1><ul>
+<li><p>不同CPU架构的Docker Image需要在相应CPU架构的机器上去构建,所以如果想通过Docker运行ARM架构的linux，还需要有ARM下的Image </p>
+<a id="more"></a>  
+
+</li>
+</ul>
+<h1 id="Linux常识💨"><a href="#Linux常识💨" class="headerlink" title="Linux常识💨"></a>Linux常识💨</h1><ul>
+<li>一般来说著名的 Linux 系统基本上分两大类：<br>RedHat 系列：Redhat、Centos、Fedora 等<br>Debian 系列：Debian、Ubuntu 等</li>
+</ul>
+<p><img src="/xzxaaa/images/debin_rehad_image.png" alt="upload successful"> </p>
+<h2 id="dpkg和apt"><a href="#dpkg和apt" class="headerlink" title="dpkg和apt"></a>dpkg和apt</h2><p>dpkg:用来安装.deb文件时，不会解决模块的依赖关系，且不会关心ubuntu的软件仓库内的软件，可以用于安装本地的deb文件。<br>apt-get:会解决和安装模块的依赖问题，并会咨询软件仓库，但不会安装本地的deb文件，apt-get是建立在dpkg之上的软件管理工具。 </p>
+<h2 id="rpm和yum"><a href="#rpm和yum" class="headerlink" title="rpm和yum"></a>rpm和yum</h2><p>rpm 是 LINUX 下的一种软件的可执行程序，你只要安装它就可以了。这种软件安装包通常是一个RPM包（Redhat Linux Packet Manager，就是Redhat的包管理器），后缀是.rpm。  </p>
+<p>rpm软件包形式的管理虽然方便，但是需要手工解决软件包的依赖关系。很多时候安装一个软件安装一个软件需要安装1个或者多个其他软件，手动解决时，很复杂，yum解决这些问题。Yum是rpm的前端程序，主要目的是设计用来自动解决rpm的依赖关系</p>
+<h1 id="磁盘阵列💨"><a href="#磁盘阵列💨" class="headerlink" title="磁盘阵列💨"></a>磁盘阵列💨</h1><h2 id="磁盘阵列（Redundant-Arrays-of-Independent-Disks，RAID）"><a href="#磁盘阵列（Redundant-Arrays-of-Independent-Disks，RAID）" class="headerlink" title="磁盘阵列（Redundant Arrays of Independent Disks，RAID）"></a>磁盘阵列（Redundant Arrays of Independent Disks，RAID）</h2><ul>
+<li>本节讲的主要是多块磁盘如果组合，实现一些特效 </li>
+<li>把多块组合的磁盘看成一块使用 </li>
+<li>USB移动存储不能用做磁盘阵列，很容易导致数据丢失 </li>
+<li>卡片计算机（树莓派）不适合磁盘阵列，因为没有SATA接口，而且工作低电压(5V),经常出现死机，系统变慢的问题</li>
+</ul>
+<p>1️⃣JBOD(线性),只要有一个损坏就不可以用<br><img src="/xzxaaa/images/JBODimage.png" alt="upload successful">  </p>
+<p>2️⃣ RAID0(条带),一个文件被分成多个部分存储在不同的磁盘上 （性能最好组合方式）</p>
+<ul>
+<li>节省了文件存储消耗的时间 </li>
+<li>只要有一个文件损坏，全部数据消失❗</li>
+</ul>
+<p><img src="/xzxaaa/images/RAID0image.png" alt="upload successful">  </p>
+<p>3️⃣ RAID1(镜像),一个文件被同时存储在不同的磁盘上 （性能最差组合方式）</p>
+<ul>
+<li>文件存储消耗的时间 大</li>
+<li>安全性最佳<br><img src="/xzxaaa/images/RAID1.png" alt="upload successful">  </li>
+</ul>
+<p>4️⃣RAID10  ，最低4块磁盘的组合，两两组成RAID1，再结合成RAID0(性能折中)</p>
+<p><img src="/xzxaaa/images/RAID10.png" alt="upload successful"></p>
+<p>5️⃣RAID5,至少3块硬盘，采用了校验技术，数据放1个磁盘上在另外2个磁盘上存放可以恢复的校验数据✨</p>
+<ul>
+<li>任意一块磁盘损坏不会损失数据  </li>
+<li>相同容量硬盘组成——损失一块磁盘的容量  </li>
+</ul>
+<p><img src="/xzxaaa/images/RAID6.png" alt="upload successful"></p>
+<p>6️⃣RAID6,跟5差不多，至少要4块磁盘组成</p>
+<ul>
+<li>任意二块磁盘损坏不会损失数据  </li>
+<li>相同容量硬盘组成——损失二块磁盘的容量 </li>
+</ul>
+<p><img src="/xzxaaa/images/RAID5.png" alt="upload successful"></p>
+]]></content>
+      <tags>
+        <tag>NAS🛫</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux应用层👷‍♂️</title>
     <url>/xzxaaa/2020/03/29/Linux%E5%BA%94%E7%94%A8%E5%B1%82/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\xzxaaa\assets\css\APlayer.min.css"><script src="\xzxaaa\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\xzxaaa\assets\js\Meting.min.js"></script><h1 id="进程与线程💨"><a href="#进程与线程💨" class="headerlink" title="进程与线程💨"></a>进程与线程💨</h1><h2 id="Linux下进程通信的方法"><a href="#Linux下进程通信的方法" class="headerlink" title="Linux下进程通信的方法"></a>Linux下进程通信的方法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1️⃣管道(pipe)🔊命名管道(FIFO) ，无名管道  </span><br><span class="line">2️⃣IPC对象🔊消息队列(message queue)，共享内存(shared memory) 信号量(semaphore) 临界区中可以调用引起阻塞API  </span><br><span class="line">3️⃣ 信号(signal)  </span><br><span class="line">5️⃣ 套接字(Socket) (不同主机之间的进程通讯)</span><br></pre></td></tr></table></figure>
@@ -33,6 +86,7 @@
 <h2 id="Linux-内核的同步方式"><a href="#Linux-内核的同步方式" class="headerlink" title="Linux 内核的同步方式"></a>Linux 内核的同步方式</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">原子操作,信号量（semaphore）</span><br><span class="line">读写信号量（rw_semaphore）</span><br><span class="line">自旋锁（spinlock）  中断中同步的方式✨</span><br><span class="line">大内核锁（BKL，Big Kernel Lock）</span><br><span class="line">读写锁（rwlock）</span><br><span class="line">大读者锁（brlock-Big Reader Lock）</span><br><span class="line">读-拷贝修改(RCU，Read-Copy Update)</span><br><span class="line">顺序锁（seqlock）</span><br></pre></td></tr></table></figure>
 <h3 id="内核中同步的一些使用"><a href="#内核中同步的一些使用" class="headerlink" title="内核中同步的一些使用"></a>内核中同步的一些使用</h3><ul>
 <li>缓冲区的循环队列运用了自旋锁  </li>
+<li>poll把fd创成链表实现了无线fd轮询</li>
 </ul>
 <h2 id="死锁条件和预防"><a href="#死锁条件和预防" class="headerlink" title="死锁条件和预防"></a>死锁条件和预防</h2><p><a href="https://blog.csdn.net/guaiguaihenguai/article/details/80303835" target="_blank" rel="noopener">参考文章🚎</a></p>
 <h3 id="死锁原因"><a href="#死锁原因" class="headerlink" title="死锁原因"></a>死锁原因</h3><p>1️⃣系统资源不足<br>2️⃣资源分配不当<br>3️⃣进程运行推进顺序不合适  </p>
@@ -143,7 +197,19 @@
 <li>一个session只能有一个终端  </li>
 <li>会话期：是一个或者多个进程组的集合，通常一个会话期开始与用户登录，终止于用户退出。在此期间，该用户运行的所有进程都属于这个会话期。  </li>
 <li>创建新会话的进程不能是进程组组长  </li>
-<li>守护进程不受终端控制   </li>
+<li>守护进程不受终端控制     </li>
+</ul>
+<h2 id="用户下的shell配置"><a href="#用户下的shell配置" class="headerlink" title="用户下的shell配置"></a>用户下的shell配置</h2><ul>
+<li><p>etc/profile:此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.并从/etc/profile.d目录的配置文件中搜集shell的设置.</p>
+</li>
+<li><p>/etc/bashrc:为每一个运行bash shell的用户执行此文件.当bash shell被打开时,该文件被读取（被上面那个执行）</p>
+</li>
+<li><p>~/.bash_profile:每个用户都可使用该文件输入专用于自己使用的shell信息,当用户登录时,该文件仅仅执行一次!默认情况下,他设置一些环境变量,执行用户的.bashrc文件✨.    </p>
+</li>
+</ul>
+<p>另外在不同的LINUX操作系统下，这个文件可能是不同的，可能是$HOME/.bash_profile； $HOME/.bash_login$HOME/.profile其中的一种或几种，如果存在几种的话，那么执行的顺序便是：$HOME/.bash_profile、 $HOME/.bash_login、$HOME/.profile。比如我用的是Ubuntu，我的用户文件夹下默认的就只有$HOME/.profile文件。 </p>
+<ul>
+<li>~/.bashrc:该文件包含专用于你的bash shell的bash信息,当登录时以及每次打开新的shell时,该文件被读取.</li>
 </ul>
 <h2 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h2><p><a href="https://blog.csdn.net/li528405176/article/details/82810342" target="_blank" rel="noopener">参考🚎</a>  </p>
 <pre><code class="text">SSH本身提供两种级别的验证方法：
@@ -166,8 +232,12 @@
 <h2 id="线程函数为什么不是系统调用"><a href="#线程函数为什么不是系统调用" class="headerlink" title="线程函数为什么不是系统调用"></a>线程函数为什么不是系统调用</h2><ul>
 <li><p>首先在Linux诞生的时候还没有线程的概念，（LINUX是在1991诞生的）。随着多核CPU的诞生，多线程能充分发挥多核CPU的优势。但是修改操作系统去支持线程是一个很大的工程，所以线程的作者采用了库函数来实现线程。但是采用库函数实现线程的话，只是模拟了线程，并没有完全实现线程的理论。比如线程不能分配到多核上，在内核看来只是一个进程。还有管理，调度之类都很麻烦。在这个场景下，IBM 启动了NGTP(Next Generation POSIX Threads)项目，以及红帽 Redhat 公司的NPTL。IBM的项目在2003年就解散了。。，大家转到了NPTL，当然这个项目是成功的。实现的方式是采用clone实现了轻量级进程，同时是内核上加入若干的机制去保证和posix的行为一致。采用NPTL的方式的产生的线程是内核级线程。 </p>
 </li>
-<li><p>线程函数的实现在glibc(😂找不到，不知道是不是要编译后才有)</p>
+<li><p>线程函数的实现在glibc(😂找不到，不知道是不是要编译后才有)  </p>
 </li>
+</ul>
+<h2 id="PM2"><a href="#PM2" class="headerlink" title="PM2"></a>PM2</h2><p><a href="https://zhanfang.github.io/2015/10/28/hexo%E4%BC%98%E5%8C%96/" target="_blank" rel="noopener">资料🚎</a>  </p>
+<ul>
+<li>pm2<br>主要特性：<br>内建负载均衡（使用Node cluster 集群模块）<br>后台运行<br>0秒停机重载，我理解大概意思是维护升级的时候不需要停机.<br>具有Ubuntu和CentOS 的启动脚本<br>停止不稳定的进程（避免无限循环）<br>控制台检测<br>提供 HTTP API<br>远程控制和实时的接口API ( Nodejs 模块,允许和PM2进程管理器交互 )</li>
 </ul>
 ]]></content>
       <categories>
@@ -478,6 +548,9 @@
 <hr>
 <h1 id="STL💨"><a href="#STL💨" class="headerlink" title="STL💨"></a>STL💨</h1><p> <a href="https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5" target="_blank" rel="noopener">STL参考🚎🚎🚎</a>  </p>
 <h2 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h2><p><img src="/xzxaaa/images/STL_RQ.png" alt="upload successful"></p>
+<ul>
+<li>注意❗❗<br>A a; //在栈中分配内存<br>A * a = new A(); //动态内存分配，在堆上<br>也就是说容器对象定义在哪里，就在哪里动态分配空间</li>
+</ul>
 <h3 id="string"><a href="#string" class="headerlink" title="string"></a>string</h3><ul>
 <li>介绍 </li>
 </ul>
@@ -486,7 +559,7 @@
 <ul>
 <li>操作  </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">🚩获取元素大小</span><br><span class="line">size_type length() const;  &#x2F;&#x2F;不包含&#39;\0&#39;    </span><br><span class="line">	对于 std::string ，元素是字节（ char 类型对象），若使用如 UTF-8 的多字节编码，则它与字符不同  </span><br><span class="line"></span><br><span class="line">🚩string中获取子串办法   </span><br><span class="line">basic_string substr( size_type pos &#x3D; 0, size_type count &#x3D; npos ) const;  </span><br><span class="line">	返回从pos开始的，长度为count的string</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">🚩获取元素大小</span><br><span class="line">size_type length() const;  &#x2F;&#x2F;不包含&#39;\0&#39;    </span><br><span class="line">	对于 std::string ，元素是字节（ char 类型对象），若使用如 UTF-8 的多字节编码，则它与字符不同  </span><br><span class="line"></span><br><span class="line">🚩string中获取子串办法   </span><br><span class="line">basic_string substr( size_type pos &#x3D; 0, size_type count &#x3D; npos ) const;  </span><br><span class="line">	返回从pos开始的，长度为count的string  </span><br><span class="line">    </span><br><span class="line">🚩找到某个字符或字符串的匹配位置</span><br><span class="line">size_type find_first_of( const basic_string&amp; str, size_type pos &#x3D; 0 )&#x2F;&#x2F;寻找等于 str 中字符之一的首个字符</span><br><span class="line">size_type find_first_of( CharT ch, size_type pos &#x3D; 0 ) const;</span><br><span class="line">	找到的字符的位置，或若找不到这种字符则为 npos</span><br></pre></td></tr></table></figure>
 
 
 
@@ -589,6 +662,12 @@
 <li>fstrem =ifstrem+ofstrem  </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fstream mylog(&quot;.&#x2F;text.txt&quot;,ios::in);</span><br><span class="line"></span><br><span class="line">char buf[1024]&#x3D;&#123;0&#125;</span><br><span class="line">while (!mylog.eof())  &#x2F;&#x2F;C++读取整个文件</span><br><span class="line">&#123;</span><br><span class="line">		mylog.read(buf, 1024);</span><br><span class="line">		str &#x3D; str + buf;</span><br><span class="line">&#125;</span><br><span class="line"> mylog.write(buf, size);   &#x2F;&#x2F;写</span><br><span class="line"> mylog.read(buf，count)&#x2F;&#x2F;  cout为读多少个字节，遇到\n不会返回</span><br><span class="line">mylog.eof();  &#x2F;&#x2F;判断是否到了文件末尾</span><br><span class="line">seekp：设置输出文件流的文件流指针位置</span><br><span class="line">seekg：设置输入文件流的文件流指针位置</span><br><span class="line">mylog.seekg(0, ios::beg);  &#x2F;&#x2F;回到文件头</span><br><span class="line">seekp( streampos pos );</span><br><span class="line">seekg( streampos pos );</span><br><span class="line">函数原型</span><br></pre></td></tr></table></figure>
+<h2 id="gt-gt-操作符重载"><a href="#gt-gt-操作符重载" class="headerlink" title="&gt;&gt;操作符重载"></a>&gt;&gt;操作符重载</h2><ul>
+<li>在读取有一定规则的文件时候 如<br>张三 语文 100<br>李四 数学 90<br>王二 手工 80.5<br>string string double<br>可以预定定义好类型然后 file&gt;&gt;str&gt;&gt;str&gt;&gt;score;<br>🚩basic_istream&amp; operator&gt;&gt;( double&amp; value );<br>潜在地跳过前导空格。存储值到给定的引用 value     </li>
+<li>operator&gt;&gt;操作底层会先构造一个std::istream::sentry对象，sentry对象默认noskipws标志设为false，white-space character会被跳过除了回车，以下字符均是默认跳过✨</li>
+</ul>
+<p><img src="/xzxaaa/images/fstream.png" alt="upload successful"></p>
+<h3 id="如果想要-gt-gt-自己定义的类型"><a href="#如果想要-gt-gt-自己定义的类型" class="headerlink" title="如果想要&gt;&gt;自己定义的类型"></a>如果想要&gt;&gt;自己定义的类型</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct Foo</span><br><span class="line">&#123;</span><br><span class="line">   char n[5];</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">std::istream&amp; operator&gt;&gt;(std::istream&amp; is, Foo&amp; f)  &#x2F;&#x2F;需要自己写操作符重载</span><br><span class="line">&#123;</span><br><span class="line">    std::istream::sentry s(is); &#x2F;&#x2F;会使is跳过前导空格</span><br><span class="line">    if (s)</span><br><span class="line">        is.read(f.n, 5);</span><br><span class="line">    return is;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
 <h1 id="模板💨"><a href="#模板💨" class="headerlink" title="模板💨"></a>模板💨</h1><ul>
@@ -626,6 +705,25 @@
 <li>访问权限的控制是编译器判断的，一旦程序运行起来，没有访问权限  </li>
 </ul>
 <hr>
+<h1 id="C-异常"><a href="#C-异常" class="headerlink" title="C++异常"></a>C++异常</h1><ul>
+<li><p>栈解旋 ：异常被抛出后，从进入try块起，到异常被抛掷前，这期间在栈上的构造的所有对象，都会被自动析构。析构的顺序与构造的顺序相反。这一过程称为栈的解旋(unwinding)。</p>
+</li>
+<li><p>异常接口声明<br>1️⃣为了加强程序的可读性，可以在函数声明中列出可能抛出的所有异常类型，例如：void func() throw (A, B, C , D); //这个函数func（）能够且只能抛出类型A B C D及其子类型的异常。<br>2️⃣如果在函数声明中没有包含异常接口声明，则次函数可以抛掷任何类型的异常，例如：void func();<br>3️⃣一个不抛掷任何类型异常的函数可以声明为：void func()  throw();<br>4️⃣如果一个函数抛出了它的异常接口声明所不允许抛出的异常，unexpected函数会被调用，该函数默认行为调用terminate函数中止程序。</p>
+</li>
+<li><p>throw的异常是有类型的，catch严格按照类型进行匹配</p>
+</li>
+<li><p>处理不了的异常，可以在catch的最后一个分支，使用throw语法，向上扔。   </p>
+</li>
+<li><p>throw操作创建一个异常对象并抛掷</p>
+</li>
+<li><p>C++编译器通过throw 来产生对象，C++编译器再执行对应的catch分支，相当于一个函数调用，把实参传递给形参  </p>
+</li>
+<li><p>catch如果捕捉的是一个引用的化，那会少一个对象的构造   </p>
+</li>
+<li><p>throw做的操作。生成一个看不到的对象(拷贝构造)，然后把throw那个对象析构。再把它像作为参数类似的扔给catch（catch就会又产生一次拷贝构造，如果是引用的话则不用）这2个对象的生命周期都是catch语句结束</p>
+</li>
+</ul>
+<hr>
 <h1 id="题目💨"><a href="#题目💨" class="headerlink" title="题目💨"></a>题目💨</h1><h2 id="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"><a href="#写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，" class="headerlink" title="写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，"></a>写一个宏OFFSET，已知结构体中一个成员，求出该成员在结构体中的内存偏移量，</h2><p>#define OFFSET（type，member） ((size_t)&amp;(((type*)0)-&gt;member))   </p>
 <h2 id="gcc和g-的主要区别"><a href="#gcc和g-的主要区别" class="headerlink" title="gcc和g++的主要区别"></a>gcc和g++的主要区别</h2><p>1️⃣对于 <em>.c和</em>.cpp文件，gcc分别当做c和cpp文件编译（c和cpp的语法强度是不一样的）<br>2️⃣对于 <em>.c和</em>.cpp文件，g++则统一当做cpp文件编译  </p>
 <h2 id="二分和斐波那契查找"><a href="#二分和斐波那契查找" class="headerlink" title="二分和斐波那契查找"></a>二分和斐波那契查找</h2><p>实际数据分布均匀，当然是二分好。如果是指数分布，菲波好。<br><a href="https://www.jianshu.com/p/f2cec99ce87b" target="_blank" rel="noopener">斐波那参考🚎</a>  </p>
@@ -651,7 +749,13 @@
 <h2 id="构造函数什么情况下必须在初始化列表中进行初始化"><a href="#构造函数什么情况下必须在初始化列表中进行初始化" class="headerlink" title="构造函数什么情况下必须在初始化列表中进行初始化"></a>构造函数什么情况下必须在初始化列表中进行初始化</h2><ul>
 <li>在父类对象只有有参构造函数的情况下  </li>
 <li>类初始化父类的私有成员，需要在(并且也只能在)参数初始化列表中显示调用父类的构造函数  </li>
-<li>对象引用或者cosnt修饰的数据成员   </li>
+<li>对象引用或者cosnt修饰的数据成员     </li>
+</ul>
+<h2 id="C-三大特性"><a href="#C-三大特性" class="headerlink" title="C++三大特性"></a>C++三大特性</h2><p><a href="https://www.zhihu.com/search?type=content&q=%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1" target="_blank" rel="noopener">什么是面向对象🚎</a></p>
+<ul>
+<li>封装：隐藏实现细节，使得代码模块化、</li>
+<li>继承：可以实现现有类的所有功能，并在无需重新编写原来的类的情况下对这些功能进行扩展（复用别人写的代码）<br>它可以使用现有类的所有功能，并在无需重新编写原来类的情况下对这些功能进行扩展✨</li>
+<li>多态：允许将子类类型指针赋值给父类类型的指针(调用未来人写的代码)</li>
 </ul>
 <hr>
 <h1 id="杂项💨"><a href="#杂项💨" class="headerlink" title="杂项💨"></a>杂项💨</h1><h2 id="高内聚低耦合"><a href="#高内聚低耦合" class="headerlink" title="高内聚低耦合"></a>高内聚低耦合</h2><ul>
@@ -709,7 +813,7 @@
 
 这是一个深思熟虑的设计决策，以防止用户意外修改将在表达式结尾处死亡的对象：</code></pre>
 <ul>
-<li>临时对象如果做返回值，相当于右值  1️⃣如果接收的是对象定义的时候，临时对象转正（编译器上的转移语义）2️⃣ 如果是对象定义后，考虑有没有右值引用函数，如果有优先匹配  </li>
+<li>临时对象如果做返回值，相当于右值  1️⃣如果接收的是对象定义的时候（并且构造函数是无参❗），临时对象转正（编译器上的转移语义）2️⃣ 如果是对象定义后，考虑有没有右值引用函数，如果有优先匹配  </li>
 </ul>
 <hr>
 ]]></content>
