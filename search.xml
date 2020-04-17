@@ -39,15 +39,14 @@
 <p>5️⃣RAID5,至少3块硬盘，采用了校验技术，数据放1个磁盘上在另外2个磁盘上存放可以恢复的校验数据✨</p>
 <ul>
 <li>任意一块磁盘损坏不会损失数据  </li>
-<li>相同容量硬盘组成——损失一块磁盘的容量  </li>
+<li>相同容量硬盘组成——损失一块磁盘的容量<br><img src="/xzxaaa/images/RAID5.png" alt="upload successful"></li>
 </ul>
-<p><img src="/xzxaaa/images/RAID6.png" alt="upload successful"></p>
 <p>6️⃣RAID6,跟5差不多，至少要4块磁盘组成</p>
 <ul>
 <li>任意二块磁盘损坏不会损失数据  </li>
 <li>相同容量硬盘组成——损失二块磁盘的容量 </li>
 </ul>
-<p><img src="/xzxaaa/images/RAID5.png" alt="upload successful"></p>
+<p><img src="/xzxaaa/images/RAID6.png" alt="upload successful"></p>
 ]]></content>
       <tags>
         <tag>NAS🛫</tag>
